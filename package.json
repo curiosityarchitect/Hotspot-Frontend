@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.0",
+    "@reduxjs/toolkit": "^1.8.5",
     "expo": "~46.0.13",
     "expo-status-bar": "~1.4.0",
     "prettier": "^2.7.1",
