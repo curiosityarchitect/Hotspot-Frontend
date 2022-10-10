@@ -1,10 +1,7 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EventScreen from '../screens/events';
 import HomeScreen from '../screens/home';
 import GroupScreen from '../screens/groups';
-
 
 const Tab = createBottomTabNavigator();
 
