@@ -17,6 +17,12 @@ export default function appReducer(state = initialState, action) {
                 foregroundPerm: action.payload
             };
         }
+        case "location/updateLocation": {
+            return {
+                ...state,
+                location: action.payload
+            }
+        }
         default: {
             return state;
         }
