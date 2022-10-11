@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 function HomeScreen() {
-
+  // render map if location has been fetched
   if (store.getState().hasLocation) {
     const currLongitude = store.getState().location.coords.longitude;
     const currLatitude = store.getState().location.coords.latitude;
@@ -42,6 +42,7 @@ function HomeScreen() {
       </View>
     );
   }
+  // otherwise show loading message
   else {
     return ( 
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
