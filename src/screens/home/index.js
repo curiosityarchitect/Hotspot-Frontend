@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function HomeScreen() {
+function MapScreen() {
   // render map if location has been fetched
   if (store.getState().hasLocation) {
     const currLongitude = store.getState().location.coords.longitude;
@@ -52,10 +52,11 @@ function HomeScreen() {
   }
 }
 
-const mapStateToProps = (state) => ({ 
-  location: state.location.location
-});
+const mapStateToProps = (state) => {
+  return { 
+    location: state.location,
+    hasLocation: state.hasLocation
+  };
+};
 
-connect(mapStateToProps)(HomeScreen);
-
-export default HomeScreen;
+export default connect(mapStateToProps)(MapScreen);

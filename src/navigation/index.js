@@ -7,7 +7,7 @@ const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Home">
       <Tab.Screen name="Events" component={EventScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Group" component={GroupScreen} />
