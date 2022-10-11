@@ -4,7 +4,8 @@ import { configureStore } from "@reduxjs/toolkit";
 const initialState = {
     backgroundPerm: false,
     foregroundPerm: false,
-    location: null
+    location: null,
+    hasLocation: false
 };
 
 export const store = configureStore({

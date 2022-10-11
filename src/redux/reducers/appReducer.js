@@ -1,9 +1,6 @@
-const initialState = {
-    backgroundPerm: false,
-    foregroundPerm: false
-};
 
-export default function appReducer(state = initialState, action) {
+
+export default function appReducer(state, action) {
     switch (action.type) {
         case "permissions/backgroundPermChange": {
             return {
@@ -20,7 +17,8 @@ export default function appReducer(state = initialState, action) {
         case "location/updateLocation": {
             return {
                 ...state,
-                location: action.payload
+                location: action.payload,
+                hasLocation: Boolean(action.payload)
             }
         }
         default: {
