@@ -4,15 +4,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
   Button,
   TouchableOpacity,
 } from 'react-native';
 
-export default function EventCreationScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const EventCreationScreen = ({navigation}) => {
+  const [eventName, setEventName] = useState('');
+  const [eventType, setEventType] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEendDate] = useState('');
 
   return (
     <View style={styles.container}>
@@ -26,7 +30,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="Event Name"
           placeholderTextColor="#808080"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(eventName) => setEventName(eventName)}
         />
       </View>
 
@@ -35,7 +39,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="Event Type"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(eventType) => setEventType(eventType)}
         />
       </View>
 
@@ -44,7 +48,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="Event Location"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(eventLocation) => setEventLocation(eventLocation)}
         />
       </View>
 
@@ -53,7 +57,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="Start Time"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(startTime) => setStartTime(startTime)}
         />
       </View>
 
@@ -62,7 +66,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="End Time"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(endTime) => setEndTime(endTime)}
         />
       </View>
 
@@ -71,7 +75,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="Start Date"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(startDate) => setStartDate(startDate)}
         />
       </View>
 
@@ -80,7 +84,7 @@ export default function EventCreationScreen() {
           style={styles.TextInput}
           placeholder="End Date"
           placeholderTextColor="#808080"
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(endDate) => setEendDate(endDate)}
         />
       </View>
 
@@ -88,7 +92,7 @@ export default function EventCreationScreen() {
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.cancelBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.cancelBtn}>
         <Text style={styles.cancelText}>Cancel</Text>
       </TouchableOpacity>
 
@@ -98,6 +102,7 @@ export default function EventCreationScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -117,11 +122,34 @@ const styles = StyleSheet.create({
   },
 
   TextInput: {
+    display: "flex",
     height: 50,
     flex: 1,
     padding: 10,
-
+    textAlign: 'center',
     alignItems: 'center',
+  },
+
+  welcomeText: {
+    marginTop: -30,
+    height: 50,
+    fontSize: 25,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+
+  createBtn: {
+    width: '90%',
+    borderRadius: 10,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    backgroundColor: '#000000',
+  },
+
+  createText: {
+    color: 'white',
   },
 
   cancelBtn: {
@@ -140,25 +168,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
-  createBtn: {
-    width: '90%',
-    borderRadius: 10,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    backgroundColor: '#000000',
-  },
-
-  createText: {
-    color: 'white',
-  },
-
-  welcomeText: {
-    marginTop: -30,
-    height: 50,
-    fontSize: 25,
-    color: 'black',
-    fontWeight: 'bold',
-  },
 });
+
+export default EventCreationScreen;
