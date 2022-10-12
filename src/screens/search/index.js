@@ -4,14 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
   Button,
   TouchableOpacity,
 } from 'react-native';
 
-export default function UserSearchScreen() {
-  const [email, setEmail] = useState('');
+const UserSearchScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
@@ -25,7 +23,6 @@ export default function UserSearchScreen() {
           style={styles.TextInput}
           placeholder="Username"
           placeholderTextColor="#808080"
-          onChangeText={(email) => setEmail(email)}
         />
       </View>
 
@@ -33,8 +30,8 @@ export default function UserSearchScreen() {
         <Text style={styles.addText}>Add</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.cancelBtn}>
-        <Text style={styles.cancelText}>Cancel</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.backBtn}>
+        <Text style={styles.backText}>Back</Text>
       </TouchableOpacity>
 
     </View>
@@ -47,6 +44,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  welcomeText: {
+    marginTop: -30,
+    height: 50,
+    fontSize: 25,
+    color: 'black',
+    fontWeight: 'bold',
   },
 
   inputView: {
@@ -65,24 +70,8 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-
+    textAlign: 'center',
     alignItems: 'center',
-  },
-
-  cancelBtn: {
-    width: '90%',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#808080',
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    backgroundColor: '#F5F5F5',
-  },
-  
-  cancelText: {
-    color: 'black',
   },
 
   addBtn: {
@@ -99,11 +88,22 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 
-  welcomeText: {
-    marginTop: -30,
+  backBtn: {
+    width: '90%',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#808080',
     height: 50,
-    fontSize: 25,
-    color: 'black',
-    fontWeight: 'bold',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    backgroundColor: '#F5F5F5',
   },
+  
+  backText: {
+    color: 'black',
+  },
+
 });
+
+export default UserSearchScreen;

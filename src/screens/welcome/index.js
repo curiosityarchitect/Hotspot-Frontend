@@ -6,18 +6,18 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
- 
-export default function WelcomeScreen() {
+
+const WelcomeScreen = ({navigation}) => {
  
   return (
     <View style={styles.container}>
-    <Image style={styles.image} source={require("./assets/logo.png")} />
+    <Image style={styles.image} source={require("../../../assets/logo.png")} />
  
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Login")} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.registerBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Register")} style={styles.registerBtn}>
         <Text style={styles.registerText}>Register</Text>
       </TouchableOpacity>
     </View>
@@ -70,3 +70,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+export default WelcomeScreen;

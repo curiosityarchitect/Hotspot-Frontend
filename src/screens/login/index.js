@@ -10,14 +10,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default function LoginScreen() {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const error = () => Alert.alert("Error")
 
   return (
     <View style={styles.container}>
 
-      <TouchableOpacity style={styles.backBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
         <Text style={styles.loginText}>Back</Text>
       </TouchableOpacity>
 
@@ -47,11 +49,11 @@ export default function LoginScreen() {
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigation.navigate("Register")}>
         <Text style={styles.register_button}>Don't have an account? Register Now</Text>
       </TouchableOpacity>
     </View>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 0,
-
+    textAlign: 'center',
     alignItems: 'center',
   },
 
@@ -104,9 +106,9 @@ const styles = StyleSheet.create({
   },
 
   register_button: {
-    height: 10,
-    marginTop: 50,
-    marginBottom: 50,
+    height: 20,
+    marginTop: 40,
+    marginBottom: 40,
     fontSize: 12,
   },
 
@@ -132,3 +134,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default LoginScreen;
