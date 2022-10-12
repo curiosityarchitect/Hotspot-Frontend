@@ -7,9 +7,7 @@ import { store } from './src/redux/store/store';
 
 export default function App() {
 
-  useEffect(() => {
-    onBoot();
-  });
+  useEffect(onBoot);
 
   return (
     <Provider store={store}>

@@ -1,31 +1,18 @@
-import { StyleSheet, View, Text, Button } from 'react-native'
-import { useState, useEffect, Component } from 'react';
-import * as Location from 'expo-location';
-import React from 'react';
+import { View, Text } from 'react-native'
 import { store } from '../../redux/store/store';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-});
+import styles from './home.styles';
+import { useState } from 'react';
+import { getNearbyEvents, setNearbyEvents } from '../../services/events.service';
 
 function MapScreen() {
+
+  useEffect(() => {
+    
+  }, []);
+  
+
   // render map if location has been fetched
   if (store.getState().hasLocation) {
     const currLongitude = store.getState().location.coords.longitude;
@@ -38,7 +25,10 @@ function MapScreen() {
     };
     return ( 
       <View style={styles.container}>
-        <MapView style={styles.map} region={mapRegion} />
+        <MapView 
+          style={styles.map} 
+          initialRegion={mapRegion} 
+          showsUserLocation={true}/>
       </View>
     );
   }
