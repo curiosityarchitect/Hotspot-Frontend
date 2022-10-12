@@ -10,14 +10,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default function RegisterScreen() {
+const RegisterScreen = ({navigation}) => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <View style={styles.container}>
 
-    <TouchableOpacity style={styles.backBtn}>
+    <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
         <Text style={styles.registerText}>Back</Text>
       </TouchableOpacity>
 
@@ -29,6 +30,7 @@ export default function RegisterScreen() {
           style={styles.TextInput}
           placeholder="Username"
           placeholderTextColor="#808080"
+          onChangeText={(username) => setUsername(username)}
         />
       </View>
 
@@ -61,11 +63,11 @@ export default function RegisterScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.registerBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.registerBtn}>
         <Text style={styles.registerText}>Register</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigation.navigate("Login")}>
         <Text style={styles.login_button}>Already have an account? Login Now</Text>
       </TouchableOpacity>
     </View>
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 0,
-    
+    textAlign: 'center',
     alignItems: 'center',
   },
 
@@ -143,3 +145,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default RegisterScreen;
