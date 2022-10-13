@@ -4,6 +4,9 @@ import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
 export async function setNearbyEvents(location) {
+    if (!location)
+        return;
+
     axios.get(`${backendUrl}/events`, 
     {
         method: 'GET',
