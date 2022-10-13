@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import EventCard from './eventscreen-components/eventcard';
-import CreateEventButton from './eventscreen-components/create-event-button';
+import CreateEventButton from '../eventCreation/create-event-button';
 
 //test data - collapse for clarity
 const events = [
@@ -77,6 +77,7 @@ const events = [
   },
 ]
 
+
 const styles = StyleSheet.create({
   container: {
     padding: 5,
@@ -84,22 +85,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#faf0e6',
   },
+  CreateButtonStyle: {
+    marginTop: 10,
+  }
 });
 
 const EventScreen = () => {
   return(
     <View style={styles.container}>
-      <CreateEventButton/>
-      <FlatList 
-        data={events} 
-        renderItem={({item}) => {
-          return (
-            <EventCard info ={item}/>
-          )
-        }}
-        keyExtractor={(events => events.uid)}
-        showsVerticalScrollIndicator ={false}
-      />
+        <FlatList 
+          data={events} 
+          renderItem={({item}) => {
+            return (
+              <EventCard info ={item}/>
+            )
+          }}
+          keyExtractor={(events => events.uid)}
+          showsVerticalScrollIndicator ={false}
+        />
+
     </View>
 
   )

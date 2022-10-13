@@ -4,6 +4,7 @@ import HomeScreen from '../screens/home';
 import GroupScreen from '../screens/groups';
 
 const Tab = createBottomTabNavigator();
+
 export default function MyTabs() {
   return (
     <Tab.Navigator initialRouteName="Home">
@@ -11,6 +12,5 @@ export default function MyTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Group" component={GroupScreen} />
     </Tab.Navigator>
-
   );
 }
