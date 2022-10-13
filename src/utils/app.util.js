@@ -7,7 +7,7 @@ export function onBoot() {
     .then(() => {
         if (store.getState().foregroundPerm) {
             getLastLocation();
-            if (!store.getState().hasLocation)
+            if (!store.getState().location)
                 getLocation();
             beginTracking();
         }
