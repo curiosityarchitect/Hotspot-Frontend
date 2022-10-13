@@ -16,9 +16,7 @@ const Stack = createStackNavigator();
 
 const App = () => {
 
-  useEffect(() => {
-    onBoot();
-  });
+  useEffect(onBoot);
 
   return (
     <Provider store={store}>
