@@ -11,7 +11,8 @@ import WelcomeScreen from './src/screens/welcome';
 import RegisterScreen from './src/screens/register'
 import EventCreationScreen from './src/screens/eventCreation';
 import UserSearchScreen from './src/screens/search';
-
+import EventDetailsPage from './src/screens/events/eventscreen-components/eventdetails';
+import RsvpConfirmation from './src/screens/events/eventscreen-components/event-rsvp/rsvp-confirmation';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -28,6 +29,8 @@ const App = () => {
         <Stack.Screen name="Home" component={MyTabs}/>
         <Stack.Screen name="Search" component={UserSearchScreen}/>
         <Stack.Screen name="CreateEvent" component={EventCreationScreen}/>
+        <Stack.Screen name="EventDetails" component={EventDetailsPage}/>
+        <Stack.Screen name="RsvpScreen" component={RsvpConfirmation}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

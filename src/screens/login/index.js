@@ -19,10 +19,6 @@ const LoginScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
-        <Text style={styles.loginText}>Back</Text>
-      </TouchableOpacity>
-
       <Text style={styles.welcomeText}>Welcome back!</Text>
 
       <StatusBar style="auto" />
@@ -45,17 +41,24 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity>
-
       <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
+        <Text style={styles.loginText}>Back</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={()=>navigation.navigate("Register")}>
         <Text style={styles.register_button}>Don't have an account? Register Now</Text>
       </TouchableOpacity>
+
+     
+
     </View>
   );
 }
@@ -90,25 +93,26 @@ const styles = StyleSheet.create({
   },
 
   backBtn: {
-    width: '20%',
+    width: '90%',
     borderRadius: 10,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -100,
+    marginTop: 10,
     backgroundColor: '#000000',
   },
 
   forgot_button: {
     height: 30,
-    marginBottom: 30,
+    marginTop: 15,
+    marginBottom: 22,
     fontSize: 11,
   },
 
   register_button: {
     height: 20,
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: -33,
+    marginBottom: 77,
     fontSize: 12,
   },
 
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -20,
+    marginTop: -9,
     backgroundColor: '#000000',
   },
 
