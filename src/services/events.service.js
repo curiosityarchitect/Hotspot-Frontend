@@ -1,22 +1,25 @@
 import { backendUrl } from "./const";
+import { store } from "../redux/store/store";
+import { updateMapEvents } from "../redux/actions/actions";
+import axios from 'axios';
 
 export async function setNearbyEvents(location) {
-    fetch(`${backendUrl}/events?longitude=${location.coords.longitude}&latitude=${location.coords.longitude}&distance=800`, {
+    axios.get(`${backendUrl}/events`, 
+    {
         method: 'GET',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-        })
+        }, 
+        params: {
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+            distance: 800
+        }
     })
-    .then((response) => response.json())
-    .then((json) => {
-        console.log(json);
-        setCloseEvents(json);
+    .then((response) => {
+        const events = response.data;
+        store.dispatch(updateMapEvents(events));
     })
-    .catch((err) => {
-        console.log(err);
-    });
+    .catch((err) => {console.log(err)});
 }
-

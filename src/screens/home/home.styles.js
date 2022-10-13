@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+export default homeStyles = StyleSheet.create({
     container: {
         position: 'absolute',
         top: 0,
