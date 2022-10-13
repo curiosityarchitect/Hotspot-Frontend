@@ -8,11 +8,6 @@ import { getNearbyEvents, setNearbyEvents } from '../../services/events.service'
 
 function MapScreen() {
 
-  useEffect(() => {
-    
-  }, []);
-  
-
   // render map if location has been fetched
   if (store.getState().hasLocation) {
     const currLongitude = store.getState().location.coords.longitude;
