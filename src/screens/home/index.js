@@ -24,21 +24,6 @@ const homeStyles = StyleSheet.create({
   },
 });
 
-const createEventMarkers = (events) => {
-  const markers = events.map((event, index) => {
-    return <Marker
-      key = {index}
-      coordinate = {{
-          longitude: event.location.coordinates[0],
-          latitude: event.location.coordinates[1]
-      }}
-      title = { event.name }
-    />
-  });
-  console.log(markers);
-  return markers;
-}
-
 function MapScreen() {
 
   const dispatch = useDispatch();
@@ -67,7 +52,6 @@ function MapScreen() {
           initialRegion={mapRegion} 
           showsUserLocation={true}
           showsPointsOfInterest = {false}>
-          {console.log(events)}
           { events.map((event, index) => {
             return <Marker
               key = {index}
