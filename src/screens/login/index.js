@@ -8,13 +8,30 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const error = () => Alert.alert("Error")
+  const checkInput = () => {
+    if (!email.trim()) {
+      alert('Please Enter Email');
+      return;
+    }
+    if (!password.trim()) {
+      alert('Please Enter Password');
+      return;
+    }
+    Alert.alert(
+      "Sucess",
+      "Redirecting to app",
+      [
+        { text: "OK", onPress: () => navigation.navigate("Main App") }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +66,7 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Main App")} style={styles.loginBtn}>
+      <TouchableOpacity onPress={checkInput} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
 

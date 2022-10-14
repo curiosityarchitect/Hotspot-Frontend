@@ -8,12 +8,44 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 
 const RegisterScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+
+  const checkInput = () => {
+    if (!username.trim()) {
+      alert('Please Enter Name');
+      return;
+    }
+    if (!email.trim()) {
+      alert('Please Enter Email');
+      return;
+    }
+    if (!password.trim()) {
+      alert('Please Enter Password');
+      return;
+    }
+    if (!password2.trim()) {
+      alert('Please Enter confirm password');
+      return;
+    }
+    if (password2 !== password) {
+      alert('Password does not match');
+      return;
+    }
+    Alert.alert(
+      "Sucess",
+      "Redirecting to app",
+      [
+        { text: "OK", onPress: () => navigation.navigate("Main App") }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -59,11 +91,11 @@ const RegisterScreen = ({navigation}) => {
           placeholder="Confirm Password"
           placeholderTextColor="#808080"
           secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password2) => setPassword2(password2)}
         />
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Main App")} style={styles.registerBtn}>
+      <TouchableOpacity onPress={checkInput} style={styles.registerBtn}>
         <Text style={styles.registerText}>Register</Text>
       </TouchableOpacity>
 
