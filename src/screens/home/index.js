@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { store } from '../../redux/store/store';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setNearbyEvents } from '../../services/events.service';
@@ -42,15 +42,27 @@ function MapScreen() {
     const mapRegion = {
       longitude: currLongitude,
       latitude: currLatitude,
-      longitudeDelta: 0.0072,
-      latitudeDelta: 0.0072
+      longitudeDelta: 0.01,
+      latitudeDelta: 0.01
     };
     return ( 
       <View style={homeStyles.container}>
         <MapView 
           style={homeStyles.map} 
           initialRegion={mapRegion} 
-          showsUserLocation={true}/>
+          showsUserLocation={true}
+          showsPointsOfInterest = {false}>
+          { events.map((event, index) => {
+            return <Marker
+              key = {index}
+              coordinate = {{
+                  longitude: event.location.coordinates[0],
+                  latitude: event.location.coordinates[1]
+              }}
+              title = { event.name }
+            />
+          }) }
+        </MapView>
       </View>
     );
   }
