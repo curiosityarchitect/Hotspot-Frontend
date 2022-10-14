@@ -7,7 +7,16 @@ import RsvpButton from './event-rsvp/rsvp-button';
 
 const EventDetailsPage = ({route,navigation}) => {
   const {name, description, location, creator, eventType, capacity, start, expiration, cover} = route.params;
-
+  const mock_user = 
+  {
+    name: 'Alex Wu',
+    email: "wuboy@purdue.edu",
+  }
+  const limit = true
+  if(capacity == 0){
+    const limit = false;
+  }
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -37,7 +46,8 @@ const EventDetailsPage = ({route,navigation}) => {
         <View style={styles.rsvpContainer}>
           <TouchableOpacity onPress={()=>navigation.navigate("RsvpScreen",
           {
-            userInfo: 'mock_user', 
+            name: name,
+            userInfo: mock_user, 
             description: description, 
             location: location.name,
             creator: creator.username,

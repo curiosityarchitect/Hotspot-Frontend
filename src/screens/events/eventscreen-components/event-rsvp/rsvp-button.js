@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
-const RsvpButton= ({navigation}) => {
+const RsvpButton= () => {
     return (
       <View style={styles.buttonStyle}>
         <Text style={styles.buttonText}>attend</Text>

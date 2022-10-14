@@ -33,7 +33,7 @@ const events = [
     location: {name: "West Lafayette, IN",loc:  "Point",coordinates: [2,-8]},
     creator: { username: "dave69", dateCreated: '10/02/2022'},
     eventType: {scope: ["public"],groupEvent: false},
-    capacity: 0,
+    capacity: 10,
     start: "10/02/2022",
     expiration: "10/04/2022",
     cover: require('./event-temp-assets/21042301_G.jpeg'),
