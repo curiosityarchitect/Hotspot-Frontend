@@ -18,7 +18,7 @@ export const beginTracking = async () => {
             accuracy: Location.Accuracy.BestForNavigation,
         },
         location => {
-            console.log(location)
+            // console.log(location)
             store.dispatch(updateLocation(location));
         }
     )
