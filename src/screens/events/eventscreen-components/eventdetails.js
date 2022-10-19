@@ -6,7 +6,8 @@ import RsvpButton from './event-rsvp/rsvp-button';
 
 
 const EventDetailsPage = ({route,navigation}) => {
-  const {name, description, location, creator, eventType, capacity, start, expiration, cover} = route.params;
+  const {name, description, location, creator, eventType, capacity, start, expiration, cover,rsvpList} = route.params;
+
   const mock_user = 
   {
     name: 'Alex Wu',
@@ -51,11 +52,15 @@ const EventDetailsPage = ({route,navigation}) => {
             description: description, 
             location: location.name,
             creator: creator.username,
-            currentCapacity: capacity-1,
+            capacity: capacity-1,
             start: start,
           })}>
             <RsvpButton/>
           </TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backButton}>
+            <Text style={styles.loginText}>Back</Text>
+          </TouchableOpacity>
+
         </View>
         </View>
       </View>
@@ -141,7 +146,21 @@ const styles = StyleSheet.create({
   rsvpContainer: {
     start: deviceWidth/1.55,
   },
- 
+  backButton: {
+    width: '30%',
+    borderRadius: 10,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.333,
+  },
   
 });
 
