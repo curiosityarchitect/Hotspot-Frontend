@@ -1,6 +1,4 @@
-
-
-export default function appReducer(state, action) {
+export default function permissionsReducer(state = {}, action) {
     switch (action.type) {
         case "permissions/backgroundPermChange": {
             return {
@@ -13,18 +11,6 @@ export default function appReducer(state, action) {
                 ...state,
                 foregroundPerm: action.payload
             };
-        }
-        case "location/updateLocation": {
-            return {
-                ...state,
-                location: action.payload
-            }
-        }
-        case "map/updateEvents": {
-            return {
-                ...state,
-                mapEvents: action.payload
-            }
         }
         default: {
             return state;

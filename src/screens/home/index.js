@@ -1,44 +1,68 @@
-import { StyleSheet, View, Text, Button } from 'react-native'
-import { useState, useEffect, Component } from 'react';
-import * as Location from 'expo-location';
-import React from 'react';
+import { View, Text, StyleSheet } from 'react-native'
 import { store } from '../../redux/store/store';
-import MapView from 'react-native-maps';
-import { connect } from 'react-redux';
+import MapView, { Marker } from 'react-native-maps';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setNearbyEvents } from '../../services/events.service';
 
-const styles = StyleSheet.create({
+const homeStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
   },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
   },
 });
 
 function MapScreen() {
+
+  const dispatch = useDispatch();
+  const location = useSelector(state => state.location);
+  const events = useSelector(state => state.mapEvents)
+
+  useEffect(() => {
+    setNearbyEvents(location);
+  }, [location])
+  
+
   // render map if location has been fetched
-  if (store.getState().hasLocation) {
+  if (store.getState().location) {
     const currLongitude = store.getState().location.coords.longitude;
     const currLatitude = store.getState().location.coords.latitude;
     const mapRegion = {
       longitude: currLongitude,
       latitude: currLatitude,
-      longitudeDelta: 0.0072,
-      latitudeDelta: 0.0072
+      longitudeDelta: 0.01,
+      latitudeDelta: 0.01
     };
     return ( 
-      <View style={styles.container}>
-        <MapView style={styles.map} region={mapRegion} />
+      <View style={homeStyles.container}>
+        <MapView 
+          style={homeStyles.map} 
+          initialRegion={mapRegion} 
+          showsUserLocation={true}
+          showsPointsOfInterest = {false}>
+          { events.map((event, index) => {
+            return <Marker
+              key = {index}
+              coordinate = {{
+                  longitude: event.location.coordinates[0],
+                  latitude: event.location.coordinates[1]
+              }}
+              title = { event.name }
+            />
+          }) }
+        </MapView>
       </View>
     );
   }
