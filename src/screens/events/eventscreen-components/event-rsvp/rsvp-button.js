@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 
 
 const RsvpButton= () => {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: Colors.grey,
+    color: '#000000',
   },
 });
 

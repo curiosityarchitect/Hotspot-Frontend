@@ -75,7 +75,12 @@ const events = [
     cover: require('./event-temp-assets/mcway-falls-big-sur-ca.jpeg'),
   },
 ]
-
+//dummy user
+const mock_user = 
+{
+  name: 'Alex Wu',
+  email: "wuboy@purdue.edu",
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -99,6 +104,7 @@ const EventScreen = ({navigation}) => {
               <TouchableOpacity onPress={()=>navigation.navigate("EventDetails",
               {
                 name: item.name, 
+                user: mock_user,
                 description: item.description, 
                 location: item.location,
                 creator: item.creator,

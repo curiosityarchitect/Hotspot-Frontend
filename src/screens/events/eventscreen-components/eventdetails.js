@@ -1,22 +1,14 @@
-import React,{Component} from 'react';
+import React,{useState} from 'react';
 import {View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import EventLabels from './event-labels';
 import RsvpButton from './event-rsvp/rsvp-button';
 
 
-const EventDetailsPage = ({route,navigation}) => {
-  const {name, description, location, creator, eventType, capacity, start, expiration, cover,rsvpList} = route.params;
 
-  const mock_user = 
-  {
-    name: 'Alex Wu',
-    email: "wuboy@purdue.edu",
-  }
-  const limit = true
-  if(capacity == 0){
-    const limit = false;
-  }
+const EventDetailsPage = ({route,navigation}) => {
+  const {name, user,description, location, creator, eventType, capacity, start, expiration, cover} = route.params;
+  const [current_capacity, increment_capacity] = useState(0);
+
   
   return (
     <View style={styles.container}>
@@ -40,21 +32,28 @@ const EventDetailsPage = ({route,navigation}) => {
           <Text style={styles.timeTextStyle}>end:</Text>
           <EventLabels name='calendar-outline' desc={expiration} />
         </View>
+      
         <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + '0/'+capacity}</Text>
+          <Text style={styles.capacityTextStyle}>{'attending: ' + current_capacity + '/' + capacity}</Text>
         </View>
         <View style={styles.rsvpContainer}>
-          <TouchableOpacity onPress={()=>navigation.navigate("RsvpScreen",
-          {
-            name: name,
-            userInfo: mock_user, 
-            description: description, 
-            location: location.name,
-            creator: creator.username,
-            capacity: capacity-1,
-            start: start,
-          })}>
+          <TouchableOpacity onPress={()=> {
+            increment_capacity(current_capacity+1),
+            navigation.navigate("RsvpScreen",
+            {
+              name: name,
+              user: user, 
+              description: description, 
+              location: location,
+              creator: creator,
+              eventType: eventType,
+              capacity: capacity,
+              start: start,
+              expiration: expiration,
+              cover: cover,
+            })
+          }}>
             <RsvpButton/>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate("Events")} style={styles.backButton}>
@@ -129,8 +128,7 @@ const styles = StyleSheet.create({
   },
   timeTextStyle:{
     fontSize: 13,
-    fontFamily:'sans-serif',
-    color: Colors.grey,
+    color: '#696969',
   },
   //capacity
   capacityContainer:{

@@ -9,34 +9,34 @@ import {
 
 
 const RsvpConfirmation = ({route,navigation}) => {
-  const {name,userInfo, description, location, creator, capacity, start} = route.params;
+  const {name,user, description, location, creator, eventType, capacity, start, expiration,cover} = route.params;
   return (
     <View style={styles.container}>
-      <Text style={styles.confirmationTextStyle}>{userInfo.name}: Thank you for the RSVP!</Text>
+      <Text style={styles.confirmationTextStyle}>{user.name}: Thank you for the RSVP!</Text>
       <Text style={styles.confirmationDetailStyle}>Here are the details...</Text>
       <View style={styles.detailsContainer}>
         <Text style={styles.detailTextStyle}>Event: {name}</Text>
-        <Text style={styles.detailTextStyle}>Where: {location}</Text>
+        <Text style={styles.detailTextStyle}>Where: {location.name}</Text>
         <Text style={styles.detailTextStyle}>When: {start}</Text>
-        <Text style={styles.detailTextStyle}>Hosted by: {creator}</Text>
-        <Text style={styles.detailTextStyle}>Spots Remaining: {capacity} </Text>
+        <Text style={styles.detailTextStyle}>Hosted by: {creator.username}</Text>
       </View>
       <View style={styles.emailContainer}>
         <Text style={styles.emailTextStyle}>We have sent a confirmation email to</Text>
-        <Text style={styles.emailTextStyle}>{userInfo.email}</Text>
+        <Text style={styles.emailTextStyle}>{user.email}</Text>
       </View>
       <View style={styles.doneView}>
         <TouchableOpacity onPress={()=>navigation.navigate("EventDetails",
         {
           name: name,
-          userInfo: userInfo,
+          user: user,
           description: description,
           location: location,
           creator: creator,
-          capacity: capacity+1,
+          eventType: eventType,
+          capacity: capacity,
           start: start,
-          rsvpList:userInfo,
-
+          expiration: expiration,
+          cover: cover,
         })} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
         </TouchableOpacity>
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   confirmationTextStyle: {
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'Sans-serif',
     paddingTop: 65,
     alignSelf: 'center',
   },
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     fontStyle: 'italic',
-    fontFamily: 'Sans-serif',
     paddingTop: 10,
     alignSelf: 'center',
   },
@@ -74,7 +72,6 @@ const styles = StyleSheet.create({
   detailTextStyle: {
     fontSize: 15,
     fontWeight: 'bold',
-    fontFamily: 'Sans-serif',
     paddingTop: 55,
     paddingBottom: 10,
     alignSelf: 'center',
@@ -86,7 +83,6 @@ const styles = StyleSheet.create({
   emailTextStyle: {
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'Sans-serif',
     alignSelf: 'center',
     paddingTop: 12,
   },

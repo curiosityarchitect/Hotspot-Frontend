@@ -1,30 +1,39 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { store } from '../../redux/store/store';
 import MapView, { Marker } from 'react-native-maps';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setNearbyEvents } from '../../services/events.service';
-
+import CreateEventButton from '../eventCreation/create-event-button';
 const homeStyles = StyleSheet.create({
   container: {
       position: 'absolute',
+      flex: 1,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      justifyContent: 'flex-end',
       alignItems: 'center',
   },
   map: {
       position: 'absolute',
+      flex: 1,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
   },
+  buttonContainer: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    marginTop: '10%',
+    marginRight: '2%',
+
+
+  },
 });
 
-function MapScreen() {
+function MapScreen({navigation}) {
 
   const dispatch = useDispatch();
   const location = useSelector(state => state.location);
@@ -46,7 +55,7 @@ function MapScreen() {
       latitudeDelta: 0.01
     };
     return ( 
-      <View style={homeStyles.container}>
+      <View style={homeStyles.container}>      
         <MapView 
           style={homeStyles.map} 
           initialRegion={mapRegion} 
@@ -63,7 +72,12 @@ function MapScreen() {
             />
           }) }
         </MapView>
-      </View>
+        <TouchableOpacity style={homeStyles.buttonContainer} onPress={() => navigation.navigate('CreateEvent')}>
+          <CreateEventButton />
+        </TouchableOpacity>
+      
+    </View>
+
     );
   }
   // otherwise show loading message
