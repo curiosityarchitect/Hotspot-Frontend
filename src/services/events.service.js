@@ -14,7 +14,7 @@ export async function setNearbyEvents(location) {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         }, 
-        params: {
+        params: { 
             longitude: location.coords.longitude,
             latitude: location.coords.latitude,
             distance: 800
