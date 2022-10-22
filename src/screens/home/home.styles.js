@@ -76,15 +76,6 @@ const regularMapStyle =
         ]
     },
     {
-        "featureType": "poi.park",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-            "visibility": "off"
-            }
-        ]
-    },
-    {
         "featureType": "road",
         "stylers": [
             {
@@ -95,6 +86,14 @@ const regularMapStyle =
 ];
 
 const heatMapStyle = [
+    {
+        "featureType": "poi.business",
+        "stylers": [
+            {
+            "visibility": "off"
+            }
+        ]
+    },
     {
       "elementType": "geometry",
       "stylers": [

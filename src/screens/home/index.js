@@ -23,6 +23,12 @@ const homeStyles = StyleSheet.create({
       right: 0,
       bottom: 0,
   },
+  buttonContainer: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    marginTop: '10%',
+    marginRight: '2%',
+  }
 });
 
 const createEventMarkers = (events) => (
@@ -59,13 +65,22 @@ const createHeatMap = (events) => {
   return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
+let eventMarkers = null;
+let heatMap = null;
+
+const updateEventMarkers = (events) => {
+  eventMarkers = createEventMarkers(events);
+};
+
+const updateHeatMap = (events) => {
+  heatMap = createHeatMap(events);
+};
+
 function MapScreen() {
-  const dispatch = useDispatch();
   const [heatMapOn, toggleHeatMap] = useState(false);
   const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
 
   const location = useSelector(state => state.location);
-  const events = useSelector(state => state.mapEvents);
   const foregroundPerm = useSelector(state => state.foregroundPerm);
 
   if (!foregroundPerm) {
@@ -93,12 +108,13 @@ function MapScreen() {
           initialRegion={mapRegion} 
           showsUserLocation={!heatMapOn}
           customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}>
-          { heatMapOn ? <View></View> : createEventMarkers(events) }
-          { heatMapOn ? createHeatMap(events) : <View></View> }
+          { heatMapOn ? null : eventMarkers }
+          { heatMapOn ? heatMap : null }
         </MapView>
         <Switch
           onValueChange={toggleSwitch}
           value={heatMapOn}
+          style={homeStyles.buttonContainer}
         />
       </View>
     );
@@ -116,6 +132,8 @@ function MapScreen() {
 
 const mapStateToProps = (state) => {
   setNearbyEvents(state.location);
+  updateEventMarkers(state.mapEvents);
+  updateHeatMap(state.mapEvents);
   return { 
     location: state.location,
     hasLocation: state.hasLocation
