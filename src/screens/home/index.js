@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
 import { ironbowPalette, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 
 const homeStyles = StyleSheet.create({
@@ -55,20 +56,18 @@ const createHeatMap = (events) => {
     colorMapSize: ironbowPalette.length
   }
 
-  return <Heatmap points={points} radius={20} gradient={gradientConfig}/>
+  return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
 function MapScreen() {
-
   const dispatch = useDispatch();
+  const [heatMapOn, toggleHeatMap] = useState(false);
+  const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
+
   const location = useSelector(state => state.location);
   const events = useSelector(state => state.mapEvents);
   const foregroundPerm = useSelector(state => state.foregroundPerm);
 
-  useEffect(() => {
-    setNearbyEvents(location);
-  }, [location])
-  
   if (!foregroundPerm) {
     return ( 
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -92,11 +91,15 @@ function MapScreen() {
         <MapView 
           style={homeStyles.map} 
           initialRegion={mapRegion} 
-          showsUserLocation={true}
-          showsPointsOfInterest = {false}>
-          { createEventMarkers(events) }
-          { createHeatMap(events) }
+          showsUserLocation={!heatMapOn}
+          customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}>
+          { heatMapOn ? <View></View> : createEventMarkers(events) }
+          { heatMapOn ? createHeatMap(events) : <View></View> }
         </MapView>
+        <Switch
+          onValueChange={toggleSwitch}
+          value={heatMapOn}
+        />
       </View>
     );
   }
@@ -112,6 +115,7 @@ function MapScreen() {
 }
 
 const mapStateToProps = (state) => {
+  setNearbyEvents(state.location);
   return { 
     location: state.location,
     hasLocation: state.hasLocation
