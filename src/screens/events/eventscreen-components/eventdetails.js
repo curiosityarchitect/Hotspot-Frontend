@@ -56,7 +56,7 @@ const EventDetailsPage = ({route,navigation}) => {
           }}>
             <RsvpButton/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("Events")} style={styles.backButton}>
+          <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backButton}>
             <Text style={styles.loginText}>Back</Text>
           </TouchableOpacity>
 
