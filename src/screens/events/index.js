@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import EventCard from './eventscreen-components/eventcard';
+import EventCard from './eventscreen-components/tab-components/eventcard';
 
 
 //test data - collapse for clarity

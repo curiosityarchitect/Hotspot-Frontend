@@ -4,7 +4,8 @@ import { configureStore } from "@reduxjs/toolkit";
 const initialState = {
     foregroundPerm: false,
     backgroundPerm: false,
-    mapEvents: []
+    mapEvents: [],
+    myEvents: []
 }
 
 export const store = configureStore({

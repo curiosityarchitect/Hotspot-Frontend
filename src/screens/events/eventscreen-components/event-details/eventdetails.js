@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import {View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
-import EventLabels from './event-labels';
-import RsvpButton from './event-rsvp/rsvp-button';
+import EventLabels from '../tab-components/event-labels';
+import RsvpButton from '../event-rsvp/rsvp-button';
 
 
 
@@ -56,7 +56,7 @@ const EventDetailsPage = ({route,navigation}) => {
           }}>
             <RsvpButton/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backButton}>
+          <TouchableOpacity onPress={()=>navigation.navigate("My Events")} style={styles.backButton}>
             <Text style={styles.loginText}>Back</Text>
           </TouchableOpacity>
 

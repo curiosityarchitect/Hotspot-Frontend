@@ -11,9 +11,11 @@ import WelcomeScreen from './src/screens/welcome';
 import RegisterScreen from './src/screens/register'
 import EventCreationScreen from './src/screens/eventCreation';
 import UserSearchScreen from './src/screens/search';
-import EventDetailsPage from './src/screens/events/eventscreen-components/eventdetails';
+import EventDetailsPage from './src/screens/events/eventscreen-components/event-details/eventdetails';
 import RsvpConfirmation from './src/screens/events/eventscreen-components/event-rsvp/rsvp-confirmation';
 import EventScreen from './src/screens/events';
+import FriendRequestView from './src/screens/social/freind-request-view';
+import InvitePage from './src/screens/eventCreation/invite-components/invite-page';
 
 
 const App = () => {
@@ -34,6 +36,8 @@ const App = () => {
         <Stack.Screen name="MyEvents" component={EventScreen}/>
         <Stack.Screen name="EventDetails" component={EventDetailsPage}/>
         <Stack.Screen name="RsvpScreen" component={RsvpConfirmation}/>
+        <Stack.Screen name="FriendRequests" component={FriendRequestView}/>
+        <Stack.Screen name="InvitePage" component={InvitePage}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

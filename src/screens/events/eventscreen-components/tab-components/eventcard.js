@@ -1,4 +1,4 @@
-
+//card component for each event - for MyEvents tab
 import React from 'react';
 import {View, Text, StyleSheet,Dimensions,Image} from 'react-native';
 import EventLabels from './event-labels';

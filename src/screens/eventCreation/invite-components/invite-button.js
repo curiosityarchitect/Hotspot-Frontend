@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
 import {Icon} from 'react-native-elements';
 
 const invitebutton= () => {
-    <TouchableOpacity onPress={()=>navigation.navigate("CreateEvent")}
+    <TouchableOpacity onPress={()=>navigation.navigate("InvitePage")}
         style={{
             borderWidth:1,
             borderColor:'rgba(0,0,0,0.2)',

@@ -72,7 +72,7 @@ function MapScreen({navigation}) {
             />
           }) }
         </MapView>
-        <TouchableOpacity style={homeStyles.buttonContainer} onPress={() => navigation.navigate('CreateEvent')}>
+        <TouchableOpacity style={homeStyles.buttonContainer} onPress={() => navigation.navigate('FriendRequests')}>
           <CreateEventButton />
         </TouchableOpacity>
       
