@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
 import { ironbowPalette, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
 import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 
@@ -65,23 +65,16 @@ const createHeatMap = (events) => {
   return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
-let eventMarkers = null;
-let heatMap = null;
-
-const updateEventMarkers = (events) => {
-  eventMarkers = createEventMarkers(events);
-};
-
-const updateHeatMap = (events) => {
-  heatMap = createHeatMap(events);
-};
-
 function MapScreen() {
-  const [heatMapOn, toggleHeatMap] = useState(false);
-  const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
-
   const location = useSelector(state => state.location);
+  const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
+
+  const [heatMapOn, toggleHeatMap] = useState(false);
+  const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
+  const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
+
+  const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
 
   if (!foregroundPerm) {
     return ( 
@@ -132,8 +125,6 @@ function MapScreen() {
 
 const mapStateToProps = (state) => {
   setNearbyEvents(state.location);
-  updateEventMarkers(state.mapEvents);
-  updateHeatMap(state.mapEvents);
   return { 
     location: state.location,
     hasLocation: state.hasLocation
