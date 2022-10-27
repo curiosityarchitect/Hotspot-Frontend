@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
-import { store } from '../../redux/store/store';
-import MapView, { Marker } from 'react-native-maps';
+import { ironbowPalette, startPoints } from './home.styles';
+import MapView, { Heatmap, Marker } from 'react-native-maps';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setNearbyEvents } from '../../services/events.service';
@@ -24,21 +24,63 @@ const homeStyles = StyleSheet.create({
   },
 });
 
+const createEventMarkers = (events) => (
+  events.map((event, index) => {
+    return <Marker
+      key = {index}
+      coordinate = {{
+          longitude: event.location.coordinates[0],
+          latitude: event.location.coordinates[1]
+      }}
+      title = { event.name }
+    />
+  })
+);
+
+const createHeatMap = (events) => {
+  if (events.length == 0)
+    return;
+
+  const points = events.map((event) => {
+    return {
+      longitude: event.location.coordinates[0],
+      latitude: event.location.coordinates[1],
+      weight: event.numAttendees
+    };
+  });
+
+  const gradientConfig = {
+    colors: ironbowPalette,
+    startPoints: startPoints,
+    colorMapSize: ironbowPalette.length
+  }
+
+  return <Heatmap points={points} radius={20} gradient={gradientConfig}/>
+};
+
 function MapScreen() {
 
   const dispatch = useDispatch();
   const location = useSelector(state => state.location);
-  const events = useSelector(state => state.mapEvents)
+  const events = useSelector(state => state.mapEvents);
+  const foregroundPerm = useSelector(state => state.foregroundPerm);
 
   useEffect(() => {
     setNearbyEvents(location);
   }, [location])
   
+  if (!foregroundPerm) {
+    return ( 
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text> Allow location permissions to access map functionality! </Text>
+      </View>
+    );
+  }
 
   // render map if location has been fetched
-  if (store.getState().location) {
-    const currLongitude = store.getState().location.coords.longitude;
-    const currLatitude = store.getState().location.coords.latitude;
+  if (location) {
+    const currLongitude = location.coords.longitude;
+    const currLatitude = location.coords.latitude;
     const mapRegion = {
       longitude: currLongitude,
       latitude: currLatitude,
@@ -52,20 +94,13 @@ function MapScreen() {
           initialRegion={mapRegion} 
           showsUserLocation={true}
           showsPointsOfInterest = {false}>
-          { events.map((event, index) => {
-            return <Marker
-              key = {index}
-              coordinate = {{
-                  longitude: event.location.coordinates[0],
-                  latitude: event.location.coordinates[1]
-              }}
-              title = { event.name }
-            />
-          }) }
+          { createEventMarkers(events) }
+          { createHeatMap(events) }
         </MapView>
       </View>
     );
   }
+
   // otherwise show loading message
   else {
     return ( 

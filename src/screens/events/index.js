@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import EventCard from './eventscreen-components/eventcard';
-import CreateEventButton from '../eventCreation/create-event-button';
+
 
 //test data - collapse for clarity
 const events = [
@@ -29,12 +29,11 @@ const events = [
   {
     uid: '2',
     name: "5k Run for Abex",
-    description: `Join us for our anual 5k in support of those who are developmentally disabled.
-     For every kilometer ran, we will donate 1000 dollars`,
+    description: "Join us for our anual 5k in support of those who are developmentally disabled. For every kilometer ran, we will donate 1000 dollars",
     location: {name: "West Lafayette, IN",loc:  "Point",coordinates: [2,-8]},
     creator: { username: "dave69", dateCreated: '10/02/2022'},
     eventType: {scope: ["public"],groupEvent: false},
-    capacity: 0,
+    capacity: 10,
     start: "10/02/2022",
     expiration: "10/04/2022",
     cover: require('./event-temp-assets/21042301_G.jpeg'),
@@ -90,20 +89,33 @@ const styles = StyleSheet.create({
   }
 });
 
-const EventScreen = () => {
+const EventScreen = ({navigation}) => {
   return(
     <View style={styles.container}>
         <FlatList 
           data={events} 
-          renderItem={({item}) => {
-            return (
-              <EventCard info ={item}/>
-            )
+          renderItem={({item}) => {       
+            return(
+              <TouchableOpacity onPress={()=>navigation.navigate("EventDetails",
+              {
+                name: item.name, 
+                description: item.description, 
+                location: item.location,
+                creator: item.creator,
+                eventType: item.eventType,
+                capacity: item.capacity,
+                start: item.start,
+                expiration: item.expiration,
+                cover: item.cover,
+              })}>
+                <EventCard info ={item}/>
+              </TouchableOpacity>
+            )        
           }}
           keyExtractor={(events => events.uid)}
           showsVerticalScrollIndicator ={false}
         />
-
+   
     </View>
 
   )
