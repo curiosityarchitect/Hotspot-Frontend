@@ -28,40 +28,39 @@ const EventDetailsPage = ({route,navigation}) => {
         <View style={styles.headerContent}>
           <Text style={styles.nameStyle}>{name}</Text>
           <Text style={styles.descriptionStyle}>{description}</Text>
-        <View style={styles.eventIdentificationContainer}>
-          <EventLabels name='location-outline' />
-          <Text style={styles.locationTextStyle}>{location.name}</Text>
-          <EventLabels  name='person-circle-outline' />
-          <Text style={styles.creatorTextStyle}>{creator.username}</Text>
-        </View>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeTextStyle}>start:</Text>
-          <EventLabels name='calendar-outline' desc={start} />
-          <Text style={styles.timeTextStyle}>end:</Text>
-          <EventLabels name='calendar-outline' desc={expiration} />
-        </View>
-        <View style={styles.capacityContainer}>
-          <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + '0/'+capacity}</Text>
-        </View>
-        <View style={styles.rsvpContainer}>
-          <TouchableOpacity onPress={()=>navigation.navigate("RsvpScreen",
-          {
-            name: name,
-            userInfo: mock_user, 
-            description: description, 
-            location: location.name,
-            creator: creator.username,
-            capacity: capacity-1,
-            start: start,
-          })}>
-            <RsvpButton/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backButton}>
-            <Text style={styles.loginText}>Back</Text>
-          </TouchableOpacity>
-
-        </View>
+          <View style={styles.eventIdentificationContainer}>
+            <EventLabels name='location-outline' />
+            <Text style={styles.locationTextStyle}>{location.name}</Text>
+            <EventLabels  name='person-circle-outline' />
+            <Text style={styles.creatorTextStyle}>{creator.username}</Text>
+          </View>
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeTextStyle}>start:</Text>
+            <EventLabels name='calendar-outline' desc={start} />
+            <Text style={styles.timeTextStyle}>end:</Text>
+            <EventLabels name='calendar-outline' desc={expiration} />
+          </View>
+          <View style={styles.capacityContainer}>
+            <EventLabels name='people-circle-outline' />
+            <Text style={styles.capacityTextStyle}>{'attending: ' + '0/'+capacity}</Text>
+          </View>
+          <View style={styles.rsvpContainer}>
+            <TouchableOpacity onPress={()=>navigation.navigate("RsvpScreen",
+            {
+              name: name,
+              userInfo: mock_user, 
+              description: description, 
+              location: location.name,
+              creator: creator.username,
+              capacity: capacity-1,
+              start: start,
+            })}>
+              <RsvpButton/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backButton}>
+              <Text style={styles.loginText}>Back</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -80,8 +79,7 @@ const styles = StyleSheet.create({
     height: '40%',
   },
   header: {
-    flex: 1,
-    justifyContent: 'flex-top',
+    flex: 1
   },
   nameStyle: {
     fontSize: 28,
