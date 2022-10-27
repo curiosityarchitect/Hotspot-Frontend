@@ -3,11 +3,11 @@ import { foregroundPermissionsReducer, backgroundPermissionsReducer } from "./pe
 import locationReducer from "./locations.reducer";
 import mapEventReducer from "./mapEvents.reducer"
 
-const mainReducer = combineReducers({
+const appReducer = combineReducers({
     foregroundPerm: foregroundPermissionsReducer, 
     backgroundPerm: backgroundPermissionsReducer,
     location: locationReducer,
     mapEvents: mapEventReducer
 });
 
-export default mainReducer;
+export default appReducer;
