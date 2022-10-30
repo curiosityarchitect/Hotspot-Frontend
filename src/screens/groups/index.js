@@ -5,7 +5,7 @@ const GroupScreen = ({navigation}) => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Groups</Text>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Search")} style={styles.createBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("UserSearch")} style={styles.createBtn}>
         <Text style={styles.createText}>Add User</Text>
       </TouchableOpacity>
 
