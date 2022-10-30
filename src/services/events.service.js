@@ -26,3 +26,30 @@ export async function setNearbyEvents(location) {
     })
     .catch((err) => {console.log(err)});
 }
+
+export async function setEvent(eventName, eventType, eventLocation, startTime, endTime, startDate, endDate) {
+    if (!eventName || !eventType || !eventLocation || !startTime || !endTime || !startDate || !endDate)
+        return;
+
+    axios.post(`${backendUrl}/events`, 
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }, 
+        data: {
+            name: eventName,
+            eventType: eventType,
+            location: eventLocation,
+            startTime: startTime,
+            endTime: endTime,
+            start: startDate,
+            expiration: endDate
+        }
+    })
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((err) => {console.log(err)});
+}
