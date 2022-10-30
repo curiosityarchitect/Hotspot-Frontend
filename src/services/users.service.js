@@ -1,6 +1,4 @@
 import { backendUrl } from "./const";
-import { store } from "../redux/store/store";
-import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
 export async function setUser(username, email, password) {
