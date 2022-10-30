@@ -4,12 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
   Button,
   TouchableOpacity,
-  Alert
 } from 'react-native';
+import { setUser } from '../../services/users.service';
 
 const RegisterScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -38,6 +37,15 @@ const RegisterScreen = ({navigation}) => {
       alert('Password does not match');
       return;
     }
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+      alert('Password needs to contain uppercase, lowercase, number, and special character');
+      return;
+    }
+    if (!/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)) {
+      alert('Needs to be a valid email');
+      return;
+    }
+    setUser(username, email, password);
     navigation.navigate("Main App");
   };
 
