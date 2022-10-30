@@ -10,7 +10,8 @@ import LoginScreen from './src/screens/login';
 import WelcomeScreen from './src/screens/welcome';
 import RegisterScreen from './src/screens/register'
 import EventCreationScreen from './src/screens/eventCreation';
-import UserSearchScreen from './src/screens/search';
+import UserSearchScreen from './src/screens/search/searchUser';
+import EventSearchScreen from './src/screens/search/searchEvent';
 import EventDetailsPage from './src/screens/events/eventscreen-components/eventdetails';
 import RsvpConfirmation from './src/screens/events/eventscreen-components/event-rsvp/rsvp-confirmation';
 import EventScreen from './src/screens/events';
@@ -29,7 +30,8 @@ const App = () => {
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="Main App" component={MyTabs}/>
-        <Stack.Screen name="Search" component={UserSearchScreen}/>
+        <Stack.Screen name="UserSearch" component={UserSearchScreen}/>
+        <Stack.Screen name="EventSearch" component={UserSearchScreen}/>
         <Stack.Screen name="CreateEvent" component={EventCreationScreen}/>
         <Stack.Screen name="MyEvents" component={EventScreen}/>
         <Stack.Screen name="EventDetails" component={EventDetailsPage}/>
