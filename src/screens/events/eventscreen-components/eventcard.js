@@ -7,7 +7,7 @@ const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 
 const EventCard = (props) => {
-  console.log(props);
+  //console.log(props);
   return (
     <View style={styles.container}>
         <Image 

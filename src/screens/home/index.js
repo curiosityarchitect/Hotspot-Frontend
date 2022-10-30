@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
 import { ironbowPalette, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
+import * as mapSettings from './map-settings';
 
 const homeStyles = StyleSheet.create({
   container: {
@@ -22,6 +24,12 @@ const homeStyles = StyleSheet.create({
       right: 0,
       bottom: 0,
   },
+  heatMapSwitch: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    marginTop: '10%',
+    marginRight: '2%',
+  }
 });
 
 const createEventMarkers = (events) => (
@@ -55,20 +63,75 @@ const createHeatMap = (events) => {
     colorMapSize: ironbowPalette.length
   }
 
-  return <Heatmap points={points} radius={20} gradient={gradientConfig}/>
+  return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
 function MapScreen() {
-
-  const dispatch = useDispatch();
   const location = useSelector(state => state.location);
-  const events = useSelector(state => state.mapEvents);
+  const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
+
+  const mapViewRef = useRef(null);
+  const [heatMapOn, toggleHeatMap] = useState(false);
+  const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
+  const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
 
   useEffect(() => {
     setNearbyEvents(location);
-  }, [location])
-  
+  }, [location]);
+
+  const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
+  const handleRegionChange = (region, isGesture={isGesture: true}) => {
+    // only adjust mapview if region change was due to user input
+    if (!isGesture.isGesture)
+      return;
+
+    const newRegion = {
+      longitude: region.longitude,
+      latitude: region.latitude,
+      longitudeDelta: region.longitudeDelta,
+      latitudeDelta: region.latitudeDelta
+    }
+      
+    // enforce maximum zoom level
+    if (region.latitudeDelta > mapSettings.maxDelta) {
+      newRegion.longitudeDelta = 0;
+      newRegion.latitudeDelta = mapSettings.maxDelta;
+    }
+
+    const maxLeft = location.coords.longitude - mapSettings.maxDelta / 2;
+    const maxRight = location.coords.longitude + mapSettings.maxDelta / 2;
+    const maxTop = location.coords.latitude - mapSettings.maxDelta / 2;
+    const maxBottom = location.coords.latitude + mapSettings.maxDelta / 2;
+    const currLeft = region.longitude - newRegion.longitudeDelta / 2;
+    const currRight = region.longitude + newRegion.longitudeDelta / 2;
+    const currTop = region.latitude - newRegion.latitudeDelta / 2;
+    const currBottom = region.latitude + newRegion.latitudeDelta / 2;
+
+    // enforce camera movement restrictions
+    if (currLeft < maxLeft) 
+      newRegion.longitude = region.longitude + maxLeft - currLeft;
+    if (currRight > maxRight) 
+      newRegion.longitude = region.longitude + maxRight - currRight;
+    if (currTop < maxTop) 
+      newRegion.latitude = region.latitude + maxTop - currTop;
+    if (currBottom > maxBottom) 
+      newRegion.latitude = region.latitude + maxBottom - currBottom;
+
+    if (newRegion.longitude       != region.longitude       || 
+        newRegion.latitude        != region.latitude        ||
+        newRegion.longitudeDelta  != region.longitudeDelta  ||
+        newRegion.latitudeDelta   != region.latitudeDelta) {
+      mapViewRef.current?.animateToRegion({
+        longitude: newRegion.longitude,
+        latitude: newRegion.latitude,
+        longitudeDelta: newRegion.longitudeDelta,
+        latitudeDelta: newRegion.latitudeDelta
+      });
+    }
+  }
+
+  // do not allow users to use map if their location is not tracked
   if (!foregroundPerm) {
     return ( 
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -84,19 +147,27 @@ function MapScreen() {
     const mapRegion = {
       longitude: currLongitude,
       latitude: currLatitude,
-      longitudeDelta: 0.01,
-      latitudeDelta: 0.01
+      longitudeDelta: 0.005,
+      latitudeDelta: 0.005
     };
+
     return ( 
       <View style={homeStyles.container}>
         <MapView 
+          ref={mapViewRef}
           style={homeStyles.map} 
           initialRegion={mapRegion} 
-          showsUserLocation={true}
-          showsPointsOfInterest = {false}>
-          { createEventMarkers(events) }
-          { createHeatMap(events) }
+          showsUserLocation={!heatMapOn}
+          customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}
+          onRegionChangeComplete={handleRegionChange}>
+          { heatMapOn ? null : eventMarkers }
+          { heatMapOn ? heatMap : null }
         </MapView>
+        <Switch
+          onValueChange={toggleSwitch}
+          value={heatMapOn}
+          style={homeStyles.heatMapSwitch}
+        />
       </View>
     );
   }
