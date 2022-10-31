@@ -20,6 +20,7 @@
     "@types/react-native-elements": "^0.18.0",
     "axios": "^1.1.2",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "expo": "~46.0.13",
     "expo-font": "~10.2.0",
     "expo-location": "~14.3.0",

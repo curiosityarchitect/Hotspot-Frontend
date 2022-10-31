@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import {View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import EventLabels from './event-labels';
 import RsvpButton from './event-rsvp/rsvp-button';
 
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
   timeTextStyle:{
     fontSize: 13,
     fontFamily:'sans-serif',
-    color: Colors.grey,
+    color: '#696969',
   },
   //capacity
   capacityContainer:{
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   capacityTextStyle: {
-    font: 15,
+    fontSize: 15,
     fontStyle: 'italic',
     padding: 3,
   },
