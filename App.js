@@ -16,6 +16,8 @@ import RsvpConfirmation from './src/screens/events/eventscreen-components/event-
 import EventScreen from './src/screens/events';
 import FriendRequestView from './src/screens/social/freind-request-view';
 import InvitePage from './src/screens/eventCreation/invite-components/invite-page';
+import ProfileScreen from './src/screens/profile';
+import SettingsScreen from './src/screens/profile/profile-components/settings';
 
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
         <Stack.Screen name="RsvpScreen" component={RsvpConfirmation}/>
         <Stack.Screen name="FriendRequests" component={FriendRequestView}/>
         <Stack.Screen name="InvitePage" component={InvitePage}/>
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

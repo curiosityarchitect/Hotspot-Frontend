@@ -1,16 +1,18 @@
-export default function permissionsReducer(state = {}, action) {
+export function foregroundPermissionsReducer(state = false, action) {
+    switch (action.type) {
+        case "permissions/foregroundPermChange": {
+            return action.payload;
+        }
+        default: {
+            return state;
+        }
+    }
+}
+
+export function backgroundPermissionsReducer(state = false, action) {
     switch (action.type) {
         case "permissions/backgroundPermChange": {
-            return {
-                ...state,
-                backgroundPerm: action.payload
-            };
-        }
-        case "permissions/foregroundPermChange": {
-            return {
-                ...state,
-                foregroundPerm: action.payload
-            };
+            return action.payload;
         }
         default: {
             return state;

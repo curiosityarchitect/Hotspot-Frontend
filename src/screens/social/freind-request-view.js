@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, FlatList, StyleSheet,Dimensions,Image} from 'react-native';
+import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
 import FriendCard  from './friend-card';
 import FriendRequestHeader from './social-components/FriendReqHeader';
 
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 
-friendrequests = [
+const friendrequests = [
     {username: 'alexwu',
      uid: '1',
     },
@@ -21,7 +21,7 @@ friendrequests = [
 ]
 
 
-const FriendRequestView = () => {
+const FriendRequestView = ({navigation}) => {
     return(
         <View style={styles.container}>
             <FriendRequestHeader/>
@@ -35,6 +35,10 @@ const FriendRequestView = () => {
               keyExtractor={(friendrequests => friendrequests.uid)}
               showsVerticalScrollIndicator ={false}
             />
+        
+          <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>
+              <Text style={styles.loginText}>Back</Text>
+          </TouchableOpacity>
         </View>
       )
 }
@@ -52,6 +56,20 @@ const styles = StyleSheet.create({
       },
     CreateButtonStyle: {
       marginTop: 10,
+    },
+    backButton: {
+      width: '30%',
+      borderRadius: 10,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffffff',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 2,
+        height: 2,
+      },
+      shadowOpacity: 0.333,
     }
   });
 

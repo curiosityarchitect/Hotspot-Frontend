@@ -26,7 +26,7 @@ export default function appReducer(state, action) {
                 mapEvents: action.payload
             }
         }
-        case "map/updateEvents": {
+        case "map/updateMyEvents": {
             return {
                 ...state,
                 events: action.payload

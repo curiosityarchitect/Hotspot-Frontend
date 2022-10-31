@@ -8,7 +8,7 @@ import RsvpButton from '../event-rsvp/rsvp-button';
 const EventDetailsPage = ({route,navigation}) => {
   const {name, user,description, location, creator, eventType, capacity, start, expiration, cover} = route.params;
   const [current_capacity, increment_capacity] = useState(0);
-
+  
   
   return (
     <View style={styles.container}>
@@ -20,20 +20,19 @@ const EventDetailsPage = ({route,navigation}) => {
         <View style={styles.headerContent}>
           <Text style={styles.nameStyle}>{name}</Text>
           <Text style={styles.descriptionStyle}>{description}</Text>
-        <View style={styles.eventIdentificationContainer}>
-          <EventLabels name='location-outline' />
-          <Text style={styles.locationTextStyle}>{location.name}</Text>
-          <EventLabels  name='person-circle-outline' />
-          <Text style={styles.creatorTextStyle}>{creator.username}</Text>
-        </View>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeTextStyle}>start:</Text>
-          <EventLabels name='calendar-outline' desc={start} />
-          <Text style={styles.timeTextStyle}>end:</Text>
-          <EventLabels name='calendar-outline' desc={expiration} />
-        </View>
-      
-        <View style={styles.capacityContainer}>
+          <View style={styles.eventIdentificationContainer}>
+            <EventLabels name='location-outline' />
+            <Text style={styles.locationTextStyle}>{location.name}</Text>
+            <EventLabels  name='person-circle-outline' />
+            <Text style={styles.creatorTextStyle}>{creator.username}</Text>
+          </View>
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeTextStyle}>start:</Text>
+            <EventLabels name='calendar-outline' desc={start} />
+            <Text style={styles.timeTextStyle}>end:</Text>
+            <EventLabels name='calendar-outline' desc={expiration} />
+          </View>
+          <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' />
           <Text style={styles.capacityTextStyle}>{'attending: ' + current_capacity + '/' + capacity}</Text>
         </View>
@@ -54,13 +53,12 @@ const EventDetailsPage = ({route,navigation}) => {
               cover: cover,
             })
           }}>
-            <RsvpButton/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("My Events")} style={styles.backButton}>
-            <Text style={styles.loginText}>Back</Text>
-          </TouchableOpacity>
-
-        </View>
+              <RsvpButton/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("My Events")} style={styles.backButton}>
+              <Text style={styles.loginText}>Back</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -79,8 +77,7 @@ const styles = StyleSheet.create({
     height: '40%',
   },
   header: {
-    flex: 1,
-    justifyContent: 'flex-top',
+    flex: 1
   },
   nameStyle: {
     fontSize: 28,
@@ -136,7 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   capacityTextStyle: {
-    font: 15,
+    fontSize: 15,
     fontStyle: 'italic',
     padding: 3,
   },

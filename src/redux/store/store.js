@@ -1,4 +1,4 @@
-import appReducer from "../reducers/appReducer";
+import appReducer from "../reducers";
 import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {

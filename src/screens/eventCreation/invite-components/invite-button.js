@@ -1,21 +1,40 @@
 import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
 import {Icon} from 'react-native-elements';
 
-const invitebutton= () => {
-    <TouchableOpacity onPress={()=>navigation.navigate("InvitePage")}
-        style={{
-            borderWidth:1,
-            borderColor:'rgba(0,0,0,0.2)',
-            alignItems:'center',
-            justifyContent:'center',
-            width:100,
-            height:100,
-            backgroundColor:'#fff',
-            borderRadius:50,
-            }}
-    >
-    <Icon name={"add-outline"}  size={300} color="#01a699" />
-    </TouchableOpacity>
-}
+const InviteButton= ({navigation}) => {
+    return (
+        
+            <View style={styles.settingsButtonContainerStyle}>
+                <View style={styles.settingsButtonStyle}>
+                    <Icon name={"send"}  size={15} color="#D2B48C" />
+                    <Text style={styles.settingsButtonTextStyle}>invite</Text>
+                </View>
+            </View>
+      );
+    }
+    
+    const styles = StyleSheet.create({
+        settingsButtonContainerStyle: {
+          flex: 1,
+        },
+        settingsButtonStyle: {
+            flexDirection: 'row',
+            width: '70%',
+            borderRadius: 3,
+            height: 30,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 10,
+            backgroundColor: '#ffffff',
+            borderWidth: 0.2,
+            borderColor: '#D2B48C',
+        },
+        settingsButtonTextStyle: {
+          color: '#777777',
+          fontSize: 10,
+          marginStart:5,
+      },
+    });
+      
 
-export default invitebutton;
+export default InviteButton;
