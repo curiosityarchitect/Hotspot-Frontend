@@ -5,7 +5,9 @@ import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
+import { dummyHit } from '../../services/dummy.service';
 import * as mapSettings from './map-settings';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const homeStyles = StyleSheet.create({
   container: {
@@ -168,6 +170,9 @@ function MapScreen() {
           value={heatMapOn}
           style={homeStyles.heatMapSwitch}
         />
+        <TouchableOpacity onPress={dummyHit}>
+          <Text>Dummy POST</Text>
+        </TouchableOpacity>
       </View>
     );
   }
