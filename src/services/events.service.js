@@ -53,3 +53,21 @@ export async function setEvent(eventName, eventType, eventLocation, startTime, e
     })
     .catch((err) => {console.log(err)});
 }
+
+export async function getEvent() {
+    axios.get(`${backendUrl}/events`, 
+    {
+        method: 'FETCH',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }, 
+        params: { 
+            eventName: eventName
+        }
+    })
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((err) => {console.log(err)});
+}
