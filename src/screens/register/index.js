@@ -38,7 +38,7 @@ const RegisterScreen = ({navigation}) => {
       alert('Password does not match');
       return;
     }
-    navigation.navigate("Main App");
+    navigation.navigate("MainApp");
   };
 
   return (

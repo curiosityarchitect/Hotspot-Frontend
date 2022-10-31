@@ -2,9 +2,22 @@ import { backendUrl } from "./const";
 import axios from 'axios';
 
 export async function dummyHit() {
-    axios.post(`${backendUrl}/dummy`, 
+    axios.post(`${backendUrl}/events`, 
     {
-        "message": "hiiii :3"
+        name: "testing 3",
+        longitude: 0,
+        latitude: 0,
+        numAttendees: 1,
+        tags: [
+            "pooga donga"
+        ]
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
     })
     .then((response) => {
         console.log(response);

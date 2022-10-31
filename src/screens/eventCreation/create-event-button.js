@@ -1,13 +1,12 @@
-import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
+import { View, TouchableOpacity,  StyleSheet } from 'react-native'
+import {Icon} from 'react-native-elements';
 
 const CreateEventButton = ({navigation}) => {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-      <TouchableOpacity onPress={()=>navigation.navigate("CreateEvent")} style={styles.createBtn}>
-        <Text style={styles.createText}>Create Event</Text>
-      </TouchableOpacity>
-
+        <TouchableOpacity onPress={()=>navigation.navigate("CreateEvent")} style={styles.createBtn}>
+            <Icon name={"add"}  size={30} color="#D2B48C" />
+        </TouchableOpacity>
       </View>
     );
 }
@@ -28,7 +27,16 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.333,
   },
-
+  buttonStyle: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:50,
+    height:50,
+    backgroundColor:'#fff',
+    borderRadius:50,
+  },
   createText: {
     color: 'black',
   },
