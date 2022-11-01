@@ -53,3 +53,21 @@ export async function setEvent(eventName, eventType, eventLocation, startTime, e
     })
     .catch((err) => {console.log(err)});
 }
+
+export async function createEvent(name, longitude=0, latitude=0, numAttendees=1, tags=[]) {
+    return axios.post(`${backendUrl}/events`, 
+    {
+        name: name,
+        longitude: longitude,
+        latitude: latitude,
+        numAttendees: numAttendees,
+        tags: tags
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+}

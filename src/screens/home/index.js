@@ -5,7 +5,10 @@ import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
+import CreateEventButton from '../eventCreation/create-event-button';
 import * as mapSettings from './map-settings';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon } from 'react-native-elements';
 
 const homeStyles = StyleSheet.create({
   container: {
@@ -29,6 +32,22 @@ const homeStyles = StyleSheet.create({
     position: 'absolute',
     marginTop: '10%',
     marginRight: '2%',
+  },
+  buttonContainer: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    padding: 10,
+    marginTop: '7%',
+    marginRight: '7%',
+  },
+  button: {
+    width: '70%',
+    borderRadius: 5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    backgroundColor: '#ffffff',
   }
 });
 
@@ -66,7 +85,7 @@ const createHeatMap = (events) => {
   return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
-function MapScreen() {
+function MapScreen({navigation}) {
   const location = useSelector(state => state.location);
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
@@ -163,11 +182,22 @@ function MapScreen() {
           { heatMapOn ? null : eventMarkers }
           { heatMapOn ? heatMap : null }
         </MapView>
-        <Switch
-          onValueChange={toggleSwitch}
-          value={heatMapOn}
-          style={homeStyles.heatMapSwitch}
-        />
+
+        <View style={homeStyles.buttonContainer}>
+          <TouchableOpacity
+            onPress={toggleSwitch}
+            style={homeStyles.button}
+          >
+            <Icon name={"device-thermostat"}  size={20} color="#7a009d" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CreateEvent")}
+            style={homeStyles.button}
+          >
+            <Icon name={"add"}  size={20} color="#7a009d" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

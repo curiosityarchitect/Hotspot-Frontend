@@ -46,7 +46,7 @@ const RegisterScreen = ({navigation}) => {
       return;
     }
     setUser(username, email, password);
-    navigation.navigate("Main App");
+    navigation.navigate("MainApp");
   };
 
   return (
