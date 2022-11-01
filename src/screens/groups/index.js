@@ -6,7 +6,11 @@ const GroupScreen = ({navigation}) => {
         <Text>Groups</Text>
 
       <TouchableOpacity onPress={()=>navigation.navigate("UserSearch")} style={styles.createBtn}>
-        <Text style={styles.createText}>Add User</Text>
+        <Text style={styles.createText}>Search User</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>navigation.navigate("EventSearch")} style={styles.createBtn}>
+        <Text style={styles.createText}>Search Event</Text>
       </TouchableOpacity>
 
       </View>
