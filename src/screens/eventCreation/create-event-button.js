@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 const CreateEventButton = ({navigation}) => {
     return (
