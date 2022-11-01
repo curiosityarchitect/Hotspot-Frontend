@@ -13,7 +13,8 @@ import { createEvent } from '../../services/events.service';
 const parseTags = (tagsString) => {
   return tagsString.split("#")
     .map((tag) => tag.trim())
-    .filter((tag) => tag.length > 0);
+    .filter((tag) => tag.length > 0)
+    .filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
 const EventCreationScreen = ({navigation}) => {
