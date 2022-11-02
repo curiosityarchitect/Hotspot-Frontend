@@ -5,7 +5,7 @@ const initialState = {
     foregroundPerm: false,
     backgroundPerm: false,
     mapEvents: [],
-    myEvents: []
+    myEvents:[]
 }
 
 export const store = configureStore({

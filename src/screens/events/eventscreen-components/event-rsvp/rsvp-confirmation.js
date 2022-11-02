@@ -9,34 +9,25 @@ import {
 
 
 const RsvpConfirmation = ({route,navigation}) => {
-  const {name,user, description, location, creator, eventType, capacity, start, expiration,cover} = route.params;
+  const {events} = route.params;
   return (
     <View style={styles.container}>
-      <Text style={styles.confirmationTextStyle}>{user.name}: Thank you for the RSVP!</Text>
+      <Text style={styles.confirmationTextStyle}>{'alexwu'}: Thank you for the RSVP!</Text>
       <Text style={styles.confirmationDetailStyle}>Here are the details...</Text>
       <View style={styles.detailsContainer}>
-        <Text style={styles.detailTextStyle}>Event: {name}</Text>
-        <Text style={styles.detailTextStyle}>Where: {location.name}</Text>
-        <Text style={styles.detailTextStyle}>When: {start}</Text>
-        <Text style={styles.detailTextStyle}>Hosted by: {creator.username}</Text>
+        <Text style={styles.detailTextStyle}>Event: {events.name}</Text>
+        <Text style={styles.detailTextStyle}>Where: {events.address}</Text>
+        <Text style={styles.detailTextStyle}>When: {events.startDate.substring(0,10)}</Text>
+        <Text style={styles.detailTextStyle}>Hosted by: {events.creator.username}</Text>
       </View>
       <View style={styles.emailContainer}>
         <Text style={styles.emailTextStyle}>We have sent a confirmation email to</Text>
-        <Text style={styles.emailTextStyle}>{user.email}</Text>
+        <Text style={styles.emailTextStyle}>{'wu1441@purdue.edu'}</Text>
       </View>
       <View style={styles.doneView}>
-        <TouchableOpacity onPress={()=>navigation.navigate("EventDetails",
+        <TouchableOpacity onPress={()=>navigation.navigate("My Events",
         {
-          name: name,
-          user: user,
-          description: description,
-          location: location,
-          creator: creator,
-          eventType: eventType,
-          capacity: capacity,
-          start: start,
-          expiration: expiration,
-          cover: cover,
+          events: events,
         })} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
         </TouchableOpacity>

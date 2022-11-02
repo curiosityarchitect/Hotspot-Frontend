@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
 import FriendCard  from './friend-card';
 import FriendRequestHeader from './social-components/FriendReqHeader';
@@ -22,6 +22,7 @@ const friendrequests = [
 
 
 const FriendRequestView = ({navigation}) => {
+    const [requestChoice, setRequestChoice] = useState('');
     return(
         <View style={styles.container}>
             <FriendRequestHeader/>

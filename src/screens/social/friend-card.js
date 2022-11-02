@@ -1,23 +1,25 @@
+import React, {useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements';
-
-
+import { sendRequest } from '../../services/request.service';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 
 
 const FriendCard = ({info}) => {
+  const [requestChoice, isVisible] = useState([]);
   const {username, uid} = info;
+
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>
             <Icon name="person-outline"></Icon>
             <Text style={styles.usernameStyle}>{username}</Text>
             <View style={styles.choiceIcons}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={sendRequest} >
                     <Icon name="check"></Icon>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity >
                     <Icon name="close"></Icon>
                 </TouchableOpacity>
             </View>

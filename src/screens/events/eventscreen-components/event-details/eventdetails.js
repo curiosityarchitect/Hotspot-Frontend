@@ -1,56 +1,103 @@
-import React,{useState} from 'react';
-import {View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
+import React,{useState, useEffect} from 'react';
+import {View, Text, FlatList,StyleSheet,Image,Dimensions,TouchableOpacity,ActivityIndicator, Pressable} from 'react-native';
 import EventLabels from '../tab-components/event-labels';
 import RsvpButton from '../event-rsvp/rsvp-button';
+import axios from 'axios';
+import { backendUrl } from '../../../../services/const';
 
 
 
 const EventDetailsPage = ({route,navigation}) => {
-  const {name, user,description, location, creator, eventType, capacity, start, expiration, cover} = route.params;
-  const [current_capacity, increment_capacity] = useState(0);
   
-  
+  const [refreshing, setRefreshing] = useState(false);
+ // const [events, setEvents] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  //const [current_capacity, increment_capacity] = useState(0);
+  const current_user = 'alexwu';
+  const {events,tags} = route.params;
+
+  useEffect(() => {
+    axios.get(`${backendUrl}/events/${events._id}/attendees`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      } 
+    }).then((response) => {
+      if(response.data.length == 0){
+        setDisabled(false)
+      }
+      else{
+        setDisabled(true)
+      }
+    }).catch ((err) => {
+      console.log(err)
+    })
+  },[])
+
+
   return (
     <View style={styles.container}>
+      {refreshing ? <ActivityIndicator color="#D2B48C" /> : (
       <View style={styles.header}>
         <Image 
           style={styles.coverImage} 
-          source={cover}
+          source={require('./mcway-falls-big-sur-ca.jpeg')}
         />
         <View style={styles.headerContent}>
-          <Text style={styles.nameStyle}>{name}</Text>
-          <Text style={styles.descriptionStyle}>{description}</Text>
+          <Text style={styles.nameStyle}>{events.name}</Text>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionStyle}>{events.description}</Text>
+          </View>
           <View style={styles.eventIdentificationContainer}>
             <EventLabels name='location-outline' />
-            <Text style={styles.locationTextStyle}>{location.name}</Text>
+            <Text style={styles.locationTextStyle}>{events.address}</Text>
             <EventLabels  name='person-circle-outline' />
-            <Text style={styles.creatorTextStyle}>{creator.username}</Text>
+            <Text style={styles.creatorTextStyle}>{events.creator.username}</Text>
           </View>
           <View style={styles.timeContainer}>
             <Text style={styles.timeTextStyle}>start:</Text>
-            <EventLabels name='calendar-outline' desc={start} />
+            <EventLabels name='calendar-outline' desc={events.startDate.substring(0,10)} />
             <Text style={styles.timeTextStyle}>end:</Text>
-            <EventLabels name='calendar-outline' desc={expiration} />
+            <EventLabels name='calendar-outline' desc={events.endDate.substring(0,10)} />
+          </View>
+          <View style={styles.tagContainer}>
+            <FlatList
+              data={tags}
+              keyExtractor={(item) => item.description}
+              renderItem={({item}) => (
+              <TouchableOpacity>
+                 <EventLabels name='pricetag' desc={item.description} />
+              </TouchableOpacity>  
+              )}
+            />
           </View>
           <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + current_capacity + '/' + capacity}</Text>
+          <Text style={styles.capacityTextStyle}>{'attending: ' + events.numAttendees + '/' + events.capacity}</Text>
         </View>
         <View style={styles.rsvpContainer}>
-          <TouchableOpacity onPress={()=> {
-            increment_capacity(current_capacity+1),
+          <TouchableOpacity disabled = {disabled} onPress={()=> {
+            axios.post(`${backendUrl}/events/${events._id}/attendees`, 
+            {
+                username: current_user,
+                numAttendees: events.numAttendees
+            },
+            {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {console.log(err)});            
             navigation.navigate("RsvpScreen",
             {
-              name: name,
-              user: user, 
-              description: description, 
-              location: location,
-              creator: creator,
-              eventType: eventType,
-              capacity: capacity,
-              start: start,
-              expiration: expiration,
-              cover: cover,
+              events: events,
+          
             })
           }}>
               <RsvpButton/>
@@ -61,7 +108,9 @@ const EventDetailsPage = ({route,navigation}) => {
           </View>
         </View>
       </View>
+        )}
     </View>
+
   )
 
 }
@@ -84,6 +133,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingTop: 3,
     paddingLeft: 3,
+  },
+  descriptionContainer: {
+    width: '80%',
+    marginStart: '1%',
   },
   descriptionStyle: {
     fontSize: 15,
@@ -129,7 +182,7 @@ const styles = StyleSheet.create({
   },
   //capacity
   capacityContainer:{
-    start:deviceWidth/1.55,
+    start:deviceWidth*0.6,
     flexDirection: 'row',
   },
   capacityTextStyle: {
@@ -156,6 +209,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.333,
   },
+  tagContainer: {
+    flexDirection: 'column',
+    paddingTop: 22,
+    height: 0.3*deviceWidth,
+    alignContent: 'center',
+    padding: 11,
+    paddingBottom: 2,
+  }
+
   
 });
 

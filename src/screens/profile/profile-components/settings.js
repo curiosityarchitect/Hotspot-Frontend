@@ -58,7 +58,7 @@ const SettingsScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Profile")}  style={styles.createBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.createBtn}>
         <Text style={styles.createText}>Apply</Text>
       </TouchableOpacity>
 

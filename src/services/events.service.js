@@ -26,3 +26,14 @@ export async function setNearbyEvents(location) {
     })
     .catch((err) => {console.log(err)});
 }
+
+/* export async function getEvents() {
+    axios.get(`${backendUrl}/events`, 
+    {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+} */

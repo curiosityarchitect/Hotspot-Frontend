@@ -20,13 +20,13 @@ export default function appReducer(state, action) {
                 location: action.payload
             }
         }
-        case "map/updateMapEvents": {
+        case "map/updateEvents": {
             return {
                 ...state,
                 mapEvents: action.payload
             }
         }
-        case "map/updateMyEvents": {
+        case "map/updateEvents": {
             return {
                 ...state,
                 events: action.payload
