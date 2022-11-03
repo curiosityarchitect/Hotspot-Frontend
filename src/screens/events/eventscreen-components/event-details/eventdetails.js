@@ -65,9 +65,9 @@ const EventDetailsPage = ({route,navigation}) => {
           <View style={styles.tagContainer}>
             <FlatList
               data={tags}
-              keyExtractor={(item) => item.description}
+              keyExtractor={(item) => item._id}
               renderItem={({item}) => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate("TagDetails",{item:item,events:events})}>
                  <EventLabels name='pricetag' desc={item.description} />
               </TouchableOpacity>  
               )}

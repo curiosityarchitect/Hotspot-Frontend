@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, Switch } from 'react-native'
 import { ironbowPalette, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
 import { connect, useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 import * as mapSettings from './map-settings';
+import CreateEventButton from '../eventCreation/create-event-button';
 
 const homeStyles = StyleSheet.create({
   container: {
@@ -30,7 +31,15 @@ const homeStyles = StyleSheet.create({
     position: 'absolute',
     marginTop: '10%',
     marginRight: '2%',
-  }
+  },
+
+  buttonContainer:{
+      flex: 1,
+      position: 'flex-end', 
+      marginStart: '83%',
+      marginTop: '20%',
+    }
+  
 });
 
 const createEventMarkers = (events) => (
@@ -67,7 +76,7 @@ const createHeatMap = (events) => {
   return <Heatmap points={points} radius={40} gradient={gradientConfig}/>
 };
 
-function MapScreen() {
+function MapScreen({navigation}) {
   const location = useSelector(state => state.location);
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
@@ -154,6 +163,7 @@ function MapScreen() {
 
     return ( 
       <View style={homeStyles.container}>
+        
         <MapView 
           ref={mapViewRef}
           style={homeStyles.map} 
@@ -161,9 +171,15 @@ function MapScreen() {
           showsUserLocation={!heatMapOn}
           customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}
           onRegionChangeComplete={handleRegionChange}>
+           
           { heatMapOn ? null : eventMarkers }
           { heatMapOn ? heatMap : null }
         </MapView>
+        <View style={homeStyles.buttonContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('CreateEvent')}>
+            <CreateEventButton />
+          </TouchableOpacity>
+        </View>
         <Switch
           onValueChange={toggleSwitch}
           value={heatMapOn}

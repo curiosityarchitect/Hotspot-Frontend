@@ -91,11 +91,10 @@ const styles = StyleSheet.create({
 //mock cover
 
 const EventScreen = ({navigation}) => {
-  const [refreshing, setRefreshing] = React.useState(true);
+  const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState([]);
-  const [tags, setTags] = useState([]);
   const current_user = 'alexwu';
-
+  let tags = [];
    useEffect(() => {
       axios.get(`${backendUrl}/events`, 
       {
@@ -138,15 +137,19 @@ const EventScreen = ({navigation}) => {
                   'Content-Type': 'application/json'
                 }
               }).then((response) => {
-                console.log(response)
-                setTags(response.data);
+                console.log(response.data) // 
+                  tags = response.data;
+                  //setTags(response.data);
               }).catch ((err) => {console.log(err)})
-              .finally(() =>  
+              .finally(() => {
+              console.log(item)
+              console.log(tags)
               navigation.navigate('EventDetails', 
               {
                 events: item, 
                 tags: tags, 
-              }))
+              })
+            })
             }>
               <EventCard info = {item}/>
             </TouchableOpacity>

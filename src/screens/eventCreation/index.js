@@ -5,13 +5,22 @@ import {
   Text,
   View,
   TextInput,
-  Button,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { createEvent } from '../../services/events.service';
+import InviteButton from './invite-components/invite-button';
+
+const parseTags = (tagsString) => {
+  return tagsString.split("#")
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0)
+    .filter((tag, index, self) => self.indexOf(tag) === index);
+}
 
 const EventCreationScreen = ({navigation}) => {
   const [eventName, setEventName] = useState('');
-  const [eventType, setEventType] = useState('');
+  const [eventTagString, setEventString] = useState('');
   const [eventLocation, setEventLocation] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -19,7 +28,7 @@ const EventCreationScreen = ({navigation}) => {
   const [endDate, setEendDate] = useState('');
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
 
       <Text style={styles.welcomeText}>Create Your Event!</Text>
 
@@ -37,9 +46,9 @@ const EventCreationScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Event Type"
+          placeholder="Event Tags"
           placeholderTextColor="#808080"
-          onChangeText={(eventType) => setEventType(eventType)}
+          onChangeText={(eventTagString) => setEventString(eventTagString)}
         />
       </View>
 
@@ -87,8 +96,15 @@ const EventCreationScreen = ({navigation}) => {
           onChangeText={(endDate) => setEendDate(endDate)}
         />
       </View>
+      
+      <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
+        <InviteButton />
+      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.createBtn}>
+      <TouchableOpacity onPress={()=> 
+        createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString)).
+        then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
+        style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
 
@@ -96,7 +112,7 @@ const EventCreationScreen = ({navigation}) => {
         <Text style={styles.cancelText}>Cancel</Text>
       </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   );
 }
 
@@ -116,35 +132,44 @@ const styles = StyleSheet.create({
     borderColor: '#808080',
     width: '90%',
     height: 45,
-    marginBottom: 20,
+    marginBottom: "2%"  ,
 
     alignItems: 'center',
   },
 
   TextInput: {
     display: "flex",
-    height: 50,
+    height: 40,
     flex: 1,
-    padding: 10,
+    padding: 5,
     textAlign: 'center',
     alignItems: 'center',
   },
 
   welcomeText: {
-    marginTop: -30,
+    marginTop: "5%",
+    marginBottom: "5%",
     height: 50,
-    fontSize: 25,
+    fontSize: 30,
     color: 'black',
     fontWeight: 'bold',
   },
-
+  inviteBtn: {
+  
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginStart: '15%',
+    marginTop: "2%",
+    backgroundColor: '#ffffff',
+  },
   createBtn: {
     width: '90%',
     borderRadius: 10,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: "5%",
     backgroundColor: '#000000',
   },
 

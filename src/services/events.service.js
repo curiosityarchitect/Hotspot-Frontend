@@ -27,8 +27,28 @@ export async function setNearbyEvents(location) {
     .catch((err) => {console.log(err)});
 }
 
-/* export async function getEvents() {
-    axios.get(`${backendUrl}/events`, 
+
+
+export async function createEvent(name, longitude=0, latitude=0, numAttendees=1, tags=[]) {
+    return axios.post(`${backendUrl}/events`, 
+    {
+        name: name,
+        longitude: longitude,
+        latitude: latitude,
+        numAttendees: numAttendees,
+        tags: tags
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+export async function findEventById(id) {
+    return axios.get(`${backendUrl}/events/${id}`,
     {
         method: 'GET',
         headers: {
@@ -36,4 +56,5 @@ export async function setNearbyEvents(location) {
             'Content-Type': 'application/json'
         }
     })
-} */
+}
+

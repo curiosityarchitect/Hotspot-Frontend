@@ -8,13 +8,15 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import { updateProfile } from '../../../services/profile.service';
 
 const SettingsScreen = ({navigation}) => {
   const [displayName, setDisplayName] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
-  const [displayLoco, setDisplayLoco] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [displayLocation, setDisplayLocation] = useState('');
   const [username, setUsername] = useState('');
-
+  const [profTags, setProfTags] = useState('');
+  
   return (
     <View style={styles.container}>
 
@@ -36,7 +38,7 @@ const SettingsScreen = ({navigation}) => {
           style={styles.TextInput}
           placeholder="New Phone Number"
           placeholderTextColor="#808080"
-          onChangeText={(phoneNum) => setPhoneNum(phoneNum)}
+          onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
         />
       </View>
 
@@ -45,7 +47,7 @@ const SettingsScreen = ({navigation}) => {
           style={styles.TextInput}
           placeholder="Set New Display Location"
           placeholderTextColor="#808080"
-          onChangeText={(displayLoco) => setDisplayLoco(displayLoco)}
+          onChangeText={(displayLocation) => setDisplayLocation(displayLocation)}
         />
       </View>
 
@@ -58,7 +60,19 @@ const SettingsScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.createBtn}>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Input Tags" 
+          placeholderTextColor="#808080"
+          onChangeText={(profTags) => setProfTags(profTags)}
+        />
+      </View>
+
+      <TouchableOpacity onPress={()=> 
+        updateProfile(displayName, phoneNumber, displayLocation, username,profTags). //{username:username} future addition when we handle user saved state
+        then(()=>navigation.navigate("Profile")).catch((err)=>console.log(err))} 
+        style={styles.createBtn}>
         <Text style={styles.createText}>Apply</Text>
       </TouchableOpacity>
 

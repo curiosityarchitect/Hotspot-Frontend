@@ -18,7 +18,7 @@ import FriendRequestView from './src/screens/social/freind-request-view';
 import InvitePage from './src/screens/eventCreation/invite-components/invite-page';
 import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/profile/profile-components/settings';
-
+import TagDetailsScreen from './src/screens/events/tags/tagdetails';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -42,6 +42,7 @@ const App = () => {
         <Stack.Screen name="InvitePage" component={InvitePage}/>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
         <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
+        <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

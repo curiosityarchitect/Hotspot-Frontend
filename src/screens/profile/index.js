@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect , useState} from 'react';
 import {View,Text,SafeAreaView, Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {Caption, Title} from 'react-native-paper';
 import {Icon, Avatar} from 'react-native-elements';
 import EventLabels from '../events/eventscreen-components/tab-components/event-labels';
 import NotificationButton from './profile-components/notification-button';
 import SettingsButton from './profile-components/settings-button';
-import InviteButton from '../eventCreation/invite-components/invite-button';
+import { getUpdatedProfile } from '../../services/profile.service';
+import { useIsFocused } from '@react-navigation/native'
+import { backendUrl } from '../../services/const';
+import axios from 'axios';
 const deviceWidth = Dimensions.get('window').width;
 
 
@@ -65,15 +68,42 @@ const styles = StyleSheet.create({
       lineHeight: 26,
     },
 });
-  
+
   
 const ProfileScreen = ({navigation}) => {
+  const username = 'alexwu';
+  const [profile, setProfile ] = useState([])
+  const [tags, setTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    getUpdatedProfile(username).then((response) => {
+      setProfile(response.data)
+      setIsLoading(false);
+    }).catch ((err) => {console.log(err)});
+    axios.get(`${backendUrl}/profile/${username}/tags`)
+    .then((response) => {
+      console.log(response.data)
+      setTags(response.data)
+    })
+    .catch((err) => {console.log(err)});
+  }, [isFocused])
+
+   if (isLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    )
+  } 
 
   return (
     <SafeAreaView style={styles.container}>
+      
+      
         <View style={styles.userInfoStyle}>
             <View style={{flexDirection:'row',marginTop:10}}>
-                
                 <TouchableOpacity>
                 <Avatar
                     rounded
@@ -83,19 +113,14 @@ const ProfileScreen = ({navigation}) => {
                 </TouchableOpacity>
                 <View style={{marginStart:22}}>
                   <TouchableOpacity>
-                    <Title style={styles.titleStyle}>Alex Wu</Title>
+                    <Title style={styles.titleStyle}>{profile.displayName}</Title>
                   </TouchableOpacity>
                   <TouchableOpacity>
-                    <Caption style={styles.captionStyle}>@wu1441</Caption>
+                    <Caption style={styles.captionStyle}>{profile.username}</Caption>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={()=>navigation.navigate('SettingsScreen')}>
                     <SettingsButton/>
                   </TouchableOpacity>
-                  <View style={{marginTop:22}}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('InvitePage')}>
-                      <InviteButton/>
-                    </TouchableOpacity>
-                  </View>
                 </View>
                 <View style={styles.NotificationButtonStyle}>
                     <TouchableOpacity onPress={()=>{navigation.navigate('FriendRequests')}}>
@@ -103,19 +128,21 @@ const ProfileScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-    
         </View>
         <View style={styles.userInfoStyle}>
             <View style = {styles.locationStyle}>
                 <EventLabels name='location-outline'/>
-                <Text style={{color:'#777777',marginStart: 10}}>San Francisco, CA</Text>
+                <Text style={{color:'#777777',marginStart: 10}}>{profile.displayLocation}</Text>
             </View>
             <View style={styles.locationStyle}>
               <EventLabels name="call-outline"/>
-              <Text style={{color:"#777777", marginLeft: 10}}>+123-456-7898</Text>
+              <Text style={{color:"#777777", marginLeft: 10}}>{profile.phoneNumber}</Text>
+            </View>
+            <View style={styles.locationStyle}>
+              <EventLabels name="pricetag"/>
+              <Text style={{color:"#777777", marginLeft: 10}}>{profile.profTags}</Text>
             </View>
         </View>
-
         <View style={styles.statsStyle}>
             <View style={[styles.stat, {
               borderRightColor: '#dddddd',
@@ -132,8 +159,9 @@ const ProfileScreen = ({navigation}) => {
                 <Caption>events</Caption>
               </TouchableOpacity>
             </View>
+
         </View>
-         
+
      
     </SafeAreaView>
   );

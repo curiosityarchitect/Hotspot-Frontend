@@ -4,20 +4,20 @@ import {Icon} from 'react-native-elements';
 const InviteButton= ({navigation}) => {
     return (
         
-            <View style={styles.settingsButtonContainerStyle}>
-                <View style={styles.settingsButtonStyle}>
+            <View style={styles.inviteButtonContainerStyle}>
+                <View style={styles.inviteButtonStyle}>
                     <Icon name={"send"}  size={15} color="#D2B48C" />
-                    <Text style={styles.settingsButtonTextStyle}>invite</Text>
+                    <Text style={styles.inviteButtonTextStyle}>invite</Text>
                 </View>
             </View>
       );
     }
     
     const styles = StyleSheet.create({
-        settingsButtonContainerStyle: {
+        inviteButtonContainerStyle: {
           flex: 1,
         },
-        settingsButtonStyle: {
+        inviteButtonStyle: {
             flexDirection: 'row',
             width: '70%',
             borderRadius: 3,
@@ -29,7 +29,7 @@ const InviteButton= ({navigation}) => {
             borderWidth: 0.2,
             borderColor: '#D2B48C',
         },
-        settingsButtonTextStyle: {
+        inviteButtonTextStyle: {
           color: '#777777',
           fontSize: 10,
           marginStart:5,
