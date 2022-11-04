@@ -139,7 +139,6 @@ const EventScreen = ({navigation}) => {
               }).then((response) => {
                 console.log(response.data) // 
                   tags = response.data;
-                  //setTags(response.data);
               }).catch ((err) => {console.log(err)})
               .finally(() => {
               console.log(item)

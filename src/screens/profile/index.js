@@ -84,7 +84,7 @@ const ProfileScreen = ({navigation}) => {
     }).catch ((err) => {console.log(err)});
     axios.get(`${backendUrl}/profile/${username}/tags`)
     .then((response) => {
-      console.log(response.data)
+      //console.log(response.data)
       setTags(response.data)
     })
     .catch((err) => {console.log(err)});
@@ -100,8 +100,6 @@ const ProfileScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      
-      
         <View style={styles.userInfoStyle}>
             <View style={{flexDirection:'row',marginTop:10}}>
                 <TouchableOpacity>

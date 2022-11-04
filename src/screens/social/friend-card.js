@@ -1,32 +1,54 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements';
-import { sendRequest } from '../../services/request.service';
+import { sendRequest, rejectRequest, isFriends } from '../../services/request.service';
+import axios  from 'axios';
+import {backendUrl} from '../../services/const';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 
 
 const FriendCard = ({info}) => {
-  const [requestChoice, isVisible] = useState([]);
-  const {username, uid} = info;
-
+  const username = 'alexwu'
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>
             <Icon name="person-outline"></Icon>
-            <Text style={styles.usernameStyle}>{username}</Text>
+            <Text style={styles.usernameStyle}>{info.deliverer}</Text>
             <View style={styles.choiceIcons}>
-                <TouchableOpacity onPress={sendRequest} >
+                <TouchableOpacity onPress={()=>{
+                     axios.post(`${backendUrl}/friend-requests/status/${username}/accept`,
+                     {
+                         deliverer: info.deliverer
+                     }, {
+                         method: 'POST',
+                         headers: {
+                             Accept: 'application/json',
+                             'Content-Type': 'application/json'
+                         }
+                     })
+                 }}>
                     <Icon name="check"></Icon>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={()=>{
+                     axios.post(`${backendUrl}/friend-requests/status/${username}/decline`,
+                     {
+                         deliverer: info.deliverer
+                     }, {
+                         method: 'POST',
+                         headers: {
+                             Accept: 'application/json',
+                             'Content-Type': 'application/json'
+                         }
+                     })
+                 }}>
                     <Icon name="close"></Icon>
                 </TouchableOpacity>
             </View>
         </View>
     </View>
   ) 
-}
+  }
 
 const styles = StyleSheet.create({
   container: {

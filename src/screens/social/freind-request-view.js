@@ -1,12 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
 import FriendCard  from './friend-card';
 import FriendRequestHeader from './social-components/FriendReqHeader';
+import { sendRequest, getRequests, acceptRequest, rejectRequest, isFriends } from '../../services/request.service';
+import axios from 'axios';
+import {backendUrl} from '../../services/const';
+import { useIsFocused } from '@react-navigation/native'
 
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
+ 
 
-const friendrequests = [
+const FriendRequestView = ({navigation}) => {
+    const username = 'alexwu';
+    const [isLoading, setIsLoading] = useState(true)
+    const [friendrequests, setFriendRequests] = useState([])
+   // let friendrequests = [];
+    const isFocused = useIsFocused()
+    useEffect(() => {
+
+      axios.get(`${backendUrl}/friend-requests/${username}`,
+      {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+          }
+      }).then((response) => {
+          setFriendRequests(response.data)
+          setIsLoading(false)
+      }).catch((error) => {
+          console.log(error);
+      })
+    }, [isFocused]);
+   
+/*  const friendrequests = [
     {username: 'alexwu',
      uid: '1',
     },
@@ -19,26 +47,32 @@ const friendrequests = [
     {username: 'johnhello',
      uid: '5',},
 ]
+ */
 
+    if (isLoading) {
+      return (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      )
+    } 
 
-const FriendRequestView = ({navigation}) => {
-    const [requestChoice, setRequestChoice] = useState('');
     return(
         <View style={styles.container}>
             <FriendRequestHeader/>
-            <FlatList 
+             <FlatList 
               data={friendrequests} 
               renderItem={({item}) => {       
-                return(
+              return(
                     <FriendCard info ={item}/>
                 )
               }}
-              keyExtractor={(friendrequests => friendrequests.uid)}
+              keyExtractor={(friendrequests => friendrequests._id)}
               showsVerticalScrollIndicator ={false}
-            />
+            />  
         
           <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>
-              <Text style={styles.loginText}>Back</Text>
+              <Text style={styles.loginText}>back</Text>
           </TouchableOpacity>
         </View>
       )
