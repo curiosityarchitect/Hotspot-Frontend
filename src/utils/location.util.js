@@ -20,7 +20,15 @@ export const beginTracking = async () => {
         },
         location => {
             // console.log(location)
-            updateUserLocation(location);
+            const oldLocation = store.getState().location;
+            // only send request if user location has changed by a significant amount
+            if (oldLocation && 
+                (Math.abs(oldLocation.coords.longitude - location.coords.longitude) > 0.0001 ||
+                Math.abs(oldLocation.coords.latitude - location.coords.latitude) > 0.0001)) {
+                
+                updateUserLocation(location);
+            }
+
             store.dispatch(updateLocation(location));
         }
     )
