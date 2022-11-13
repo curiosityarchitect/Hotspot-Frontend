@@ -30,6 +30,19 @@ const createEventMarkers = (events) => (
   })
 );
 
+const createFriendMarkers = (friends) => (
+  friends.map((friend, index) => {
+    return <Marker
+      key = {index}
+      coordinate = {{
+          longitude: friends.location.coordinates[0],
+          latitude: friends.location.coordinates[1]
+      }}
+      title = { friends.name }
+    />
+  })
+)
+
 const createHeatMap = (events) => {
   if (events.length == 0)
     return;
@@ -59,10 +72,21 @@ function MapComponent({heatMapOn}) {
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
   const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
+  const friendMarkers = useMemo(() => createFriendMarkers())
 
   useEffect(() => {
     setNearbyEvents(location);
   }, [location]);
+
+  // automatically fetch friend location on a 5 second timer
+  useEffect(() => {
+    const intervalId = setInterval(5000);
+
+    // clean up friend location fetching interval
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [])
 
   const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
   const handleRegionChange = (region, isGesture={isGesture: true}) => {
