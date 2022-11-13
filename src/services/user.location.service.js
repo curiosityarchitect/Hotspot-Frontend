@@ -9,7 +9,7 @@ export default async function updateUserLocation(location) {
 
     const userId = store.getState().currUser._id;
 
-    axios.put(`${backendUrl}/users/userId/location`,
+    axios.put(`${backendUrl}/users/${userId}/location`,
     {
         longitude: location.coords.longitude,
         latitue: location.coords.latitude
