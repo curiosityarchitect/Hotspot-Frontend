@@ -12,7 +12,7 @@ export default async function updateUserLocation(location) {
     axios.put(`${backendUrl}/users/${userId}/location`,
     {
         longitude: location.coords.longitude,
-        latitue: location.coords.latitude
+        latitude: location.coords.latitude
     },
     {
         method: 'PUT',
