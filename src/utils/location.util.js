@@ -1,6 +1,7 @@
 import * as Location from "expo-location";
 import { store } from "../redux/store/store";
 import { updateLocation } from "../redux/actions/actions";
+import updateUserLocation from "../services/user.location.service";
 
 export const getLastLocation = async () => {
     let location = await Location.getLastKnownPositionAsync({});
@@ -19,6 +20,7 @@ export const beginTracking = async () => {
         },
         location => {
             // console.log(location)
+            updateUserLocation(location);
             store.dispatch(updateLocation(location));
         }
     )
