@@ -39,7 +39,7 @@ const createFriendMarkers = (friends) => (
           longitude: friend.location.coordinates[0],
           latitude: friend.location.coordinates[1]
       }}
-      title = { friend.name }
+      title = { friend.username }
     />
   })
 )
@@ -74,7 +74,7 @@ function MapComponent({heatMapOn}) {
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
   const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
-  // const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
+  const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
 
   useEffect(() => {
     setNearbyEvents(location);
@@ -171,6 +171,7 @@ function MapComponent({heatMapOn}) {
           customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}
           onRegionChangeComplete={handleRegionChange}>
           { heatMapOn ? null : eventMarkers }
+          { friendMarkers }
           { heatMapOn ? heatMap : null }
         </MapView>
     );
