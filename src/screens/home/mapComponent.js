@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 import * as mapSettings from './map-settings';
+import setFriendLocations from '../../services/friends.locations.service';
 
 const mapStyles = StyleSheet.create({
   map: {
@@ -35,10 +36,10 @@ const createFriendMarkers = (friends) => (
     return <Marker
       key = {index}
       coordinate = {{
-          longitude: friends.location.coordinates[0],
-          latitude: friends.location.coordinates[1]
+          longitude: friend.location.coordinates[0],
+          latitude: friend.location.coordinates[1]
       }}
-      title = { friends.name }
+      title = { friend.name }
     />
   })
 )
@@ -65,14 +66,15 @@ const createHeatMap = (events) => {
 };
 
 function MapComponent({heatMapOn}) {
-  const location = useSelector(state => state.location);
+  const location = useSelector(state => state.userLocation);
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
+  const friendLocations = useSelector(state => state.friendLocations);
 
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
   const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
-  const friendMarkers = useMemo(() => createFriendMarkers())
+  // const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
 
   useEffect(() => {
     setNearbyEvents(location);
@@ -80,13 +82,14 @@ function MapComponent({heatMapOn}) {
 
   // automatically fetch friend location on a 5 second timer
   useEffect(() => {
-    const intervalId = setInterval(5000);
+    // retrieve friend locations every 5 seconds
+    const intervalId = setInterval(setFriendLocations, 5000);
 
     // clean up friend location fetching interval
     return () => {
       clearInterval(intervalId);
     };
-  }, [])
+  }, []);
 
   const toggleSwitch = () => toggleHeatMap(heatMapOn => !heatMapOn);
   const handleRegionChange = (region, isGesture={isGesture: true}) => {
@@ -185,7 +188,7 @@ function MapComponent({heatMapOn}) {
 
 const mapStateToProps = (state) => {
   return { 
-    location: state.location
+    userLocation: state.userLocation
   };
 };
 

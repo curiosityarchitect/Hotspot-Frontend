@@ -21,5 +21,5 @@ export default async function updateUserLocation(location) {
             'Content-Type': 'application/json'
         }
     })
-    .catch((err) => {console.log(err)});
+    .catch((err) => {console.log("user location PUT failed", err)});
 }
