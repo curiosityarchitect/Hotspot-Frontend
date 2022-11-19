@@ -82,6 +82,7 @@ function MapComponent({heatMapOn}) {
 
   // automatically fetch friend location on a 5 second timer
   useEffect(() => {
+    setFriendLocations();
     // retrieve friend locations every 5 seconds
     const intervalId = setInterval(setFriendLocations, 5000);
 
