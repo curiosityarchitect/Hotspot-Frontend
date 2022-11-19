@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements';
-import { sendRequest, rejectRequest, isFriends } from '../../services/request.service';
 import axios  from 'axios';
 import {backendUrl} from '../../services/const';
+import * as MailComposer from 'expo-mail-composer';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
-
+const appEmail = 'hotspot.notification@gmail.com'
 
 const FriendCard = ({info}) => {
   const username = 'alexwu'
+  const [email, setEmail] = useState('')
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>
@@ -27,6 +28,7 @@ const FriendCard = ({info}) => {
                              'Content-Type': 'application/json'
                          }
                      })
+                   
                  }}>
                     <Icon name="check"></Icon>
                 </TouchableOpacity>
@@ -41,6 +43,7 @@ const FriendCard = ({info}) => {
                              'Content-Type': 'application/json'
                          }
                      })
+                     
                  }}>
                     <Icon name="close"></Icon>
                 </TouchableOpacity>
@@ -49,6 +52,10 @@ const FriendCard = ({info}) => {
     </View>
   ) 
   }
+/*  const friendStatus = async (username, deliverer) => {
+    const status = await isFriends(username, deliverer);
+    return status;
+  }  */
 
 const styles = StyleSheet.create({
   container: {

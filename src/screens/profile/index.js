@@ -3,12 +3,14 @@ import {View,Text,SafeAreaView, Dimensions, StyleSheet, TouchableOpacity} from '
 import {Caption, Title} from 'react-native-paper';
 import {Icon, Avatar} from 'react-native-elements';
 import EventLabels from '../events/eventscreen-components/tab-components/event-labels';
-import NotificationButton from './profile-components/notification-button';
+import FriendReqButton from './profile-components/friendreq-button';
+import NotificationsButton from './profile-components/notifications-button';
 import SettingsButton from './profile-components/settings-button';
 import { getUpdatedProfile } from '../../services/profile.service';
 import { useIsFocused } from '@react-navigation/native'
 import { backendUrl } from '../../services/const';
 import axios from 'axios';
+
 const deviceWidth = Dimensions.get('window').width;
 
 
@@ -97,7 +99,6 @@ const ProfileScreen = ({navigation}) => {
       </View>
     )
   } 
-
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.userInfoStyle}>
@@ -122,23 +123,34 @@ const ProfileScreen = ({navigation}) => {
                 </View>
                 <View style={styles.NotificationButtonStyle}>
                     <TouchableOpacity onPress={()=>{navigation.navigate('FriendRequests')}}>
-                      <NotificationButton/>
+                      <FriendReqButton/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{navigation.navigate('Notifications')}}>
+                      <NotificationsButton/>
                     </TouchableOpacity>
                 </View>
+               
             </View>
         </View>
         <View style={styles.userInfoStyle}>
             <View style = {styles.locationStyle}>
                 <EventLabels name='location-outline'/>
+                <TouchableOpacity>
                 <Text style={{color:'#777777',marginStart: 10}}>{profile.displayLocation}</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.locationStyle}>
               <EventLabels name="call-outline"/>
+              <TouchableOpacity>
               <Text style={{color:"#777777", marginLeft: 10}}>{profile.phoneNumber}</Text>
+              </TouchableOpacity>
             </View>
+            
             <View style={styles.locationStyle}>
               <EventLabels name="pricetag"/>
+              <TouchableOpacity>
               <Text style={{color:"#777777", marginLeft: 10}}>{profile.profTags}</Text>
+              </TouchableOpacity>
             </View>
         </View>
         <View style={styles.statsStyle}>
@@ -157,7 +169,7 @@ const ProfileScreen = ({navigation}) => {
                 <Caption>events</Caption>
               </TouchableOpacity>
             </View>
-
+            
         </View>
 
      

@@ -29,14 +29,21 @@ export async function setNearbyEvents(location) {
 
 
 
-export async function createEvent(name, longitude=0, latitude=0, numAttendees=1, tags=[]) {
+export async function createEvent(name,address='krusty krab',description, longitude=0, latitude=0, username, numAttendees=1,capacity, startDate = 1/11/11, endDate = 2/22/22,tags=[],invitees=[]) {
     return axios.post(`${backendUrl}/events`, 
     {
         name: name,
+        address: address,
+        description: description,
         longitude: longitude,
         latitude: latitude,
+        username: username,
         numAttendees: numAttendees,
-        tags: tags
+        capacity: capacity,
+        startDate: startDate,
+        endDate: endDate,
+        tags: tags,
+        invitees: invitees
     },
     {
         method: 'POST',
@@ -58,3 +65,14 @@ export async function findEventById(id) {
     })
 }
 
+
+export async function tagID(id) {
+    return axios.get(`${backendUrl}/events/${id}/tags`,
+    {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+}

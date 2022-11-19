@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { createEvent } from '../../services/events.service';
 import InviteButton from './invite-components/invite-button';
+import * as MailComposer from 'expo-mail-composer';
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -18,15 +19,32 @@ const parseTags = (tagsString) => {
     .filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
-const EventCreationScreen = ({navigation}) => {
+const parseInvitees = (invitees) => {
+  return invitees.split(",")
+    .map((invitee) => invitee.trim())
+    .filter((invitee) => invitee.length > 0)
+    .filter((invitee, index, self) => self.indexOf(invitee) === index);
+}
+ 
+
+
+const EventCreationScreen = ({route,navigation}) => {
+  const [invitees, setInvitees] = useState('');
+  if (route.params) {
+    setInvitees(route.params.invitees);
+    route.params = null;
+  }
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
   const [eventLocation, setEventLocation] = useState('');
+  const [eventDescription, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEendDate] = useState('');
-
+  const [capacity, setCapacity] = useState('');
+  const username= 'alexwu'
+ 
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
@@ -64,6 +82,16 @@ const EventCreationScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
+          placeholder="Description"
+          placeholderTextColor="#808080"
+          onChangeText={(eventDescription) => setDescription(eventDescription)}
+        />
+      </View>
+
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
           placeholder="Start Time"
           placeholderTextColor="#808080"
           onChangeText={(startTime) => setStartTime(startTime)}
@@ -96,17 +124,29 @@ const EventCreationScreen = ({navigation}) => {
           onChangeText={(endDate) => setEendDate(endDate)}
         />
       </View>
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Capacity"
+          placeholderTextColor="#808080"
+          onChangeText={(capacity) => setCapacity(capacity)}
+        />
+      </View>
       
       <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
         <InviteButton />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={()=> 
-        createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString)).
-        then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
+        
+        createEvent(eventName,undefined,eventDescription, undefined, undefined, username,undefined,capacity, undefined, undefined,parseTags(eventTagString),parseInvitees(invitees)).
+        then(()=>navigation.goBack())
+        .catch((err)=>console.log(err))} 
         style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
+      
 
       <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.cancelBtn}>
         <Text style={styles.cancelText}>Cancel</Text>

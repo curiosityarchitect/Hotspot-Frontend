@@ -1,22 +1,31 @@
-import react, {useState} from 'react';
-import { View, Text,TextInput, Dimensions, TouchableOpacity, StyleSheet } from 'react-native'
+import react, {useState,useEffect, useTransition} from 'react';
+import { View, Text,TextInput, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native'
+import axios from 'axios';
+import { backendUrl } from '../../../services/const';
 
 
 const InvitePage= ({navigation}) => {
     const capacity = 5 
     const [invitees, setInvitees] = useState('');
+
     return(
         <View style={styles.InviteContainerStyle}>
+          
             <Text style={styles.headerStyle}>Invite up to {capacity} people </Text>
+
             <View style={styles.inputView}>
                 <TextInput
                 style={styles.TextInput}
-                placeholder="Enter username or email"
+                placeholder="Enter usernames"
                 placeholderTextColor="#808080"
                 onChangeText={(invitees) => setInvitees(invitees)}
                 />
             </View>
-            <TouchableOpacity  onPress={()=>navigation.navigate("CreateEvent")} style={styles.submitBtn} >
+            <TouchableOpacity  onPress={
+                ()=>navigation.navigate("CreateEvent", {
+                invitees: invitees,
+                })
+            } style={styles.submitBtn} >
                 <Text style={{color: '#ffffff'}}>Invite</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>navigation.navigate("CreateEvent")} style={styles.cancelBtn}>
@@ -24,9 +33,10 @@ const InvitePage= ({navigation}) => {
             </TouchableOpacity>
         </View>
     )
+   
 }
 
-const deviceHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
     InviteContainerStyle: {
         flex: 1,

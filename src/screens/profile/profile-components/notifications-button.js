@@ -2,7 +2,7 @@ import { View,  StyleSheet } from 'react-native'
 import {Icon} from 'react-native-elements';
 
 
-const NotificationButton = () => {
+const NotificationsButton = () => {
   return (
       <View style={styles.buttonStyle}>
           <Icon name={"notifications"}  size={15} color="#D2B48C" />
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
 
 
 
-export default NotificationButton;
+export default NotificationsButton;

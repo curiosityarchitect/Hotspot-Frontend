@@ -29,7 +29,7 @@ const SettingsScreen = ({navigation}) => {
           style={styles.TextInput}
           placeholder="New Display Name"
           placeholderTextColor="#808080"
-         onChangeText={(displayName) => setDisplayName(displayName)}
+          onChangeText={(displayName) => setDisplayName(displayName)}
         />
       </View>
 

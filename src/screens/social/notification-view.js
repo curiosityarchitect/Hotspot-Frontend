@@ -1,25 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
 import FriendCard  from './friend-card';
-import FriendRequestHeader from './social-components/friend-request-header';
-import { sendRequest, getRequests, acceptRequest, rejectRequest, isFriends } from '../../services/request.service';
+import NotificationHeader from './social-components/notification-header';
 import axios from 'axios';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
+import NotificationCard from './notification-card';
 
-const DeviceWidth = Math.round(Dimensions.get('window').width);
-const radius = 20;
- 
-
-const FriendRequestView = ({navigation}) => {
+const NotificationView = ({navigation}) => {
     const username = 'alexwu';
     const [isLoading, setIsLoading] = useState(true)
-    const [friendrequests, setFriendRequests] = useState([])
-   // let friendrequests = [];
+    const [notifications, setNotifications] = useState([])
+
     const isFocused = useIsFocused()
     useEffect(() => {
 
-      axios.get(`${backendUrl}/friend-requests/${username}`,
+      axios.get(`${backendUrl}/notifications/${username}`,
       {
           method: 'GET',
           headers: {
@@ -27,28 +23,13 @@ const FriendRequestView = ({navigation}) => {
               'Content-Type': 'application/json'
           }
       }).then((response) => {
-          setFriendRequests(response.data)
+          setNotifications(response.data)
           setIsLoading(false)
       }).catch((error) => {
           console.log(error);
       })
     }, [isFocused]);
    
-/*  const friendrequests = [
-    {username: 'alexwu',
-     uid: '1',
-    },
-    {username: 'davedude5',
-     uid: '2',},
-    {username: 'evanboba7',
-     uid: '3',},
-    {username: 'barnob8',
-     uid: '4',},
-    {username: 'johnhello',
-     uid: '5',},
-]
- */
-
     if (isLoading) {
       return (
         <View>
@@ -59,18 +40,37 @@ const FriendRequestView = ({navigation}) => {
 
     return(
         <View style={styles.container}>
-            <FriendRequestHeader/>
+            <NotificationHeader/>
              <FlatList 
-              data={friendrequests} 
+              data={notifications} 
               renderItem={({item}) => {       
               return(
-                    <FriendCard info ={item}/>
+                    <NotificationCard info ={item}/>
                 )
               }}
-              keyExtractor={(friendrequests => friendrequests._id)}
+              inverted = {false}
+              keyExtractor={(notifications => notifications._id)}
               showsVerticalScrollIndicator ={false}
             />  
-        
+            
+          <TouchableOpacity onPress={()=> {navigation.navigate("Profile") 
+          axios.delete(`${backendUrl}/notifications`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                console.log(response)
+            }
+            ).catch((error) => {
+                console.log(error);
+            }
+            )
+           } } style={styles.backButton}>
+              <Text style={styles.loginText}>clear</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>
               <Text style={styles.loginText}>back</Text>
           </TouchableOpacity>
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
       width: '30%',
+      marginBottom: 10,
       borderRadius: 10,
       height: 50,
       alignItems: 'center',
@@ -110,4 +111,4 @@ const styles = StyleSheet.create({
 
 
   
-export default FriendRequestView;
+export default NotificationView;
