@@ -1,23 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Button,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
+import { backendUrl } from '../../services/const';
+import axios from 'axios';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const submitForm = async () => {
+    try {
+      const res = await axios.post(`${backendUrl}/sign-in`, {username, password})
+      
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const checkInput = () => {
-    if (!email.trim()) {
-      alert('Please Enter Email');
+    if (!username.trim()) {
+      alert('Please Enter Username');
       return;
     }
     if (!password.trim()) {
@@ -36,9 +46,9 @@ const LoginScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Enter your email"
+          placeholder="Enter your username"
           placeholderTextColor="#808080"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(username) => setUsername(username)}
         />
       </View>
 
@@ -51,10 +61,6 @@ const LoginScreen = ({navigation}) => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity onPress={checkInput} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
