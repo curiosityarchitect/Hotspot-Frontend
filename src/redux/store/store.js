@@ -2,9 +2,10 @@ import appReducer from "../reducers";
 import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
-    foregroundPerm: false,
-    backgroundPerm: false,
-    mapEvents: []
+    currUser: {
+        username: "wangedge",
+        _id: "6374679b1efa6ec7be761d55"
+    }
 }
 
 export const store = configureStore({
