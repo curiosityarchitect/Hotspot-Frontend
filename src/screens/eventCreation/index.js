@@ -1,8 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import TimeInput from '@tighten/react-native-time-input';
-import DateField from 'react-native-datefield';
-
 import {
   StyleSheet,
   Text,
@@ -12,6 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { createEvent } from '../../services/events.service';
+import DateField from 'react-native-datefield';
+import TimePicker from 'react-native-simple-time-picker';
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -27,7 +26,7 @@ const EventCreationScreen = ({navigation}) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [endDate, setEendDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const handleTimeChangeStart = (startTime, validTime) => {
     if (!validTime) return;
@@ -46,35 +45,29 @@ const EventCreationScreen = ({navigation}) => {
       alert('Please Enter Event Name');
       return;
     }
-    if (!eventType.trim()) {
-      alert('Please Enter Event Type');
+    if (!eventTagString.trim()) {
+      alert('Please Enter Event Tag');
       return;
     }
-    if (!eventLocation.trim()) {
-      alert('Please Enter Event Location');
+    if (!startTime.trim() || !/^[0-2][0-3]:[0-5][0-9]$/.test(startTime)) {
+      alert('Please Enter Start Time in Format HH:MM (Military Time)');
       return;
     }
-    if (!startTime.trim()) {
-      alert('Please Enter Start Time');
+    if (!endTime.trim() || !/^[0-2][0-3]:[0-5][0-9]$/.test(endTime)) {
+      alert('Password Enter End Time in Format HH:MM (Military Time)');
       return;
     }
-    if (!endTime.trim()) {
-      alert('Password Enter End Time');
+    if (!startDate.trim() || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(startDate)) {
+      alert('Password Enter Start Date in format DD/MM/YYYY');
       return;
     }
-    if (!startDate.trim()) {
-      alert('Password Enter End Time');
+    if (!endDate.trim() || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(endDate)) {
+      alert('Password Enter End Date in format DD/MM/YYYY');
       return;
     }
-    if (!endDate.trim()) {
-      alert('Password Enter End Time');
-      return;
-    }
-    setEvent(eventName, eventType, eventLocation, startTime, endTime, startDate, endDate);
-    navigation.navigate("Home");
+    createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString), startTime, endTime, startDate, endDate).
+    then(()=>navigation.goBack()).catch((err)=>console.log(err))
   };
-
-  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -111,49 +104,42 @@ const EventCreationScreen = ({navigation}) => {
       </View>
 
       <View style={styles.inputView}>
-        <TimeInput
+        <TextInput
           style={styles.TextInput}
+          placeholder="Start Time"
           placeholderTextColor="#808080"
           onChangeText={(startTime) => setStartTime(startTime)}
         />
       </View>
 
       <View style={styles.inputView}>
-        <TimeInput
+        <TextInput
           style={styles.TextInput}
+          placeholder="End Time"
           placeholderTextColor="#808080"
           onChangeText={(endTime) => setEndTime(endTime)}
         />
       </View>
 
       <View style={styles.inputView}>
-        <DateField
+        <TextInput
           style={styles.TextInput}
-          styleInput={{ fontSize: 10 }}
-          containerStyle={{ marginVertical: 20 }}
-          onTimeChange={handleTimeChangeStart} 
+          placeholder="Start Date"
           placeholderTextColor="#808080"
           onChangeText={(startDate) => setStartDate(startDate)}
         />
       </View>
 
       <View style={styles.inputView}>
-        <DateField
+        <TextInput
           style={styles.TextInput}
-          styleInput={{ fontSize: 10 }}
-          containerStyle={{ marginVertical: 20 }}
-          onTimeChange={handleTimeChangeEnd} 
+          placeholder="End Date"
           placeholderTextColor="#808080"
-          onChangeText={(endDate) => setEendDate(endDate)}
+          onChangeText={(endDate) => setEndDate(endDate)}
         />
       </View>
 
-      <TouchableOpacity onPress={()=>
-        createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString)).
-        then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
-        
-        style={styles.createBtn}>
-
+      <TouchableOpacity onPress={checkInput} style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
 
@@ -232,6 +218,14 @@ const styles = StyleSheet.create({
   
   cancelText: {
     color: 'black',
+  },
+
+  inputBorder: {
+    width: '30%',
+    borderRadius: 8,
+    borderColor: '#cacaca',
+    borderWidth: 1,
+    marginBottom: -40,
   },
 
 });
