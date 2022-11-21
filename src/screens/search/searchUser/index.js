@@ -33,7 +33,7 @@ const UserSearchScreen = ({navigation}) => {
     <SafeAreaView style={styles.root}>
       {!clicked}
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Group")} style={styles.backBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.backBtn}>
         <Text style={styles.backText}>Back</Text>
       </TouchableOpacity>
 
