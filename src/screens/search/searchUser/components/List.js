@@ -8,10 +8,9 @@ import {
 } from "react-native";
 
 // definition of the Item, which will be rendered in the FlatList
-const Item = ({ name, details }) => (
+const Item = ({ name }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{name}</Text>
-    <Text style={styles.details}>{details}</Text>
   </View>
 );
 
