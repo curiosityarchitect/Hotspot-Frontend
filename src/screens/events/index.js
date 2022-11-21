@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
+import {Icon} from 'react-native-elements';
 import EventCard from './eventscreen-components/eventcard';
 
 
@@ -92,6 +93,11 @@ const styles = StyleSheet.create({
 const EventScreen = ({navigation}) => {
   return(
     <View style={styles.container}>
+
+      <TouchableOpacity onPress={()=>navigation.navigate("EventSearch")} style={styles.CreateButtonStyle}>
+        <Icon name={"search"}  size={30} color="#000000" />
+      </TouchableOpacity>
+
         <FlatList 
           data={events} 
           renderItem={({item}) => {       
