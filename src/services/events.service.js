@@ -3,7 +3,7 @@ import { store } from "../redux/store/store";
 import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
-export async function setNearbyEvents(location) {
+export async function setNearbyEvents(userid, location, specific) {
     if (!location)
         return;
 
@@ -15,9 +15,19 @@ export async function setNearbyEvents(location) {
             'Content-Type': 'application/json'
         }, 
         params: { 
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
-            distance: 800
+            // only query for user specific if a user id is provided
+            ...(userid && {
+                userid: userid
+            }),
+            ...(userid && specific && {
+                specific: specific
+            }),
+            // only query for location specific if a location is provided
+            ...(location && {
+                longitude: location.coords.longitude,
+                latitude: location.coords.latitude,
+                distance: 800
+            }) 
         }
     })
     .then((response) => {

@@ -70,6 +70,7 @@ function MapComponent({heatMapOn}) {
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
   const friendLocations = useSelector(state => state.friendLocations);
+  const userid = useSelector(state => state.currUser._id);
 
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
@@ -77,7 +78,7 @@ function MapComponent({heatMapOn}) {
   const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
 
   useEffect(() => {
-    setNearbyEvents(location);
+    setNearbyEvents(userid, location, false);
   }, [location]);
 
   // automatically fetch friend location on a 5 second timer
