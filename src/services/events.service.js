@@ -4,9 +4,6 @@ import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
 export async function setNearbyEvents(userid, location, specific) {
-    if (!location)
-        return;
-
     axios.get(`${backendUrl}/events`, 
     {
         method: 'GET',
@@ -37,14 +34,22 @@ export async function setNearbyEvents(userid, location, specific) {
     .catch((err) => {console.log(err)});
 }
 
-export async function createEvent(name, longitude=0, latitude=0, numAttendees=1, tags=[]) {
+export async function createEvent(eventDetails) {
     return axios.post(`${backendUrl}/events`, 
     {
-        name: name,
-        longitude: longitude,
-        latitude: latitude,
-        numAttendees: numAttendees,
-        tags: tags
+        name: eventDetails.name,
+        address: !eventDetails.address ? "" : eventDetails.address,
+        description: !eventDetails.description ? "" : eventDetails.description,
+        longitude: !eventDetails.longitude ? 0 : eventDetails.longitude,
+        latitude: !eventDetails.latitude ? 0 : eventDetails.latitude,
+        username: eventDetails.username,
+        numAttendees: 0,
+        capacity: !eventDetails.capacity ? 0 : eventDetails.capacity,
+        startDate: !eventDetails.startDate ? 0 : eventDetails.startDate,
+        endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
+        cover: !eventDetails.cover ? "" : eventDetails.cover,
+        tags: eventDetails.tags,
+        scope: eventDetails.scope
     },
     {
         method: 'POST',

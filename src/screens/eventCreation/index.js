@@ -8,6 +8,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { withTheme } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 import { createEvent } from '../../services/events.service';
 
 const parseTags = (tagsString) => {
@@ -25,6 +27,9 @@ const EventCreationScreen = ({navigation}) => {
   const [endTime, setEndTime] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEendDate] = useState('');
+  const [eventScope, setEventScope] = useState('Public');
+
+  const creatorUsername = useSelector(state => state.currUser.username);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -41,6 +46,13 @@ const EventCreationScreen = ({navigation}) => {
           onChangeText={(eventName) => setEventName(eventName)}
         />
       </View>
+
+      <TouchableOpacity
+        onPress={() => {setEventScope(eventScope === "Public" ? "Private" : "Public")}}
+        style={styles.scopeBtn}
+      >
+        <Text style={styles.scopeBtnText}>{eventScope}</Text>
+      </TouchableOpacity>
 
       <View style={styles.inputView}>
         <TextInput
@@ -97,8 +109,13 @@ const EventCreationScreen = ({navigation}) => {
       </View>
 
       <TouchableOpacity onPress={()=>
-        createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString)).
-        then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
+        createEvent({
+          eventName: eventName, 
+          username: creatorUsername,
+          tags: parseTags(eventTagString),
+          scope: eventScope.toLowerCase()
+        }).
+          then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
         
         style={styles.createBtn}>
 
@@ -160,6 +177,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: "5%",
     backgroundColor: '#000000',
+  },
+
+  scopeBtn: {
+    width: '30%',
+    borderRadius: 10,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: "2%"  ,
+    backgroundColor: '#000000',
+  },
+
+  scopeBtnText: {
+    color: 'white'
   },
 
   createText: {
