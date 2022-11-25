@@ -20,9 +20,11 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     borderRadius:50,
   },
-}
-);
 
+  createText: {
+    color: 'black',
+  },
+});
 
 
 export default CreateEventButton;

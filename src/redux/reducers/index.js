@@ -1,15 +1,17 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { foregroundPermissionsReducer, backgroundPermissionsReducer } from "./permissions.reducer";
-import locationReducer from "./locations.reducer";
+import userLocationReducer from "./userLocation.reducer";
 import mapEventReducer from "./mapEvents.reducer"
-import myEventsReducer from "./myEvents.reducer";
+import currUserReducer from "./currUser.reducer";
+import friendLocationsReducer from "./friendLocation.reducers";
 
 const appReducer = combineReducers({
     foregroundPerm: foregroundPermissionsReducer, 
     backgroundPerm: backgroundPermissionsReducer,
-    location: locationReducer,
+    userLocation: userLocationReducer,
     mapEvents: mapEventReducer,
-    myEvents: myEventsReducer,
+    currUser: currUserReducer,
+    friendLocations: friendLocationsReducer
 });
 
 export default appReducer;

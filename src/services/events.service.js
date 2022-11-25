@@ -3,10 +3,7 @@ import { store } from "../redux/store/store";
 import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
-export async function setNearbyEvents(location) {
-    if (!location)
-        return;
-
+export async function setNearbyEvents(userid, location, specific) {
     axios.get(`${backendUrl}/events`, 
     {
         method: 'GET',
@@ -15,9 +12,19 @@ export async function setNearbyEvents(location) {
             'Content-Type': 'application/json'
         }, 
         params: { 
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
-            distance: 800
+            // only query for user specific if a user id is provided
+            ...(userid && {
+                userid: userid
+            }),
+            ...(userid && specific && {
+                specific: specific
+            }),
+            // only query for location specific if a location is provided
+            ...(location && {
+                longitude: location.coords.longitude,
+                latitude: location.coords.latitude,
+                distance: 800
+            }) 
         }
     })
     .then((response) => {
@@ -27,23 +34,24 @@ export async function setNearbyEvents(location) {
     .catch((err) => {console.log(err)});
 }
 
-
-
-export async function createEvent(name,address='krusty krab',description, longitude=0, latitude=0, username, numAttendees=1,capacity, startDate = 1/11/11, endDate = 2/22/22,tags=[],invitees=[]) {
+export async function createEvent(eventDetails) {
     return axios.post(`${backendUrl}/events`, 
     {
-        name: name,
-        address: address,
-        description: description,
-        longitude: longitude,
-        latitude: latitude,
-        username: username,
-        numAttendees: numAttendees,
-        capacity: capacity,
-        startDate: startDate,
-        endDate: endDate,
-        tags: tags,
-        invitees: invitees
+        name: eventDetails.name,
+        address: !eventDetails.address ? "" : eventDetails.address,
+        description: !eventDetails.description ? "" : eventDetails.description,
+        longitude: !eventDetails.longitude ? 0 : eventDetails.longitude,
+        latitude: !eventDetails.latitude ? 0 : eventDetails.latitude,
+        username: eventDetails.username,
+        numAttendees: 0,
+        capacity: !eventDetails.capacity ? 0 : eventDetails.capacity,
+        startDate: !eventDetails.startDate ? 0 : eventDetails.startDate,
+        endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
+        cover: !eventDetails.cover ? "" : eventDetails.cover,
+        tags: eventDetails.tags,
+        invitees: eventDetails.invitees,
+        scope: eventDetails.scope
+
     },
     {
         method: 'POST',
@@ -52,6 +60,7 @@ export async function createEvent(name,address='krusty krab',description, longit
             'Content-Type': 'application/json'
         }
     });
+
 }
 
 export async function findEventById(id) {
@@ -75,4 +84,6 @@ export async function tagID(id) {
             'Content-Type': 'application/json'
         }
     })
+
+
 }

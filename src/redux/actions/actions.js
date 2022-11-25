@@ -4,10 +4,8 @@ export const backgroundPermChange = createAction("permissions/backgroundPermChan
 
 export const foregroundPermChange = createAction("permissions/foregroundPermChange");
 
-export const updateLocation = createAction("location/updateLocation");
+export const updateLocation = createAction("userLocation/updateLocation");
 
 export const updateMapEvents = createAction("map/updateEvents");
 
-export const updateMyEvents = createAction("events/updateEvents");
-
-export const updateNotification = createAction("social/updateNotification");
+export const updateFriendLocations = createAction("friendLocations/updateLocations");

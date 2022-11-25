@@ -35,7 +35,7 @@ const App = () => {
         <Stack.Screen name="Welcome" component={WelcomeScreen}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Register" component={RegisterScreen}/>
-        <Stack.Screen name="Main App" component={MyTabs}/>
+        <Stack.Screen name="MainApp" component={MyTabs}/>
         <Stack.Screen name="Search" component={UserSearchScreen}/>
         <Stack.Screen name="CreateEvent" component={EventCreationScreen}/>
         <Stack.Screen name="MyEvents" component={EventScreen}/>

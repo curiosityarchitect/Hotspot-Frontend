@@ -24,7 +24,7 @@ const LoginScreen = ({navigation}) => {
       alert('Please Enter Password');
       return;
     }
-    navigation.navigate("Main App");
+    navigation.navigate("MainApp");
   };
 
   return (

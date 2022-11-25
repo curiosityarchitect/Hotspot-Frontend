@@ -8,9 +8,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+
 import { createEvent } from '../../services/events.service';
 import InviteButton from './invite-components/invite-button';
-import * as MailComposer from 'expo-mail-composer';
+import { useSelector } from 'react-redux';
+
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -18,6 +20,7 @@ const parseTags = (tagsString) => {
     .filter((tag) => tag.length > 0)
     .filter((tag, index, self) => self.indexOf(tag) === index);
 }
+
 
 const parseInvitees = (invitees) => {
   return invitees.split(",")
@@ -32,19 +35,21 @@ const EventCreationScreen = ({route,navigation}) => {
   const [invitees, setInvitees] = useState('');
   if (route.params) {
     setInvitees(route.params.invitees);
+    console.log(invitees)
     route.params = null;
   }
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
+  const [eventAddress, setEventAddress] = useState('');
   const [eventDescription, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEendDate] = useState('');
   const [capacity, setCapacity] = useState('');
-  const username= 'alexwu'
- 
+  const [eventScope, setEventScope] = useState('Public');
+  const creatorUsername = useSelector(state => state.currUser.username);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
@@ -61,6 +66,13 @@ const EventCreationScreen = ({route,navigation}) => {
         />
       </View>
 
+      <TouchableOpacity
+        onPress={() => {setEventScope(eventScope === "Public" ? "Private" : "Public")}}
+        style={styles.scopeBtn}
+      >
+        <Text style={styles.scopeBtnText}>{eventScope}</Text>
+      </TouchableOpacity>
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -75,7 +87,7 @@ const EventCreationScreen = ({route,navigation}) => {
           style={styles.TextInput}
           placeholder="Event Location"
           placeholderTextColor="#808080"
-          onChangeText={(eventLocation) => setEventLocation(eventLocation)}
+          onChangeText={(eventAddress) => setEventAddress(eventAddress)}
         />
       </View>
 
@@ -137,12 +149,22 @@ const EventCreationScreen = ({route,navigation}) => {
       <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
         <InviteButton />
       </TouchableOpacity>
-
-      <TouchableOpacity onPress={()=> 
-        
-        createEvent(eventName,undefined,eventDescription, undefined, undefined, username,undefined,capacity, undefined, undefined,parseTags(eventTagString),parseInvitees(invitees)).
-        then(()=>navigation.goBack())
-        .catch((err)=>console.log(err))} 
+      <TouchableOpacity onPress={()=>
+        createEvent({
+          name: eventName, 
+          description: eventDescription,
+          address: eventAddress,
+          startTime: startTime,
+          endTime: endTime,
+          startDate: startDate,
+          endDate: endDate,
+          capacity: capacity,
+          username: creatorUsername,
+          tags: parseTags(eventTagString),
+          invitees: parseInvitees(invitees),
+          scope: eventScope.toLowerCase()
+        }).
+          then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
         style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
@@ -211,6 +233,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: "5%",
     backgroundColor: '#000000',
+  },
+
+  scopeBtn: {
+    width: '30%',
+    borderRadius: 10,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: "2%"  ,
+    backgroundColor: '#000000',
+  },
+
+  scopeBtnText: {
+    color: 'white'
   },
 
   createText: {

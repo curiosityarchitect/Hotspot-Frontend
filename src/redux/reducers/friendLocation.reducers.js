@@ -1,6 +1,6 @@
-export default function locationReducer(state = null, action) {
+export default function friendLocationsReducer(state = [], action) {
     switch (action.type) {
-        case "location/updateLocation": {
+        case "friendLocations/updateLocations": {
             return action.payload;
         }
         default: {
