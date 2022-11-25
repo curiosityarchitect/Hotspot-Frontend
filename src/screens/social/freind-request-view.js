@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
-import FriendCard  from './friend-card';
+import FriendReqCard from './friend-request-card';
 import FriendRequestHeader from './social-components/friend-request-header';
 import { sendRequest, getRequests, acceptRequest, rejectRequest, isFriends } from '../../services/request.service';
 import axios from 'axios';
@@ -11,12 +11,13 @@ const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
  
 
-const FriendRequestView = ({navigation}) => {
-    const username = 'alexwu';
+const FriendRequestView = ({route,navigation}) => {
+    const username = 'alexwu'; //MAIN FUNCTIONALITY - Change here to change user (until login  stores)
     const [isLoading, setIsLoading] = useState(true)
     const [friendrequests, setFriendRequests] = useState([])
    // let friendrequests = [];
     const isFocused = useIsFocused()
+    
     useEffect(() => {
 
       axios.get(`${backendUrl}/friend-requests/${username}`,
@@ -64,7 +65,7 @@ const FriendRequestView = ({navigation}) => {
               data={friendrequests} 
               renderItem={({item}) => {       
               return(
-                    <FriendCard info ={item}/>
+                    <FriendReqCard info ={item}/>
                 )
               }}
               keyExtractor={(friendrequests => friendrequests._id)}

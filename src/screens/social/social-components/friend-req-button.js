@@ -5,7 +5,7 @@ import {Icon} from 'react-native-elements';
 const FriendReqButton = () => {
   return (
       <View style={styles.buttonStyle}>
-          <Icon name={"group"}  size={15} color="#D2B48C" />
+          <Icon name={"person-add"}  size={15} color="#D2B48C" />
       </View>
   );
 }
@@ -20,6 +20,22 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     borderRadius:50,
   },
+  altButtonStyle: {
+    width: '100%',
+    marginBottom: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.333,
+  }
 }
 );
 

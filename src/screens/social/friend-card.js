@@ -3,59 +3,23 @@ import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-na
 import {Icon} from 'react-native-elements';
 import axios  from 'axios';
 import {backendUrl} from '../../services/const';
-import * as MailComposer from 'expo-mail-composer';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
-const radius = 20;
 const appEmail = 'hotspot.notification@gmail.com'
 
 const FriendCard = ({info}) => {
   const username = 'alexwu'
-  const [email, setEmail] = useState('')
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>
-            <Icon name="person-outline"></Icon>
-            <Text style={styles.usernameStyle}>{info.deliverer}</Text>
+            <Text style={styles.usernameStyle}>{info.friend}</Text>
             <View style={styles.choiceIcons}>
-                <TouchableOpacity onPress={()=>{
-                     axios.post(`${backendUrl}/friend-requests/status/${username}/accept`,
-                     {
-                         deliverer: info.deliverer
-                     }, {
-                         method: 'POST',
-                         headers: {
-                             Accept: 'application/json',
-                             'Content-Type': 'application/json'
-                         }
-                     })
-                   
-                 }}>
-                    <Icon name="check"></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{
-                     axios.post(`${backendUrl}/friend-requests/status/${username}/decline`,
-                     {
-                         deliverer: info.deliverer
-                     }, {
-                         method: 'POST',
-                         headers: {
-                             Accept: 'application/json',
-                             'Content-Type': 'application/json'
-                         }
-                     })
-                     
-                 }}>
-                    <Icon name="close"></Icon>
-                </TouchableOpacity>
+               
             </View>
         </View>
     </View>
   ) 
   }
-/*  const friendStatus = async (username, deliverer) => {
-    const status = await isFriends(username, deliverer);
-    return status;
-  }  */
+ 
 
 const styles = StyleSheet.create({
   container: {

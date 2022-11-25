@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
-import FriendCard  from './friend-card';
+import FriendCard  from './friend-request-card';
 import NotificationHeader from './social-components/notification-header';
 import axios from 'axios';
 import {backendUrl} from '../../services/const';

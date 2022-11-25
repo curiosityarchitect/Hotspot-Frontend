@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
-import {Icon} from 'react-native-elements';
-import axios  from 'axios';
-import {backendUrl} from '../../services/const';
-import * as MailComposer from 'expo-mail-composer';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
-const radius = 20;
 const appEmail = 'hotspot.notification@gmail.com'
 
 const NotificationCard = ({info}) => {

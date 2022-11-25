@@ -21,6 +21,7 @@ import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/profile/profile-components/settings';
 import TagDetailsScreen from './src/screens/events/tags/tagdetails';
 import EventSearchScreen from './src/screens/search';
+import FriendList from './src/screens/social/friend-list';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -47,6 +48,7 @@ const App = () => {
         <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
         <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
         <Stack.Screen name ='EventSearch' component={EventSearchScreen}/>
+        <Stack.Screen name ='FriendList' component={FriendList}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

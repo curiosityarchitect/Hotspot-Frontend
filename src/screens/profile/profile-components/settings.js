@@ -14,9 +14,9 @@ const SettingsScreen = ({navigation}) => {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [displayLocation, setDisplayLocation] = useState('');
-  const [username, setUsername] = useState('');
+  const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
-  
+  const username = 'alexwu' //change once login user store done
   return (
     <View style={styles.container}>
 
@@ -56,7 +56,7 @@ const SettingsScreen = ({navigation}) => {
           style={styles.TextInput}
           placeholder="Change Username" 
           placeholderTextColor="#808080"
-          onChangeText={(username) => setUsername(username)}
+          onChangeText={(newusername) => setUsername(newusername)}
         />
       </View>
 
@@ -70,7 +70,7 @@ const SettingsScreen = ({navigation}) => {
       </View>
 
       <TouchableOpacity onPress={()=> 
-        updateProfile(displayName, phoneNumber, displayLocation, username,profTags). //{username:username} future addition when we handle user saved state
+        updateProfile(displayName, phoneNumber, displayLocation, username, newusername,profTags). //{username:username} future addition when we handle user saved state
         then(()=>navigation.navigate("Profile")).catch((err)=>console.log(err))} 
         style={styles.createBtn}>
         <Text style={styles.createText}>Apply</Text>

@@ -4,15 +4,14 @@ import { RotateInUpLeft } from "react-native-reanimated";
 
 
 
-export async function updateProfile(displayName,phoneNumber,displayLocation,username, profTags) {
-    return axios.post(`${backendUrl}/profile/${username}/settings`, 
+export async function updateProfile(displayName,phoneNumber,displayLocation,username,newusername, profTags) {
+    return axios.put(`${backendUrl}/profile/${username}/settings`, 
     {
         displayName: displayName,
         phoneNumber: phoneNumber,
         displayLocation: displayLocation,
-        username: username,
+        username: newusername,
         profTags: profTags
-       // newUsername: username
     },
     {
         method: 'POST',

@@ -3,7 +3,6 @@ import {View,Text,SafeAreaView, Dimensions, StyleSheet, TouchableOpacity} from '
 import {Caption, Title} from 'react-native-paper';
 import {Icon, Avatar} from 'react-native-elements';
 import EventLabels from '../events/eventscreen-components/tab-components/event-labels';
-import FriendReqButton from './profile-components/friendreq-button';
 import NotificationsButton from './profile-components/notifications-button';
 import SettingsButton from './profile-components/settings-button';
 import { getUpdatedProfile } from '../../services/profile.service';
@@ -78,6 +77,8 @@ const ProfileScreen = ({navigation}) => {
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const isFocused = useIsFocused()
+  const [friendList, setFriendList] = useState([])
+  const friends = []
 
   useEffect(() => {
     getUpdatedProfile(username).then((response) => {
@@ -90,6 +91,19 @@ const ProfileScreen = ({navigation}) => {
       setTags(response.data)
     })
     .catch((err) => {console.log(err)});
+    axios.get(`${backendUrl}/friends/${username}`,
+      {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+          }
+      }).then((response) => {
+          setFriendList(response.data)
+          setIsLoading(false)
+      }).catch((error) => {
+          console.log(error);
+      })
   }, [isFocused])
 
    if (isLoading) {
@@ -99,6 +113,21 @@ const ProfileScreen = ({navigation}) => {
       </View>
     )
   } 
+
+  //retrieve friend data
+  let id = 0;
+  let friendCount = friendList[0]
+  for (let i = 1; i < friendList.length; i++) {
+    if (friendList[i].username1 !==  undefined) {
+      friends.push({_id: id, friend: friendList[i].username1})
+    }
+    else if (friendList[i].username2 !== undefined) {
+      friends.push({_id: id, friend: friendList[i].username2})
+    }
+    id++;
+  }
+  console.log(friends)
+///
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.userInfoStyle}>
@@ -122,9 +151,6 @@ const ProfileScreen = ({navigation}) => {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.NotificationButtonStyle}>
-                    <TouchableOpacity onPress={()=>{navigation.navigate('FriendRequests')}}>
-                      <FriendReqButton/>
-                    </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{navigation.navigate('Notifications')}}>
                       <NotificationsButton/>
                     </TouchableOpacity>
@@ -158,14 +184,14 @@ const ProfileScreen = ({navigation}) => {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
             }]}>
-              <TouchableOpacity>
-                <Title>100</Title>
+              <TouchableOpacity onPress={()=>navigation.navigate("FriendList" ,{friends: friends})}>
+                <Title>{friendCount}</Title>
                 <Caption>friends</Caption>
               </TouchableOpacity>
             </View>
             <View style={styles.stat}>
               <TouchableOpacity>
-                <Title>100</Title>
+                <Title>11</Title>
                 <Caption>events</Caption>
               </TouchableOpacity>
             </View>
