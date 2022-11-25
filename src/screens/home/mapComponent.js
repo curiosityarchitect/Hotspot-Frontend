@@ -75,21 +75,23 @@ function MapComponent({heatMapOn}) {
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
   const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
-  const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
+  const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations]);
 
   useEffect(() => {
+    setFriendLocations();
     setNearbyEvents(userid, location, false);
-  }, [location]);
+  }, []);
 
   // automatically fetch friend location on a 5 second timer
   useEffect(() => {
-    setFriendLocations();
-    // retrieve friend locations every 5 seconds
-    const intervalId = setInterval(setFriendLocations, 5000);
+    // retrieve every 5 seconds
+    const friendLocationInterval = setInterval(setFriendLocations, 5000);
+    const nearbyEventsInterval = setInterval(setNearbyEvents, 5000, userid, location, false);
 
-    // clean up friend location fetching interval
+    // clean up intervals
     return () => {
-      clearInterval(intervalId);
+      clearInterval(friendLocationInterval);
+      clearInterval(nearbyEventsInterval);
     };
   }, []);
 

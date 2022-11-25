@@ -18,19 +18,18 @@ export const getLocation = async () => {
 export const beginTracking = async () => {
     await Location.watchPositionAsync(
         {
-            accuracy: Location.Accuracy.BestForNavigation,
+            accuracy: Location.Accuracy.High,
+            distanceInterval: 15
         },
         location => {
             // console.log(location)
-            const oldLocation = store.getState().location;
-            // only send request if user location has changed by a significant amount
-            if (oldLocation && 
-                (Math.abs(oldLocation.coords.longitude - location.coords.longitude) > 0.0001 ||
-                Math.abs(oldLocation.coords.latitude - location.coords.latitude) > 0.0001)) {
-                updateUserLocation(location);
-            }
+            updateUserLocation(location);
 
             store.dispatch(updateLocation(location));
         }
     )
 };
+
+export const watchEventVicinity = async () => {
+    
+}
