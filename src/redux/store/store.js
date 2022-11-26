@@ -3,8 +3,8 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
     currUser: {
-        username: "wangedge",
-        _id: "6374679b1efa6ec7be761d55"
+        username: "alexwu",
+        _id: "63803d09202b9146d223c593"
     }
 }
 
