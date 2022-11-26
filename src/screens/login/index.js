@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,22 +8,11 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { backendUrl } from '../../services/const';
-import axios from 'axios';
+import { getUser } from '../../services/users.service';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const submitForm = async () => {
-    try {
-      const res = await axios.post(`${backendUrl}/sign-in`, {username, password})
-      
-      console.log(res.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   const checkInput = () => {
     if (!username.trim()) {
@@ -34,7 +23,13 @@ const LoginScreen = ({navigation}) => {
       alert('Please Enter Password');
       return;
     }
-    navigation.navigate("MainApp");
+    getUser(username, password).then((response) => {
+      alert('You have successfully signed in');
+      navigation.navigate("MainApp");
+    }).catch((error) => {
+      alert('User not found');
+      return;
+    });
   };
 
   return (

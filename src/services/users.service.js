@@ -17,3 +17,17 @@ export async function createUser(username, email, password) {
     });
 }
 
+export async function getUser(username, password) {
+    return axios.post(`${backendUrl}/login`, 
+    {
+        username: username,
+        password: password
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+}
