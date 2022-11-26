@@ -27,12 +27,12 @@ export async function setNearbyEvents(location) {
     .catch((err) => {console.log(err)});
 }
 
-export async function createEvent(name, longitude=160, latitude=60, numAttendees=1, tags=[], startTime, endTime, startDate, endDate) {
+export async function createEvent(name, longitude, latitude, numAttendees=1, tags=[], startTime, endTime, startDate, endDate) {
     return axios.post(`${backendUrl}/events`, 
     {
         name: name,
-        longitude: longitude,
-        latitude: latitude,
+        longitude: parseInt(longitude),
+        latitude: parseInt(latitude),
         numAttendees: numAttendees,
         tags: tags,
         startTime: startTime,

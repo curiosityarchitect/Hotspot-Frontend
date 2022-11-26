@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
+  Button,
   StyleSheet,
   Text,
   View,
@@ -9,8 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { createEvent } from '../../services/events.service';
-import DateField from 'react-native-datefield';
-import TimePicker from 'react-native-simple-time-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -22,23 +22,54 @@ const parseTags = (tagsString) => {
 const EventCreationScreen = ({navigation}) => {
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [Longitude, setLong] = useState('');
+  const [Latitude, setLat] = useState('');
+  // Start Date and Time
+  const [startDate, setStartDate] = useState(new Date());
+  const [startDatePicker, setStartDatePicker] = useState(false);
+  const [startTimePicker, setStartTimePicker] = useState(false);
+  const [startTime, setStartTime] = useState(new Date(Date.now()));
+  // End Date and Time
+  const [endDate, setEndDate] = useState(new Date());
+  const [endDatePicker, setEndDatePicker] = useState(false);
+  const [endTimePicker, setEndTimePicker] = useState(false);
+  const [endTime, setEndTime] = useState(new Date(Date.now()));
 
-  const handleTimeChangeStart = (startTime, validTime) => {
-    if (!validTime) return;
+  function showStartDatePicker() {
+    setStartDatePicker(true);
+  };
 
-    setStartTime(startTime);
-  }
+  function showStartTimePicker() {
+    setStartTimePicker(true);
+  };
 
-  const handleTimeChangeEnd = (endTime, validTime) => {
-    if (!validTime) return;
+  function showEndDatePicker() {
+    setEndDatePicker(true);
+  };
 
-    setEndTime(endTime);
-  }
+  function showEndTimePicker() {
+    setEndTimePicker(true);
+  };
+
+  function onStartDateSelected(event, value) {
+    setStartDate(value);
+    setStartDatePicker(false);
+  };
+ 
+  function onStartTimeSelected(event, value) {
+    setStartTime(value);
+    setStartTimePicker(false);
+  };
+
+  function onEndDateSelected(event, value) {
+    setEndDate(value);
+    setEndDatePicker(false);
+  };
+ 
+  function onEndTimeSelected(event, value) {
+    setEndTime(value);
+    setEndTimePicker(false);
+  };
 
   const checkInput = () => {
     if (!eventName.trim()) {
@@ -49,23 +80,15 @@ const EventCreationScreen = ({navigation}) => {
       alert('Please Enter Event Tag');
       return;
     }
-    if (!startTime.trim() || !/^[0-2][0-3]:[0-5][0-9]$/.test(startTime)) {
-      alert('Please Enter Start Time in Format HH:MM (Military Time)');
+    if (!Longitude.trim() || Longitude > 180 || Longitude < -180 || /[a-zA-Z]+/g.test(Longitude)) {
+      alert('Longitude Incorrect');
       return;
     }
-    if (!endTime.trim() || !/^[0-2][0-3]:[0-5][0-9]$/.test(endTime)) {
-      alert('Password Enter End Time in Format HH:MM (Military Time)');
+    if (!Latitude.trim() || Latitude > 90 || Latitude < -90 || /[a-zA-Z]+/g.test(Latitude)) {
+      alert('Latitude Incorrect');
       return;
     }
-    if (!startDate.trim() || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(startDate)) {
-      alert('Password Enter Start Date in format DD/MM/YYYY');
-      return;
-    }
-    if (!endDate.trim() || !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(endDate)) {
-      alert('Password Enter End Date in format DD/MM/YYYY');
-      return;
-    }
-    createEvent(eventName, undefined, undefined, undefined, parseTags(eventTagString), startTime, endTime, startDate, endDate).
+    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), startTime.toString().substring(16, 21), endTime.toString().substring(16, 21), startDate.toString().substring(0, 15), endDate.toString().substring(0, 15)).
     then(()=>navigation.goBack()).catch((err)=>console.log(err))
   };
 
@@ -97,46 +120,103 @@ const EventCreationScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Event Location"
+          placeholder="Event Longitude"
           placeholderTextColor="#808080"
-          onChangeText={(eventLocation) => setEventLocation(eventLocation)}
+          onChangeText={(Longitude) => setLong(Longitude)}
         />
       </View>
 
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Start Time"
+          placeholder="Event Latitude"
           placeholderTextColor="#808080"
-          onChangeText={(startTime) => setStartTime(startTime)}
+          onChangeText={((Latitude) => setLat(Latitude))}
         />
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="End Time"
-          placeholderTextColor="#808080"
-          onChangeText={(endTime) => setEndTime(endTime)}
-        />
+      <View style={styles.MainContainer}>
+ 
+        <Text style={styles.text}>Start Date = {startDate.toDateString()}</Text>
+ 
+        <Text style={styles.text}>Start Time = {startTime.toLocaleTimeString('en-US')}</Text>
+ 
+        {startDatePicker && (
+          <DateTimePicker
+            value={startDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onStartDateSelected}
+            style={styles.datePicker}
+          />
+        )}
+ 
+        {startTimePicker && (
+          <DateTimePicker
+            value={startTime}
+            mode={'time'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={false}
+            onChange={onStartTimeSelected}
+            style={styles.datePicker}
+          />
+        )}
+ 
+        {!startDatePicker && (
+          <View style={{ margin: 0 }}>
+            <Button title="Pick Start Date" color="black" onPress={showStartDatePicker} />
+          </View>
+        )}
+ 
+        {!startTimePicker && (
+          <View style={{ margin: 0 }}>
+            <Button title="Pick Start Time" color="black" onPress={showStartTimePicker} />
+          </View>
+        )}
+ 
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Start Date"
-          placeholderTextColor="#808080"
-          onChangeText={(startDate) => setStartDate(startDate)}
-        />
-      </View>
+      <View style={styles.MainContainer}>
+ 
+        <Text style={styles.text}>End Date = {endDate.toDateString()}</Text>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="End Date"
-          placeholderTextColor="#808080"
-          onChangeText={(endDate) => setEndDate(endDate)}
-        />
+        <Text style={styles.text}>End Time = {endTime.toLocaleTimeString('en-US')}</Text>
+
+        {endDatePicker && (
+          <DateTimePicker
+            value={endDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onEndDateSelected}
+            style={styles.datePicker}
+          />
+        )}
+
+        {endTimePicker && (
+          <DateTimePicker
+            value={endTime}
+            mode={'time'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={false}
+            onChange={onEndTimeSelected}
+            style={styles.datePicker}
+          />
+        )}
+
+        {!endDatePicker && (
+          <View style={{ margin: 0 }}>
+            <Button title="Pick End Date" color="black" onPress={showEndDatePicker} />
+          </View>
+        )}
+
+        {!endTimePicker && (
+          <View style={{ margin: 0 }}>
+            <Button title="Pick End Time" color="black" onPress={showEndTimePicker} />
+          </View>
+        )}
+
       </View>
 
       <TouchableOpacity onPress={checkInput} style={styles.createBtn}>
@@ -226,6 +306,30 @@ const styles = StyleSheet.create({
     borderColor: '#cacaca',
     borderWidth: 1,
     marginBottom: -40,
+  },
+
+  MainContainer: {
+    flex: 0,
+    padding: 6,
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+ 
+  text: {
+    fontSize: 20,
+    color: 'black',
+    padding: 3,
+    marginBottom: 0,
+    textAlign: 'center'
+  },
+ 
+  // Style for iOS ONLY...
+  datePicker: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: 320,
+    height: 260,
+    display: 'flex',
   },
 
 });
