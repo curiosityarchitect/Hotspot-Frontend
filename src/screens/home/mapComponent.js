@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
-import { ironbowPalette, startPoints } from './home.styles';
+import { ironbowPalette, eventPinColor, friendPinColor, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
 import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
@@ -26,6 +26,7 @@ const createEventMarkers = (events) => (
           longitude: event.location.coordinates[0],
           latitude: event.location.coordinates[1]
       }}
+      pinColor = {eventPinColor}
       title = { event.name }
     />
   })
@@ -39,6 +40,7 @@ const createFriendMarkers = (friends) => (
           longitude: friend.location.coordinates[0],
           latitude: friend.location.coordinates[1]
       }}
+      pinColor = {friendPinColor}
       title = { friend.username }
     />
   })
@@ -175,7 +177,7 @@ function MapComponent({heatMapOn}) {
           customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}
           onRegionChangeComplete={handleRegionChange}>
           { heatMapOn ? null : eventMarkers }
-          { friendMarkers }
+          { heatMapOn ? null : friendMarkers }
           { heatMapOn ? heatMap : null }
         </MapView>
     );

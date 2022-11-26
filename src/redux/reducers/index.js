@@ -4,6 +4,7 @@ import userLocationReducer from "./userLocation.reducer";
 import mapEventReducer from "./mapEvents.reducer"
 import currUserReducer from "./currUser.reducer";
 import friendLocationsReducer from "./friendLocation.reducers";
+import attendingEventReducer from "./attendingEvents.reducer";
 
 const appReducer = combineReducers({
     foregroundPerm: foregroundPermissionsReducer, 
@@ -11,7 +12,8 @@ const appReducer = combineReducers({
     userLocation: userLocationReducer,
     mapEvents: mapEventReducer,
     currUser: currUserReducer,
-    friendLocations: friendLocationsReducer
+    friendLocations: friendLocationsReducer,
+    attendingEvents: attendingEventReducer
 });
 
 export default appReducer;

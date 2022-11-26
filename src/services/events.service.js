@@ -59,3 +59,22 @@ export async function createEvent(eventDetails) {
         }
     });
 }
+
+export async function setAttendingEvents(userid) {
+    if (!userid) {
+        return;
+    }
+    
+
+    const response = await axios.get(`${backendUrl}/user/${userid}/events/attending`, 
+    {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    .catch((err) => {console.log(err)});
+
+    return response.data;
+}

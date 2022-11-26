@@ -64,6 +64,9 @@ const ironbow =
 
 const cutoff = 40;
 
+export const eventPinColor = '#dd3051';
+export const friendPinColor = '#ca1385';
+
 // generated using https://mapstyle.withgoogle.com/
 const regularMapStyle = 
 [
