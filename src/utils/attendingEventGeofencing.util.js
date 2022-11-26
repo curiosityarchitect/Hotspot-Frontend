@@ -5,6 +5,9 @@ import { updateAttendingEvents } from '../redux/actions/actions';
 import { store } from '../redux/store/store';
 
 const updateGeofencing = async () => {
+    if (!store.getState().currUser._id) {
+        return;
+    }
 
     const events = await setAttendingEvents(store.getState().currUser._id);
 
@@ -22,8 +25,6 @@ const updateGeofencing = async () => {
                 notifyOnExit: false,
                 radius: 100
             }));
-
-        console.log(regions);
 
         if (regions.length > 0) {
             Location.startGeofencingAsync(GEOFENCING_TASK, regions);

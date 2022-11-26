@@ -78,3 +78,21 @@ export async function setAttendingEvents(userid) {
 
     return response.data;
 }
+
+export async function reportEventArrival(eventid, userid) {
+    if (!userid || !eventid) {
+        return;
+    }
+
+    await axios.post(`${backendUrl}/events/${eventid}/arrivee`, 
+    {
+        arriveeId: userid
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+}

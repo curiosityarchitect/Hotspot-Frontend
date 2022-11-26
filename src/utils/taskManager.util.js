@@ -1,5 +1,7 @@
 import { GeofencingEventType } from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
+import { reportEventArrival } from '../services/events.service';
+import { store } from "../redux/store/store";
 
 export const GEOFENCING_TASK = "EVENT GEOFENCING";
 
@@ -11,7 +13,7 @@ export const initTaskManager = async () => {
         }
         
         if (eventType === GeofencingEventType.Enter) {
-            console.log("You've entered region:", region);
+            reportEventArrival(region.identifier, store.getState().currUser._id);
         } 
     });
 };

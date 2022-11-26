@@ -17,7 +17,6 @@ export function onBoot() {
         else if (store.getState().backgroundPerm);
     });
 
-    initDummyGeofencing();
     initTaskManager();
 
     beginAttendingEventGeofencing();
