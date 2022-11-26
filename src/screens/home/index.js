@@ -42,40 +42,31 @@ function HomeScreen({navigation}) {
     <View style={homeStyles.container}>
       <MapComponent heatMapOn={heatMapOn}/>
 
-        <View style={homeStyles.buttonContainer}>
-          <TouchableOpacity 
-            onPress={()=>navigation.navigate("UserSearch")} 
-            style={homeStyles.button}
-          >
-            <Icon name={"search"}  size={20} color="#7a009d" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            onPress={toggleSwitch}
-            style={homeStyles.button}
-          >
-            <Icon name={"device-thermostat"}  size={20} color="#7a009d" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            onPress={() => navigation.navigate("CreateEvent")}
-            style={homeStyles.button}
-          >
-            <Icon name={"add"}  size={20} color="#7a009d" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
+      <View style={homeStyles.buttonContainer}>
+        <TouchableOpacity 
+          onPress={()=>navigation.navigate("UserSearch")} 
+          style={homeStyles.button}
+        >
+          <Icon name={"search"}  size={20} color="#7a009d" />
+        </TouchableOpacity>
 
-  // otherwise show loading message
-  else {
-    return ( 
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text> Getting location... </Text>
+        <TouchableOpacity
+          onPress={toggleSwitch}
+          style={homeStyles.button}
+        >
+          <Icon name={"device-thermostat"}  size={20} color="#7a009d" />
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CreateEvent")}
+          style={homeStyles.button}
+        >
+          <Icon name={"add"}  size={20} color="#7a009d" />
+        </TouchableOpacity>
       </View>
-    );
-  }
+    </View>
+  );
+  
 }
 
 const mapStateToProps = (state) => {
