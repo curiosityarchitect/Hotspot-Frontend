@@ -49,8 +49,14 @@ const RegisterScreen = ({navigation}) => {
       alert('Needs to be a valid email');
       return;
     }
-    createUser(username, email, password);
-    navigation.navigate("MainApp");
+    createUser(username, email, password).then((response) => {
+      alert('Your account has been created');
+      navigation.navigate("MainApp");
+    }).catch((error) => {
+      alert('User already exists');
+      return;
+    });
+    
   };
 
   return (
