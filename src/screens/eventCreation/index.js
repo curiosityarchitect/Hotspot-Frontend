@@ -21,6 +21,18 @@ const parseTags = (tagsString) => {
     .filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
+const combineDateTime = (date, time) => {
+  return new Date(parseDateISO(date) + parseTimeISO(time));
+}
+
+const parseDateISO = (date) => {
+  return date.toISOString().substring(0, 11);
+}
+
+const parseTimeISO = (time) => {
+  return time.toISOString().substring(11);
+}
+
 const EventCreationScreen = ({navigation}) => {
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
@@ -87,7 +99,10 @@ const EventCreationScreen = ({navigation}) => {
       alert('Latitude Incorrect');
       return;
     }
-    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), startTime.toString().substring(16, 21), endTime.toString().substring(16, 21), startDate.toString().substring(0, 15), endDate.toString().substring(0, 15), eventScope.toLowerCase()).
+    // console.log(combineDateTime(startDate, startTime), combineDateTime(endDate, endTime), new Date());
+    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), 
+      combineDateTime(startDate, startTime), combineDateTime(endDate, endTime), 
+      eventScope.toLowerCase()).
     then(()=>navigation.goBack()).catch((err)=>console.log(err))
   };
 

@@ -25,10 +25,8 @@ const updateGeofencing = async () => {
                 notifyOnExit: false,
                 radius: 100
             }));
-
-        if (regions.length > 0) {
-            Location.startGeofencingAsync(GEOFENCING_TASK, regions);
-        }
+            
+        Location.startGeofencingAsync(GEOFENCING_TASK, regions);
         store.dispatch(updateAttendingEvents(events));
     }
 }

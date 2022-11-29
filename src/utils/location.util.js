@@ -22,7 +22,7 @@ export const beginTracking = async () => {
             distanceInterval: 15
         },
         location => {
-            console.log(location)
+            // console.log(location)
             updateUserLocation(location);
 
             store.dispatch(updateLocation(location));
