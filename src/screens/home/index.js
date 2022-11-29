@@ -43,6 +43,13 @@ function HomeScreen({navigation}) {
       <MapComponent heatMapOn={heatMapOn}/>
 
       <View style={homeStyles.buttonContainer}>
+        <TouchableOpacity 
+          onPress={()=>navigation.navigate("UserSearch")} 
+          style={homeStyles.button}
+        >
+          <Icon name={"search"}  size={20} color="#7a009d" />
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={toggleSwitch}
           style={homeStyles.button}

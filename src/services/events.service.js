@@ -34,22 +34,19 @@ export async function setNearbyEvents(userid, location, specific) {
     .catch((err) => {console.log(err)});
 }
 
-export async function createEvent(eventDetails) {
+export async function createEvent(name, longitude, latitude, numAttendees=1, tags=[], startTime, endTime, startDate, endDate, eventScope) {
     return axios.post(`${backendUrl}/events`, 
     {
-        name: eventDetails.name,
-        address: !eventDetails.address ? "" : eventDetails.address,
-        description: !eventDetails.description ? "" : eventDetails.description,
-        longitude: !eventDetails.longitude ? 0 : eventDetails.longitude,
-        latitude: !eventDetails.latitude ? 0 : eventDetails.latitude,
-        username: eventDetails.username,
-        numAttendees: 0,
-        capacity: !eventDetails.capacity ? 0 : eventDetails.capacity,
-        startDate: !eventDetails.startDate ? 0 : eventDetails.startDate,
-        endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
-        cover: !eventDetails.cover ? "" : eventDetails.cover,
-        tags: eventDetails.tags,
-        scope: eventDetails.scope
+        name: name,
+        longitude: parseInt(longitude),
+        latitude: parseInt(latitude),
+        numAttendees: numAttendees,
+        tags: tags,
+        startTime: startTime,
+        endTime: endTime,
+        startDate: startDate,
+        endDate: endDate,
+        scope: eventScope
     },
     {
         method: 'POST',
@@ -65,7 +62,6 @@ export async function setAttendingEvents(userid) {
         return;
     }
     
-
     const response = await axios.get(`${backendUrl}/user/${userid}/events/attending`, 
     {
         method: 'GET',
@@ -80,6 +76,7 @@ export async function setAttendingEvents(userid) {
 }
 
 export async function reportEventArrival(eventid, userid) {
+    console.log("Report", eventid, userid);
     if (!userid || !eventid) {
         return;
     }

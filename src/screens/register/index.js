@@ -4,12 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
   Button,
   TouchableOpacity,
-  Alert
 } from 'react-native';
+import { createUser } from '../../services/users.service';
 
 const RegisterScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -38,7 +37,26 @@ const RegisterScreen = ({navigation}) => {
       alert('Password does not match');
       return;
     }
-    navigation.navigate("MainApp");
+    if (/\s/.test(username)) {
+      alert('Username cannot contain whitespaces');
+      return;
+    }
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+      alert('Password needs to contain uppercase, lowercase, number, and special character');
+      return;
+    }
+    if (!/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)) {
+      alert('Needs to be a valid email');
+      return;
+    }
+    createUser(username, email, password).then((response) => {
+      dispatch(setUser(response.data));
+      navigation.navigate("MainApp");
+    }).catch((error) => {
+      alert('User already exists');
+      return;
+    });
+    
   };
 
   return (
@@ -89,7 +107,7 @@ const RegisterScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity onPress={checkInput} style={styles.registerBtn}>
+      <TouchableOpacity onPress={checkInput}  style={styles.registerBtn}>
         <Text style={styles.registerText}>Register</Text>
       </TouchableOpacity>
 

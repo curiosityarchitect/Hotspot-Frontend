@@ -33,7 +33,12 @@ const createEventMarkers = (events) => (
 );
 
 const createFriendMarkers = (friends) => (
-  friends.map((friend, index) => {
+  friends.filter((friend) => 
+    friend.location && 
+    friend.location.coordinates && 
+    friend.location.coordinates.length > 0)
+    
+  .map((friend, index) => {
     return <Marker
       key = {index}
       coordinate = {{

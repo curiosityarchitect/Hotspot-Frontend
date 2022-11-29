@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
+  Button,
   StyleSheet,
   Text,
   View,
@@ -11,6 +12,7 @@ import {
 import { withTheme } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { createEvent } from '../../services/events.service';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -22,14 +24,72 @@ const parseTags = (tagsString) => {
 const EventCreationScreen = ({navigation}) => {
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEendDate] = useState('');
+  const [Longitude, setLong] = useState('');
+  const [Latitude, setLat] = useState('');
+  // Start Date and Time
+  const [startDate, setStartDate] = useState(new Date());
+  const [startDatePicker, setStartDatePicker] = useState(false);
+  const [startTimePicker, setStartTimePicker] = useState(false);
+  const [startTime, setStartTime] = useState(new Date(Date.now()));
+  // End Date and Time
+  const [endDate, setEndDate] = useState(new Date());
+  const [endDatePicker, setEndDatePicker] = useState(false);
+  const [endTimePicker, setEndTimePicker] = useState(false);
+  const [endTime, setEndTime] = useState(new Date(Date.now()));
   const [eventScope, setEventScope] = useState('Public');
 
-  const creatorUsername = useSelector(state => state.currUser.username);
+  function showStartDatePicker() {
+    setStartDatePicker(true);
+  };
+
+  function showStartTimePicker() {
+    setStartTimePicker(true);
+  };
+
+  function showEndDatePicker() {
+    setEndDatePicker(true);
+  };
+
+  function showEndTimePicker() {
+    setEndTimePicker(true);
+  };
+
+  function onStartDateSelected(event, value) {
+    setStartDate(value);
+    setStartDatePicker(false);
+  };
+ 
+  function onStartTimeSelected(event, value) {
+    setStartTime(value);
+    setStartTimePicker(false);
+  };
+
+  function onEndDateSelected(event, value) {
+    setEndDate(value);
+    setEndDatePicker(false);
+  };
+ 
+  function onEndTimeSelected(event, value) {
+    setEndTime(value);
+    setEndTimePicker(false);
+  };
+
+  const checkInput = () => {
+    if (!eventName.trim()) {
+      alert('Please Enter Event Name');
+      return;
+    }
+    if (!Longitude.trim() || Longitude > 180 || Longitude < -180 || /[a-zA-Z]+/g.test(Longitude)) {
+      alert('Longitude Incorrect');
+      return;
+    }
+    if (!Latitude.trim() || Latitude > 90 || Latitude < -90 || /[a-zA-Z]+/g.test(Latitude)) {
+      alert('Latitude Incorrect');
+      return;
+    }
+    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), startTime.toString().substring(16, 21), endTime.toString().substring(16, 21), startDate.toString().substring(0, 15), endDate.toString().substring(0, 15), eventScope.toLowerCase()).
+    then(()=>navigation.goBack()).catch((err)=>console.log(err))
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -66,59 +126,106 @@ const EventCreationScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Event Location"
+          placeholder="Event Longitude"
           placeholderTextColor="#808080"
-          onChangeText={(eventLocation) => setEventLocation(eventLocation)}
+          onChangeText={(Longitude) => setLong(Longitude)}
         />
       </View>
 
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Start Time"
+          placeholder="Event Latitude"
           placeholderTextColor="#808080"
-          onChangeText={(startTime) => setStartTime(startTime)}
+          onChangeText={((Latitude) => setLat(Latitude))}
         />
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="End Time"
-          placeholderTextColor="#808080"
-          onChangeText={(endTime) => setEndTime(endTime)}
-        />
+      <View style={styles.MainContainer}>
+ 
+        <Text style={styles.text}>Start Date = {startDate.toDateString()}</Text>
+ 
+        <Text style={styles.text}>Start Time = {startTime.toLocaleTimeString('en-US')}</Text>
+ 
+        {startDatePicker && (
+          <DateTimePicker
+            value={startDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onStartDateSelected}
+            style={styles.datePicker}
+          />
+        )}
+ 
+        {startTimePicker && (
+          <DateTimePicker
+            value={startTime}
+            mode={'time'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={false}
+            onChange={onStartTimeSelected}
+            style={styles.datePicker}
+          />
+        )}
+ 
+        {!startDatePicker && (
+          <View style={{ margin: 10 }}>
+            <Button title="Pick Start Date" color="black" onPress={showStartDatePicker} />
+          </View>
+        )}
+ 
+        {!startTimePicker && (
+          <View style={{ marginBottom: 10 }}>
+            <Button title="Pick Start Time" color="black" onPress={showStartTimePicker} />
+          </View>
+        )}
+ 
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Start Date"
-          placeholderTextColor="#808080"
-          onChangeText={(startDate) => setStartDate(startDate)}
-        />
+      <View style={styles.MainContainer}>
+ 
+        <Text style={styles.text}>End Date = {endDate.toDateString()}</Text>
+
+        <Text style={styles.text}>End Time = {endTime.toLocaleTimeString('en-US')}</Text>
+
+        {endDatePicker && (
+          <DateTimePicker
+            value={endDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onEndDateSelected}
+            style={styles.datePicker}
+          />
+        )}
+
+        {endTimePicker && (
+          <DateTimePicker
+            value={endTime}
+            mode={'time'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={false}
+            onChange={onEndTimeSelected}
+            style={styles.datePicker}
+          />
+        )}
+
+        {!endDatePicker && (
+          <View style={{ margin: 10 }}>
+            <Button title="Pick End Date" color="black" onPress={showEndDatePicker} />
+          </View>
+        )}
+
+        {!endTimePicker && (
+          <View style={{ marginBottom: 10 }}>
+            <Button title="Pick End Time" color="black" onPress={showEndTimePicker} />
+          </View>
+        )}
+
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="End Date"
-          placeholderTextColor="#808080"
-          onChangeText={(endDate) => setEendDate(endDate)}
-        />
-      </View>
-
-      <TouchableOpacity onPress={()=>
-        createEvent({
-          eventName: eventName, 
-          username: creatorUsername,
-          tags: parseTags(eventTagString),
-          scope: eventScope.toLowerCase()
-        }).
-          then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
-        
-        style={styles.createBtn}>
-
+      <TouchableOpacity onPress={checkInput} style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
 
@@ -132,11 +239,11 @@ const EventCreationScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingBottom: '5%',
+    paddingTop: '5%'
+    //justifyContent: 'center',
   },
 
   inputView: {
@@ -211,6 +318,38 @@ const styles = StyleSheet.create({
   
   cancelText: {
     color: 'black',
+  },
+
+  inputBorder: {
+    width: '30%',
+    borderRadius: 8,
+    borderColor: '#cacaca',
+    borderWidth: 1,
+    marginBottom: -40,
+  },
+
+  MainContainer: {
+    flex: 0,
+    padding: 6,
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+ 
+  text: {
+    fontSize: 20,
+    color: 'black',
+    padding: 3,
+    marginBottom: 0,
+    textAlign: 'center'
+  },
+ 
+  // Style for iOS ONLY...
+  datePicker: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: 320,
+    height: 260,
+    display: 'flex',
   },
 
 });
