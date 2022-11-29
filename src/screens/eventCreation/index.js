@@ -12,6 +12,7 @@ import {
 import { withTheme } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { createEvent } from '../../services/events.service';
+import InviteButton from './invite-components/invite-button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const parseTags = (tagsString) => {
@@ -245,6 +246,10 @@ const EventCreationScreen = ({route,navigation}) => {
 
       </View>
 
+      <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
+        <InviteButton />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={checkInput} style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
@@ -346,6 +351,15 @@ const styles = StyleSheet.create({
     borderColor: '#cacaca',
     borderWidth: 1,
     marginBottom: -40,
+  },
+
+  inviteBtn: {
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginStart: '15%',
+    marginTop: "2%",
+    backgroundColor: '#ffffff',
   },
 
   MainContainer: {
