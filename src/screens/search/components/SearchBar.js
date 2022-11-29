@@ -21,7 +21,7 @@ const SearchBar = (props) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Event Search"
+          placeholder="Tag Search"
           value={props.searchPhrase}
           onChangeText={props.setSearchPhrase}
           onFocus={() => {
@@ -55,7 +55,7 @@ export default SearchBar;
 const styles = StyleSheet.create({
   container: {
     margin: 15,
-    justifyContent: "flex-start",
+    //justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
     width: "90%",

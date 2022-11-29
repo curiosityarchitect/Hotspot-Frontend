@@ -33,7 +33,12 @@ const parseTimeISO = (time) => {
   return time.toISOString().substring(11);
 }
 
-const EventCreationScreen = ({navigation}) => {
+const EventCreationScreen = ({route,navigation}) => {
+  const [invitees, setInvitees] = useState('');
+  if (route.params) {
+    setInvitees(route.params.invitees);
+    route.params = null;
+  }
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
   const [Longitude, setLong] = useState('');

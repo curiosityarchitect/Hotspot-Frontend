@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, Switch } from 'react-native'
 import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
+import CreateEventButton from '../eventCreation/create-event-button';
 import MapComponent from './mapComponent'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
 const homeStyles = StyleSheet.create({
@@ -15,13 +15,11 @@ const homeStyles = StyleSheet.create({
       justifyContent: 'flex-end',
       alignItems: 'center',
   },
-  buttonContainer: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    padding: 10,
-    marginTop: '7%',
-    marginRight: '7%',
-  },
+  buttonContainer:{
+      flex: 1,
+      marginStart: '83%',
+      marginTop: '20%',
+    },
   button: {
     width: '70%',
     borderRadius: 5,
@@ -54,14 +52,14 @@ function HomeScreen({navigation}) {
           onPress={toggleSwitch}
           style={homeStyles.button}
         >
-          <Icon name={"device-thermostat"}  size={20} color="#7a009d" />
+          <Icon name={"device-thermostat"}  size={20} color="#D2B48C" />
         </TouchableOpacity>
         
         <TouchableOpacity
           onPress={() => navigation.navigate("CreateEvent")}
           style={homeStyles.button}
         >
-          <Icon name={"add"}  size={20} color="#7a009d" />
+          <Icon name={"add"}  size={20} color="#D2B48C" />
         </TouchableOpacity>
       </View>
     </View>

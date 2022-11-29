@@ -13,6 +13,7 @@ export const initTaskManager = async () => {
         }
         
         if (eventType === GeofencingEventType.Enter) {
+            console.log("Report", region.identifier, store.getState().currUser._id);
             reportEventArrival(region.identifier, store.getState().currUser._id);
         } 
     });

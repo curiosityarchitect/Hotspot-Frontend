@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,24 +6,35 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 
 // definition of the Item, which will be rendered in the FlatList
-const Item = ({ name }) => (
+const Item = ({ description, id }) => (
+
   <View style={styles.item}>
-    <Text style={styles.title}>{name}</Text>
+    <TouchableOpacity>
+        <Text style={styles.title}>{description}</Text>
+        <Text style={styles.title}>{id}</Text>
+    </TouchableOpacity>
   </View>
 );
 
 // the filter
 const List = (props) => {
-  const renderItem = ({ item }) => {
+  
+  const renderItem = ({ item }) => {   
+
     // when no input, show all
+
     if (props.searchPhrase === "") {
-      return <Item name={item.username} />;
+      return (
+        <Item description={item.description} id={item.eventid} />
+      )
     }
     // filter of the name
-    if (item.username.toUpperCase().includes(props.searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item name={item.username} />;
+    if (item.description.toUpperCase().includes(props.searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
+      return <Item description={item.description} id={item.eventid} />;
     }
   };
 
@@ -37,7 +48,7 @@ const List = (props) => {
         <FlatList
           data={props.data}
           renderItem={renderItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
         />
       </View>
     </SafeAreaView>

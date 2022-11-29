@@ -23,7 +23,7 @@ export async function setNearbyEvents(userid, location, specific) {
             ...(location && {
                 longitude: location.coords.longitude,
                 latitude: location.coords.latitude,
-                distance: 800
+                distance: 6000
             }) 
         }
     })
@@ -74,7 +74,6 @@ export async function setAttendingEvents(userid) {
 }
 
 export async function reportEventArrival(eventid, userid) {
-    console.log("Report", eventid, userid);
     if (!userid || !eventid) {
         return;
     }
