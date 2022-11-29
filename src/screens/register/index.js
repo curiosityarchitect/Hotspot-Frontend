@@ -50,7 +50,7 @@ const RegisterScreen = ({navigation}) => {
       return;
     }
     createUser(username, email, password).then((response) => {
-      alert('Your account has been created');
+      dispatch(setUser(response.data));
       navigation.navigate("MainApp");
     }).catch((error) => {
       alert('User already exists');
