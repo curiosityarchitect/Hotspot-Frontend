@@ -9,10 +9,14 @@ import {
   Alert,
 } from 'react-native';
 import { getUser } from '../../services/users.service';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/actions/actions';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
 
   const checkInput = () => {
     if (!username.trim()) {
@@ -24,7 +28,7 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     getUser(username, password).then((response) => {
-      alert('You have successfully signed in');
+      dispatch(setUser(response.data));
       navigation.navigate("MainApp");
     }).catch((error) => {
       alert('User not found');
