@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     borderColor: '#808080',
     width: '90%',
     height: 45,
-    marginBottom: 20,
+    marginBottom: 10,
 
     alignItems: 'center',
   },
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -9,
+    marginTop: 10,
     backgroundColor: '#000000',
   },
 
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
 
   welcomeText: {
     marginTop: 100,
+    marginBottom: 10,
     height: 50,
     fontSize: 25,
     color: 'black',

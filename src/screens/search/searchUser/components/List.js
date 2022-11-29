@@ -37,7 +37,7 @@ const List = (props) => {
         <FlatList
           data={props.data}
           renderItem={renderItem}
-          keyExtractor={(item) => {console.log(item.id); return item.id}}
+          keyExtractor={(item) => item._id}
         />
       </View>
     </SafeAreaView>
