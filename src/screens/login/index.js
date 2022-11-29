@@ -31,7 +31,7 @@ const LoginScreen = ({navigation}) => {
       dispatch(setUser(response.data));
       navigation.navigate("MainApp");
     }).catch((error) => {
-      alert('User not found');
+      alert('Invalid Credentials');
       return;
     });
   };
