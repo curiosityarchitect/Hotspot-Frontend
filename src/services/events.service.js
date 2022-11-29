@@ -38,12 +38,11 @@ export async function createEvent(eventDetails) {
     return axios.post(`${backendUrl}/events`, 
     {
         name: eventDetails.name,
-        address: !eventDetails.address ? "" : eventDetails.address,
         description: !eventDetails.description ? "" : eventDetails.description,
-        longitude: !eventDetails.longitude ? 0 : eventDetails.longitude,
-        latitude: !eventDetails.latitude ? 0 : eventDetails.latitude,
+        longitude: !eventDetails.longitude ? 0 : parseInt(eventDetails.longitude),
+        latitude: !eventDetails.latitude ? 0 : parseInt(eventDetails.latitude),
         username: eventDetails.username,
-        numAttendees: 0,
+        numAttendees: 1,
         capacity: !eventDetails.capacity ? 0 : eventDetails.capacity,
         startDate: !eventDetails.startDate ? 0 : eventDetails.startDate,
         endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
@@ -51,7 +50,6 @@ export async function createEvent(eventDetails) {
         tags: eventDetails.tags,
         invitees: eventDetails.invitees,
         scope: eventDetails.scope
-
     },
     {
         method: 'POST',

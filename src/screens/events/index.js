@@ -13,6 +13,7 @@ import EventCard from './eventscreen-components/tab-components/eventcard';
 /* import { getEvents } from '../../services/events.service'; */
 import axios from 'axios';
 import { backendUrl } from '../../services/const';
+import {Icon} from 'react-native-elements';
 
 /* const events = [
   {
@@ -122,6 +123,10 @@ const EventScreen = ({navigation}) => {
 
   return(
     <View style={styles.container}>
+    
+      <TouchableOpacity onPress={()=>navigation.navigate("EventSearch")} style={styles.CreateButtonStyle}>
+          <Icon name={"search"}  size={30} color="#000000" />
+      </TouchableOpacity>
       {refreshing ? <ActivityIndicator color="#D2B48C" /> : (
         <FlatList
           data={events}
@@ -160,3 +165,4 @@ const EventScreen = ({navigation}) => {
 
 
 export default EventScreen
+

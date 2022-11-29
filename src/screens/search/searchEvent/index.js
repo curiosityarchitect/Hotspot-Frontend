@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import List from "./components/List";
 import SearchBar from "./components/SearchBar";
-import { backendUrl } from "../../services/const";
+import { backendUrl } from "../../../services/const";
 
 const EventSearchScreen = ({navigation}) => {
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -21,22 +21,19 @@ const EventSearchScreen = ({navigation}) => {
   }, []);
 
   const getData = () => {
-    axios.get(`${backendUrl}/events/tags/all`)
+    axios.get(`${backendUrl}/events`)
     .then((response) => {
       const allData = response.data;
       setFakeData(allData);
-      
     })
     .catch(error => console.error(`Error: ${error}`));
-    
-    
   }
 
   return (
     <SafeAreaView style={styles.root}>
       {!clicked}
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Group")} style={styles.backBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backBtn}>
         <Text style={styles.backText}>Back</Text>
       </TouchableOpacity>
 

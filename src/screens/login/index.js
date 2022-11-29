@@ -4,27 +4,36 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Button,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
+import { getUser } from '../../services/users.service';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/actions/actions';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
+
   const checkInput = () => {
-    if (!email.trim()) {
-      alert('Please Enter Email');
+    if (!username.trim()) {
+      alert('Please Enter Username');
       return;
     }
     if (!password.trim()) {
       alert('Please Enter Password');
       return;
     }
-    navigation.navigate("MainApp");
+    getUser(username, password).then((response) => {
+      dispatch(setUser(response.data));
+      navigation.navigate("MainApp");
+    }).catch((error) => {
+      alert('Invalid Credentials');
+      return;
+    });
   };
 
   return (
@@ -36,9 +45,9 @@ const LoginScreen = ({navigation}) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Enter your email"
+          placeholder="Enter your username"
           placeholderTextColor="#808080"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(username) => setUsername(username)}
         />
       </View>
 
@@ -51,10 +60,6 @@ const LoginScreen = ({navigation}) => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
-
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity onPress={checkInput} style={styles.loginBtn}>
         <Text style={styles.loginText}>Login</Text>
@@ -71,9 +76,7 @@ const LoginScreen = ({navigation}) => {
       <TouchableOpacity onPress={()=>navigation.navigate("Register")}>
         <Text style={styles.register_button}>Don't have an account? Register Now</Text>
       </TouchableOpacity>
-
-     
-
+      
     </View>
   );
 }
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     borderColor: '#808080',
     width: '90%',
     height: 45,
-    marginBottom: 20,
+    marginBottom: 10,
 
     alignItems: 'center',
   },
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -9,
+    marginTop: 10,
     backgroundColor: '#000000',
   },
 
@@ -147,6 +150,7 @@ const styles = StyleSheet.create({
 
   welcomeText: {
     marginTop: 100,
+    marginBottom: 10,
     height: 50,
     fontSize: 25,
     color: 'black',

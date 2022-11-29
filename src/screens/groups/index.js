@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {Icon} from 'react-native-elements';
 
 const GroupScreen = ({navigation}) => {
     return (
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
   },
 
   createText: {
