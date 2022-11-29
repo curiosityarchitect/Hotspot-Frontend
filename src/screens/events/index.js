@@ -1,20 +1,19 @@
-import React, {Component, useEffect, useState} from 'react';
+import React,{Component} from 'react';
 import {
   View,
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  RefreshControl,
-  ScrollView,
+  Text,
+  StatusBar,
   ActivityIndicator,
   Image,
 } from 'react-native';
-import EventCard from './eventscreen-components/tab-components/eventcard';
-/* import { getEvents } from '../../services/events.service'; */
-import axios from 'axios';
-import { backendUrl } from '../../services/const';
+import EventCard from './eventscreen-components/eventcard';
 
-/* const events = [
+
+//test data - collapse for clarity
+const events = [
   {
     uid: '1',
     name: "Architecture Appreciation Group",
@@ -76,7 +75,8 @@ import { backendUrl } from '../../services/const';
     cover: require('./event-temp-assets/mcway-falls-big-sur-ca.jpeg'),
   },
 ]
- */
+
+
 const styles = StyleSheet.create({
   container: {
     padding: 5,
@@ -88,79 +88,39 @@ const styles = StyleSheet.create({
     marginTop: 10,
   }
 });
-//mock cover
 
 const EventScreen = ({navigation}) => {
-  const [refreshing, setRefreshing] = useState(true);
-  const [events, setEvents] = useState([]);
-  const current_user = 'alexwu';
-  let tags = [];
-   useEffect(() => {
-      axios.get(`${backendUrl}/events`, 
-      {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-          }
-      }).then((response) => {
-        console.log(response)
-        setEvents(response.data);
-      })
-        .catch ((err) => {console.log(err)})
-        .finally(() => setRefreshing(false));
-  }, []); 
-  
- 
-
-  const wait = (timeout) => { 
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(1111).then(() => setRefreshing(false));
-  }, []);
-
   return(
     <View style={styles.container}>
-      {refreshing ? <ActivityIndicator color="#D2B48C" /> : (
-        <FlatList
-          data={events}
-          keyExtractor={(item) => item._id}
-          renderItem={({item}) => (
-            <TouchableOpacity onPress={() =>
-              axios.get(`${backendUrl}/events/${item._id}/tags`,
+        <FlatList 
+          data={events} 
+          renderItem={({item}) => {       
+            return(
+              <TouchableOpacity onPress={()=>navigation.navigate("EventDetails",
               {
-                method: 'GET',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json'
-                }
-              }).then((response) => {
-                console.log(response.data) // 
-                  tags = response.data;
-              }).catch ((err) => {console.log(err)})
-              .finally(() => {
-              console.log(item)
-              console.log(tags)
-              navigation.navigate('EventDetails', 
-              {
-                events: item, 
-                tags: tags, 
-              })
-            })
-            }>
-              <EventCard info = {item}/>
-            </TouchableOpacity>
-          )}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+                name: item.name, 
+                description: item.description, 
+                location: item.location,
+                creator: item.creator,
+                eventType: item.eventType,
+                capacity: item.capacity,
+                start: item.start,
+                expiration: item.expiration,
+                cover: item.cover,
+              })}>
+                <EventCard info ={item}/>
+              </TouchableOpacity>
+            )        
+          }}
+          keyExtractor={(events => events.uid)}
+          showsVerticalScrollIndicator ={false}
         />
-      )}
-      </View>
+   
+    </View>
 
-)}
+  )
+}
 
 
 export default EventScreen
+

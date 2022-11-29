@@ -1,4 +1,4 @@
-//card component for each event - for MyEvents tab
+
 import React from 'react';
 import {View, Text, StyleSheet,Dimensions,Image} from 'react-native';
 import EventLabels from './event-labels';
@@ -7,36 +7,27 @@ const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 
 const EventCard = (props) => {
-  const cover = require('./mcway-falls-big-sur-ca.jpeg')
+  //console.log(props);
   return (
     <View style={styles.container}>
         <Image 
           style={styles.imageStyle}
-          source = {cover}
+          source = {props.info.cover}
         /> 
         <View style={styles.eventInfoStyle}>
           <Text style={styles.eventNameStyle}>{props.info.name}</Text>
           <Text style={styles.descriptionStyle}>{(props.info.description).substring(0,44)+"..."}</Text>
           <View style={styles.IconWithLabel}>
-            <View style={styles.dasteLocSeperator}>
-              <EventLabels name='calendar-outline' desc={props.info.startDate.substring(0,10)} />
+            <View style={styles.dateLocSeperator}>
+              <EventLabels name='calendar-outline' desc={props.info.start} />
             </View>
-            <EventLabels name='location-outline' desc={props.info.address}/>
+            <EventLabels name='location-outline' desc={props.info.location.name}/>
           </View>
         </View>
 
     </View>
   ) 
 }
-Date.prototype.yyyymmdd = function() {
-  var mm = this.getMonth() + 1; 
-  var dd = this.getDate();
-
-  return [this.getFullYear(),
-          (mm>9 ? '' : '0') + mm,
-          (dd>9 ? '' : '0') + dd
-         ].join('');
-};
 
 const styles = StyleSheet.create({
   container: {

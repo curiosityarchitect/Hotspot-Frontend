@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-
-import { createEvent } from '../../services/events.service';
-import InviteButton from './invite-components/invite-button';
+import { withTheme } from 'react-native-elements';
 import { useSelector } from 'react-redux';
-
+import { createEvent } from '../../services/events.service';
 
 const parseTags = (tagsString) => {
   return tagsString.split("#")
@@ -21,33 +19,16 @@ const parseTags = (tagsString) => {
     .filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
-
-const parseInvitees = (invitees) => {
-  return invitees.split(",")
-    .map((invitee) => invitee.trim())
-    .filter((invitee) => invitee.length > 0)
-    .filter((invitee, index, self) => self.indexOf(invitee) === index);
-}
- 
-
-
-const EventCreationScreen = ({route,navigation}) => {
-  const [invitees, setInvitees] = useState('');
-  if (route.params) {
-    setInvitees(route.params.invitees);
-    console.log(invitees)
-    route.params = null;
-  }
+const EventCreationScreen = ({navigation}) => {
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
-  const [eventAddress, setEventAddress] = useState('');
-  const [eventDescription, setDescription] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEendDate] = useState('');
-  const [capacity, setCapacity] = useState('');
   const [eventScope, setEventScope] = useState('Public');
+
   const creatorUsername = useSelector(state => state.currUser.username);
 
   return (
@@ -87,19 +68,9 @@ const EventCreationScreen = ({route,navigation}) => {
           style={styles.TextInput}
           placeholder="Event Location"
           placeholderTextColor="#808080"
-          onChangeText={(eventAddress) => setEventAddress(eventAddress)}
+          onChangeText={(eventLocation) => setEventLocation(eventLocation)}
         />
       </View>
-
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Description"
-          placeholderTextColor="#808080"
-          onChangeText={(eventDescription) => setDescription(eventDescription)}
-        />
-      </View>
-
 
       <View style={styles.inputView}>
         <TextInput
@@ -137,38 +108,19 @@ const EventCreationScreen = ({route,navigation}) => {
         />
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Capacity"
-          placeholderTextColor="#808080"
-          onChangeText={(capacity) => setCapacity(capacity)}
-        />
-      </View>
-      
-      <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
-        <InviteButton />
-      </TouchableOpacity>
       <TouchableOpacity onPress={()=>
         createEvent({
-          name: eventName, 
-          description: eventDescription,
-          address: eventAddress,
-          startTime: startTime,
-          endTime: endTime,
-          startDate: startDate,
-          endDate: endDate,
-          capacity: capacity,
+          eventName: eventName, 
           username: creatorUsername,
           tags: parseTags(eventTagString),
-          invitees: parseInvitees(invitees),
           scope: eventScope.toLowerCase()
         }).
           then(()=>navigation.goBack()).catch((err)=>console.log(err))} 
+        
         style={styles.createBtn}>
+
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
-      
 
       <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.cancelBtn}>
         <Text style={styles.cancelText}>Cancel</Text>
@@ -216,15 +168,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-  inviteBtn: {
-  
-    height: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginStart: '15%',
-    marginTop: "2%",
-    backgroundColor: '#ffffff',
-  },
+
   createBtn: {
     width: '90%',
     borderRadius: 10,

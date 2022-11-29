@@ -49,9 +49,7 @@ export async function createEvent(eventDetails) {
         endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
         cover: !eventDetails.cover ? "" : eventDetails.cover,
         tags: eventDetails.tags,
-        invitees: eventDetails.invitees,
         scope: eventDetails.scope
-
     },
     {
         method: 'POST',
@@ -81,18 +79,6 @@ export async function setAttendingEvents(userid) {
     return response.data;
 }
 
-
-export async function findEventById(id) {
-    return axios.get(`${backendUrl}/events/${id}`,
-    {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-}
-
 export async function reportEventArrival(eventid, userid) {
     if (!userid || !eventid) {
         return;
@@ -109,17 +95,4 @@ export async function reportEventArrival(eventid, userid) {
             'Content-Type': 'application/json'
         }
     });
-}
-
-
-export async function tagID(id) {
-    return axios.get(`${backendUrl}/events/${id}/tags`,
-    {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
-    });
-
 }

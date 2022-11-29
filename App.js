@@ -11,17 +11,10 @@ import WelcomeScreen from './src/screens/welcome';
 import RegisterScreen from './src/screens/register'
 import EventCreationScreen from './src/screens/eventCreation';
 import UserSearchScreen from './src/screens/search';
-import EventDetailsPage from './src/screens/events/eventscreen-components/event-details/eventdetails';
+import EventDetailsPage from './src/screens/events/eventscreen-components/eventdetails';
 import RsvpConfirmation from './src/screens/events/eventscreen-components/event-rsvp/rsvp-confirmation';
 import EventScreen from './src/screens/events';
-import FriendRequestView from './src/screens/social/freind-request-view';
-import NotificationView from './src/screens/social/notification-view';
-import InvitePage from './src/screens/eventCreation/invite-components/invite-page';
-import ProfileScreen from './src/screens/profile';
-import SettingsScreen from './src/screens/profile/profile-components/settings';
-import TagDetailsScreen from './src/screens/events/tags/tagdetails';
-import EventSearchScreen from './src/screens/search';
-import FriendList from './src/screens/social/friend-list';
+
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -41,14 +34,6 @@ const App = () => {
         <Stack.Screen name="MyEvents" component={EventScreen}/>
         <Stack.Screen name="EventDetails" component={EventDetailsPage}/>
         <Stack.Screen name="RsvpScreen" component={RsvpConfirmation}/>
-        <Stack.Screen name="FriendRequests" component={FriendRequestView}/>
-        <Stack.Screen name="Notifications" component={NotificationView}/>
-        <Stack.Screen name="InvitePage" component={InvitePage}/>
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
-        <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
-        <Stack.Screen name ='EventSearch' component={EventSearchScreen}/>
-        <Stack.Screen name ='FriendList' component={FriendList}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

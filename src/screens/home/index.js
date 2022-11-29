@@ -1,57 +1,36 @@
-import { View, Text, StyleSheet, Pressable, TouchableOpacity, Switch } from 'react-native'
-import { ironbowPalette, startPoints } from './home.styles';
-import MapView, { Heatmap, Marker } from 'react-native-maps';
+import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
 import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { regularMapStyle, heatMapStyle } from './home.styles';
-import { setNearbyEvents } from '../../services/events.service';
-import * as mapSettings from './map-settings';
-import CreateEventButton from '../eventCreation/create-event-button';
 import MapComponent from './mapComponent'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
-
 
 const homeStyles = StyleSheet.create({
   container: {
       position: 'absolute',
-      flex: 1,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
+      justifyContent: 'flex-end',
       alignItems: 'center',
   },
-  map: {
-      position: 'absolute',
-      flex: 1,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-  },
-  heatMapSwitch: {
+  buttonContainer: {
     alignSelf: 'flex-end',
     position: 'absolute',
-    marginTop: '10%',
-    marginRight: '2%',
+    padding: 10,
+    marginTop: '7%',
+    marginRight: '7%',
   },
-
-  buttonContainer:{
-      flex: 1,
-      position: 'flex-end', 
-      marginStart: '83%',
-      marginTop: '20%',
-    },
-    button: {
-      width: '70%',
-      borderRadius: 5,
-      height: 50,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: 5,
-      backgroundColor: '#ffffff',
-    }
-  
+  button: {
+    width: '70%',
+    borderRadius: 5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    backgroundColor: '#ffffff',
+  }
 });
 
 function HomeScreen({navigation}) {
@@ -89,5 +68,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-  
 export default connect(mapStateToProps)(HomeScreen);
