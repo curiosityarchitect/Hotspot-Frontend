@@ -12,10 +12,10 @@ import axios from 'axios';
 
 const deviceWidth = Dimensions.get('window').width;
 
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: '10%'
     },
     userInfoStyle: {
       paddingStart: 20,
