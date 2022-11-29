@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
       fontWeight: '500',
     },
     NotificationButtonStyle: {
-      alignItems: 'flex-end',
       marginStart: deviceWidth*0.11,
     },
     locationStyle: {
@@ -126,8 +125,8 @@ const FriendView = ({navigation}) => {
     }
     id++;
   }
-  console.log(friends)
-///
+  //console.log(friends)
+
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.userInfoStyle}>

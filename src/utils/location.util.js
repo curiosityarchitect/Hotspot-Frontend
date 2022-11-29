@@ -21,7 +21,6 @@ export const beginTracking = async () => {
             accuracy: Location.Accuracy.BestForNavigation,
         },
         location => {
-            // console.log(location)
             const oldLocation = store.getState().location;
             // only send request if user location has changed by a significant amount
             if (oldLocation && 

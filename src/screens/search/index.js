@@ -24,7 +24,6 @@ const EventSearchScreen = ({navigation}) => {
     axios.get(`${backendUrl}/events/tags/all`)
     .then((response) => {
       const allData = response.data;
-      console.log(allData)
       setFakeData(allData);
       
     })

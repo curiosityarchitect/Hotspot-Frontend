@@ -35,7 +35,6 @@ const EventCreationScreen = ({route,navigation}) => {
   const [invitees, setInvitees] = useState('');
   if (route.params) {
     setInvitees(route.params.invitees);
-    console.log(invitees)
     route.params = null;
   }
   const [eventName, setEventName] = useState('');
