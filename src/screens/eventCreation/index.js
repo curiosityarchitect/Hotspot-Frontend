@@ -164,13 +164,13 @@ const EventCreationScreen = ({navigation}) => {
         )}
  
         {!startDatePicker && (
-          <View style={{ margin: 0 }}>
+          <View style={{ margin: 10 }}>
             <Button title="Pick Start Date" color="black" onPress={showStartDatePicker} />
           </View>
         )}
  
         {!startTimePicker && (
-          <View style={{ margin: 0 }}>
+          <View style={{ marginBottom: 10 }}>
             <Button title="Pick Start Time" color="black" onPress={showStartTimePicker} />
           </View>
         )}
@@ -206,13 +206,13 @@ const EventCreationScreen = ({navigation}) => {
         )}
 
         {!endDatePicker && (
-          <View style={{ margin: 0 }}>
+          <View style={{ margin: 10 }}>
             <Button title="Pick End Date" color="black" onPress={showEndDatePicker} />
           </View>
         )}
 
         {!endTimePicker && (
-          <View style={{ margin: 0 }}>
+          <View style={{ marginBottom: 10 }}>
             <Button title="Pick End Time" color="black" onPress={showEndTimePicker} />
           </View>
         )}
@@ -233,11 +233,11 @@ const EventCreationScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingBottom: '5%',
+    paddingTop: '5%'
+    //justifyContent: 'center',
   },
 
   inputView: {
