@@ -3,12 +3,13 @@ import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 
 import FriendCard  from './friend-request-card';
 import NotificationHeader from './social-components/notification-header';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
 import NotificationCard from './notification-card';
 
 const NotificationView = ({navigation}) => {
-    const username = 'alexwu';
+    const username = useSelector(state => state.currUser.username);
     const [isLoading, setIsLoading] = useState(true)
     const [notifications, setNotifications] = useState([])
 
