@@ -13,10 +13,14 @@ const updateGeofencing = async () => {
 
     // only change geofencing areas if necessary
     if (JSON.stringify(events) !== JSON.stringify(store.getState().attendingEvents)) {
+        const currTime = new Date();
 
         const regions = events
-            // for sake of testing, set to 7 days
-            .filter((event) => Math.abs(new Date(event.startDate) - new Date()) < 60 * 60 * 1000 * 24 * 7)
+            // Triggers an alert if user arrives within 6 hours before or during the event. 
+            .filter((event) => {
+                return ( currTime <= new Date(event.endDate) ) &&
+                ( (new Date(event.startDate) - currTime) < 60 * 60 * 1000 * 6 )
+            })
             .map((event) => ({
                 identifier: event._id, 
                 longitude: event.location.coordinates[0],
@@ -25,8 +29,11 @@ const updateGeofencing = async () => {
                 notifyOnExit: false,
                 radius: 100
             }));
-            
-        Location.startGeofencingAsync(GEOFENCING_TASK, regions);
+        
+        if (regions.length > 0) {
+            Location.startGeofencingAsync(GEOFENCING_TASK, regions);
+        } 
+
         store.dispatch(updateAttendingEvents(events));
     }
 }
