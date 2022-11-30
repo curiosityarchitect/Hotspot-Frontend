@@ -19,9 +19,9 @@ const mapStyles = StyleSheet.create({
 });
 
 const createEventMarkers = (events) => (
-  events.map((event, index) => {
+  events.map((event) => {
     return <Marker
-      key = {index}
+      key = {event._id}
       coordinate = {{
           longitude: event.location.coordinates[0],
           latitude: event.location.coordinates[1]
@@ -38,9 +38,9 @@ const createFriendMarkers = (friends) => (
     friend.location.coordinates && 
     friend.location.coordinates.length > 0)
     
-  .map((friend, index) => {
+  .map((friend) => {
     return <Marker
-      key = {index}
+      key = {friend._id}
       coordinate = {{
           longitude: friend.location.coordinates[0],
           latitude: friend.location.coordinates[1]
