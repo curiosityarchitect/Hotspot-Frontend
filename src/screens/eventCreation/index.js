@@ -44,7 +44,7 @@ const EventCreationScreen = ({route,navigation}) => {
   const [eventTagString, setEventString] = useState('');
   const [Longitude, setLong] = useState('');
   const [Latitude, setLat] = useState('');
-  // Start Date and Time
+ // Start Date and Time
   const [startDate, setStartDate] = useState(new Date());
   const [startDatePicker, setStartDatePicker] = useState(false);
   const [startTimePicker, setStartTimePicker] = useState(false);
@@ -54,7 +54,10 @@ const EventCreationScreen = ({route,navigation}) => {
   const [endDatePicker, setEndDatePicker] = useState(false);
   const [endTimePicker, setEndTimePicker] = useState(false);
   const [endTime, setEndTime] = useState(new Date(Date.now()));
+  const [capacity, setCapacity] = useState('');
+
   const [eventScope, setEventScope] = useState('Public');
+  const creatorUsername = useSelector(state => state.currUser.username);
 
   function showStartDatePicker() {
     setStartDatePicker(true);
@@ -73,27 +76,20 @@ const EventCreationScreen = ({route,navigation}) => {
   };
 
   function onStartDateSelected(event, value) {
-    setStartDate(value);
-    setStartDatePicker(false);
-  };
- 
-  function onStartTimeSelected(event, value) {
     setStartTime(value);
     setStartTimePicker(false);
+    setStartDate(value);
+    setStartDatePicker(false);
   };
 
   function onEndDateSelected(event, value) {
     setEndDate(value);
     setEndDatePicker(false);
-  };
- 
-  function onEndTimeSelected(event, value) {
     setEndTime(value);
     setEndTimePicker(false);
   };
-
   const checkInput = () => {
-    if (!eventName.trim()) {
+   if (!eventName.trim()) {
       alert('Please Enter Event Name');
       return;
     }
@@ -144,6 +140,16 @@ const EventCreationScreen = ({route,navigation}) => {
         />
       </View>
 
+
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Description"
+          placeholderTextColor="#808080"
+          onChangeText={(eventDescription) => setDescription(eventDescription)}
+        />
+      </View>
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -162,12 +168,20 @@ const EventCreationScreen = ({route,navigation}) => {
         />
       </View>
 
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Capacity"
+          placeholderTextColor="#808080"
+          onChangeText={(capacity) => setCapacity(capacity)}
+        />
+      </View>
       <View style={styles.MainContainer}>
  
         <Text style={styles.text}>Start Date = {startDate.toDateString()}</Text>
- 
+        
         <Text style={styles.text}>Start Time = {startTime.toLocaleTimeString('en-US')}</Text>
- 
+
         {startDatePicker && (
           <DateTimePicker
             value={startDate}
@@ -178,30 +192,31 @@ const EventCreationScreen = ({route,navigation}) => {
             style={styles.datePicker}
           />
         )}
- 
+
         {startTimePicker && (
           <DateTimePicker
             value={startTime}
             mode={'time'}
             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             is24Hour={false}
-            onChange={onStartTimeSelected}
+            onChange={onStartDateSelected}
             style={styles.datePicker}
           />
         )}
- 
+
         {!startDatePicker && (
           <View style={{ margin: 10 }}>
             <Button title="Pick Start Date" color="black" onPress={showStartDatePicker} />
           </View>
         )}
- 
+
         {!startTimePicker && (
           <View style={{ marginBottom: 10 }}>
             <Button title="Pick Start Time" color="black" onPress={showStartTimePicker} />
           </View>
         )}
- 
+
+
       </View>
 
       <View style={styles.MainContainer}>

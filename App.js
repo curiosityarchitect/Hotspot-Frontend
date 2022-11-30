@@ -10,7 +10,12 @@ import LoginScreen from './src/screens/login';
 import WelcomeScreen from './src/screens/welcome';
 import RegisterScreen from './src/screens/register'
 import EventCreationScreen from './src/screens/eventCreation';
+<<<<<<< HEAD
 import UserSearchScreen from './src/screens/search';
+=======
+import UserSearchScreen from './src/screens/search/searchUser';
+import EventSearchScreen from './src/screens/search/searchEvent';
+>>>>>>> main
 import EventDetailsPage from './src/screens/events/eventscreen-components/event-details/eventdetails';
 import RsvpConfirmation from './src/screens/events/eventscreen-components/event-rsvp/rsvp-confirmation';
 import EventScreen from './src/screens/events';
@@ -20,7 +25,6 @@ import InvitePage from './src/screens/eventCreation/invite-components/invite-pag
 import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/profile/profile-components/settings';
 import TagDetailsScreen from './src/screens/events/tags/tagdetails';
-import EventSearchScreen from './src/screens/search';
 import FriendList from './src/screens/social/friend-list';
 
 
@@ -48,7 +52,6 @@ const App = () => {
         <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
         <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
         <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
-        <Stack.Screen name ='EventSearch' component={EventSearchScreen}/>
         <Stack.Screen name ='FriendList' component={FriendList}/>
       </Stack.Navigator>
       </NavigationContainer>

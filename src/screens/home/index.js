@@ -20,7 +20,7 @@ const homeStyles = StyleSheet.create({
       marginStart: '83%',
       marginTop: '20%',
     },
-  button: {
+  androidButton: {
     width: '70%',
     borderRadius: 5,
     height: 50,
@@ -28,6 +28,17 @@ const homeStyles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     backgroundColor: '#ffffff',
+  },
+  iosButton: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom: 10,
+    width:50,
+    height:50,
+    backgroundColor:'#fff',
+    borderRadius:20,
   }
 });
 
@@ -43,21 +54,21 @@ function HomeScreen({navigation}) {
       <View style={homeStyles.buttonContainer}>
         <TouchableOpacity 
           onPress={()=>navigation.navigate("UserSearch")} 
-          style={homeStyles.button}
+          style={homeStyles.iosButton}
         >
-          <Icon name={"search"}  size={20} color="#7a009d" />
+          <Icon name={"search"}  size={20} color="#D2B48C" />
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={toggleSwitch}
-          style={homeStyles.button}
+          style={homeStyles.iosButton}
         >
           <Icon name={"device-thermostat"}  size={20} color="#D2B48C" />
         </TouchableOpacity>
         
         <TouchableOpacity
           onPress={() => navigation.navigate("CreateEvent")}
-          style={homeStyles.button}
+          style={homeStyles.iosButton}
         >
           <Icon name={"add"}  size={20} color="#D2B48C" />
         </TouchableOpacity>
