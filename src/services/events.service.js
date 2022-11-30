@@ -3,7 +3,10 @@ import { store } from "../redux/store/store";
 import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
-export async function setNearbyEvents(userid, location, specific) {
+export async function setNearbyEvents(specific) {
+    const userid = store.getState().currUser._id;
+    const location = store.getState().userLocation;
+
     axios.get(`${backendUrl}/events`, 
     {
         method: 'GET',
