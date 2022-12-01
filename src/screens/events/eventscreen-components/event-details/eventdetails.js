@@ -4,11 +4,13 @@ import EventLabels from '../tab-components/event-labels';
 import RsvpButton from '../event-rsvp/rsvp-button';
 import axios from 'axios';
 import { backendUrl } from '../../../../services/const';
+import { useSelector } from 'react-redux';
+import currUserReducer from '../../../../redux/reducers/currUser.reducer';
 
 
 
 const EventDetailsPage = ({route,navigation}) => {
-  
+  const userid = useSelector(state => state.currUser.userid);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
@@ -53,7 +55,7 @@ const EventDetailsPage = ({route,navigation}) => {
           'Content-Type': 'application/json'
         } 
       }).then((response) => {
-        if(response.data.length == 0){
+        if(response.data.filter((attendee) => attendee._id === userid).length == 0){
           setDisabled(false)
         }
         else{
@@ -134,7 +136,7 @@ const EventDetailsPage = ({route,navigation}) => {
           }}>
               <RsvpButton/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>navigation.navigate("My Events")} style={styles.backButton}>
+            <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
             </TouchableOpacity>
           </View>

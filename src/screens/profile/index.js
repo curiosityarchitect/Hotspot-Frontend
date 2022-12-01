@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
   
 const ProfileScreen = ({navigation}) => {
-  const username = 'alexwu';
+  const username = 'wangedge';
   const [profile, setProfile ] = useState([])
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
