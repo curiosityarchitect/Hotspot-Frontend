@@ -22,6 +22,7 @@ import ProfileScreen from './src/screens/profile';
 import SettingsScreen from './src/screens/profile/profile-components/settings';
 import TagDetailsScreen from './src/screens/events/tags/tagdetails';
 import FriendList from './src/screens/social/friend-list';
+import ProfileTagDetailsScreen from './src/screens/profile/profile-components/profileTagDetails';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -49,6 +50,7 @@ const App = () => {
         <Stack.Screen name="SettingsScreen" component={SettingsScreen}/>
         <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
         <Stack.Screen name ='FriendList' component={FriendList}/>
+        <Stack.Screen name ='ProfileTagDetails' component={ProfileTagDetailsScreen}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

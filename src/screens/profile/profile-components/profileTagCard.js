@@ -1,37 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements';
-import axios  from 'axios';
-import {backendUrl} from '../../services/const';
 import {useSelector} from 'react-redux';
-import UnaddButton from './social-components/undadd-button';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 
 
-const FriendCard = ({info}) => {
+const PTCard = ({info}) => {
   const username = useSelector(state => state.currUser.username);
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>
-            <Text style={styles.usernameStyle}>{info.friend}</Text>
+            <Text style={styles.usernameStyle}>{info.username}</Text>
             <View style={styles.choiceIcons}>
-                <TouchableOpacity onPress={()=>{
-                      axios.delete(`${backendUrl}/friends/unadd`,
-                      {
-                          method: 'DELETE',
-                          headers: {
-                              Accept: 'application/json',
-                              'Content-Type': 'application/json'
-                          },
-                          data: {
-                            username: username,
-                            toDelete: info.friend
-                          }
-                      })
-                  }}>
-                  <UnaddButton username={username} friend={info.friend}/>
-                </TouchableOpacity>
-
 
             </View>
         </View>
@@ -42,7 +22,7 @@ const FriendCard = ({info}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: DeviceWidth - 20,
+    width: DeviceWidth/1.1,
     height: 50,
     marginTop: 10,
     backgroundColor: '#f8f8ff', 
@@ -81,4 +61,4 @@ const styles = StyleSheet.create({
 
 })
   
-export default FriendCard;
+export default PTCard;

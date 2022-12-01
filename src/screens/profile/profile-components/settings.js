@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
+import {useSelector} from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -10,13 +11,28 @@ import {
 } from 'react-native';
 import { updateProfile } from '../../../services/profile.service';
 
+ 
+
 const SettingsScreen = ({navigation}) => {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [displayLocation, setDisplayLocation] = useState('');
   const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
-  const username = 'alexwu' //change once login user store done
+  const username = useSelector(state => state.currUser.username);
+
+  const validate = () => {
+    if (newusername === '') {
+      updateProfile(displayName, phoneNumber, displayLocation, username, username,profTags)
+      
+    }
+    else{
+       updateProfile(displayName, phoneNumber, displayLocation, username, newusername,profTags)
+
+    }
+    navigation.navigate("Profile");
+  }
+
   return (
     <View style={styles.container}>
 
@@ -69,10 +85,8 @@ const SettingsScreen = ({navigation}) => {
         />
       </View>
 
-      <TouchableOpacity onPress={()=> 
-        updateProfile(displayName, phoneNumber, displayLocation, username, newusername,profTags). //{username:username} future addition when we handle user saved state
-        then(()=>navigation.navigate("Profile")).catch((err)=>console.log(err))} 
-        style={styles.createBtn}>
+      <TouchableOpacity onPress={validate}
+       style={styles.createBtn}>
         <Text style={styles.createText}>Apply</Text>
       </TouchableOpacity>
 

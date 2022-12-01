@@ -6,13 +6,14 @@ import { sendRequest, getRequests, acceptRequest, rejectRequest, isFriends } fro
 import axios from 'axios';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
+import {useSelector} from 'react-redux';
 
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
  
 
 const FriendRequestView = ({route,navigation}) => {
-    const username = 'alexwu'; //MAIN FUNCTIONALITY - Change here to change user (until login  stores)
+    const username = useSelector(state => state.currUser.username);
     const [isLoading, setIsLoading] = useState(true)
     const [friendrequests, setFriendRequests] = useState([])
    // let friendrequests = [];

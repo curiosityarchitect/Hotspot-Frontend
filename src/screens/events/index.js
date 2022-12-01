@@ -13,6 +13,7 @@ import EventCard from './eventscreen-components/tab-components/eventcard';
 /* import { getEvents } from '../../services/events.service'; */
 import axios from 'axios';
 import { backendUrl } from '../../services/const';
+import { useSelector } from 'react-redux';
 import {Icon} from 'react-native-elements';
 
 /* const events = [
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 5,
     flex: 1,
+    marginTop: '5%',
     alignItems: 'center',
     backgroundColor: '#faf0e6',
   },
@@ -94,10 +96,10 @@ const styles = StyleSheet.create({
 const EventScreen = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState([]);
-  const current_user = 'alexwu';
+  const user_id = useSelector(state => state.currUser._id);
   let tags = [];
    useEffect(() => {
-      axios.get(`${backendUrl}/events`, 
+      axios.get(`${backendUrl}/events?userid=${user_id}&specific=true`, 
       {
           method: 'GET',
           headers: {
@@ -131,6 +133,7 @@ const EventScreen = ({navigation}) => {
         <FlatList
           data={events}
           keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() =>
               axios.get(`${backendUrl}/events/${item._id}/tags`,

@@ -6,9 +6,10 @@ import axios from 'axios';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
 import NotificationCard from './notification-card';
+import {useSelector} from 'react-redux';
 
 const NotificationView = ({navigation}) => {
-    const username = 'alexwu';
+    const username = useSelector(state => state.currUser.username);
     const [isLoading, setIsLoading] = useState(true)
     const [notifications, setNotifications] = useState([])
 
@@ -54,21 +55,18 @@ const NotificationView = ({navigation}) => {
             />  
             
           <TouchableOpacity onPress={()=> {navigation.navigate("Profile") 
-          axios.delete(`${backendUrl}/notifications`,
-            {
-                method: 'DELETE',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then((response) => {
-              //  console.log(response)
-            }
-            ).catch((error) => {
-                console.log(error);
-            }
-            )
-           } } style={styles.backButton}>
+         axios.delete(`${backendUrl}/notifications/${username}`,
+          {
+              method: 'DELETE',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          }).then((response) => {
+              console.log("deleted")
+          }).catch((error) => {
+              console.log(error);
+          })}} style={styles.backButton}>
               <Text style={styles.loginText}>clear</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>

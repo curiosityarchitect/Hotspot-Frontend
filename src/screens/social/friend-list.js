@@ -4,12 +4,13 @@ import FriendCard  from './friend-card';
 import FriendHeader from './social-components/friend-header';
 import FriendReqButton from './social-components/friend-req-button';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
 
 
 const FriendList = ({route,navigation}) => {
-    const username = 'alexwu';
+    const username = useSelector(state => state.currUser.username);
     const friends = route.params.friends;
 
     return(

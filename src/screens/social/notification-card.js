@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
+
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const appEmail = 'hotspot.notification@gmail.com'
 
 const NotificationCard = ({info}) => {
-  const username = 'alexwu'
+  const username = useSelector(state => state.currUser.username);
   return (
     <View style={styles.container}>
         <View style={styles.infoStyle}>

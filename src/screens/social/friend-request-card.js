@@ -3,13 +3,13 @@ import {View, Text, StyleSheet,Dimensions,Image,TouchableOpacity} from 'react-na
 import {Icon} from 'react-native-elements';
 import axios  from 'axios';
 import {backendUrl} from '../../services/const';
-import * as MailComposer from 'expo-mail-composer';
+import {useSelector} from 'react-redux';
 const DeviceWidth = Math.round(Dimensions.get('window').width);
 const radius = 20;
 const appEmail = 'hotspot.notification@gmail.com'
 
 const FriendReqCard = ({info}) => {
-  const username = 'alexwu' //change here to change user - pass in user through saved state
+  const username = useSelector(state => state.currUser.username);
   const [email, setEmail] = useState('')
   return (
     <View style={styles.container}>
