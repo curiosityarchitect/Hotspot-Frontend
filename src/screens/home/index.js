@@ -78,10 +78,4 @@ function HomeScreen({navigation}) {
   
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    location: state.location
-  };
-};
-
-export default connect(mapStateToProps)(HomeScreen);
+export default HomeScreen;

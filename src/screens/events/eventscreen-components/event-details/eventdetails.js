@@ -10,32 +10,64 @@ import { backendUrl } from '../../../../services/const';
 const EventDetailsPage = ({route,navigation}) => {
   
   const [refreshing, setRefreshing] = useState(false);
- // const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
-  //const [current_capacity, increment_capacity] = useState(0);
   const current_user = 'alexwu';
-  const {events,tags} = route.params;
+  const {eventid} = route.params;
+  const [event, setEvent] = useState(null);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    axios.get(`${backendUrl}/events/${events._id}/attendees`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      } 
-    }).then((response) => {
-      if(response.data.length == 0){
-        setDisabled(false)
-      }
-      else{
-        setDisabled(true)
-      }
-    }).catch ((err) => {
-      console.log(err)
-    })
-  },[])
+    Promise.all([
+      axios.get(`${backendUrl}/events/${eventid}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        } 
+      }).then((response) => {
+        setEvent(response.data);
+      }).catch ((err) => {
+        console.log(err)
+      }),
+      
+      axios.get(`${backendUrl}/events/${eventid}/tags`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        } 
+      }).then((response) => {
+        setTags(response.data);
+      }).catch ((err) => {
+        console.log(err)
+      }),
 
+      axios.get(`${backendUrl}/events/${eventid}/attendees`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        } 
+      }).then((response) => {
+        if(response.data.length == 0){
+          setDisabled(false)
+        }
+        else{
+          setDisabled(true)
+        }
+      }).catch ((err) => {
+        console.log(err)
+      })
+    ]).then(() => setLoading(false));
+  },[]);
+
+  if (loading) {
+    return <ActivityIndicator color="#D2B48C" />
+  }
 
   return (
     <View style={styles.container}>
@@ -46,28 +78,28 @@ const EventDetailsPage = ({route,navigation}) => {
           source={require('./mcway-falls-big-sur-ca.jpeg')}
         />
         <View style={styles.headerContent}>
-          <Text style={styles.nameStyle}>{events.name}</Text>
+          <Text style={styles.nameStyle}>{event.name}</Text>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionStyle}>{events.description}</Text>
+            <Text style={styles.descriptionStyle}>{event.description}</Text>
           </View>
           <View style={styles.eventIdentificationContainer}>
             <EventLabels name='location-outline' />
-            <Text style={styles.locationTextStyle}>{events.address}</Text>
+            <Text style={styles.locationTextStyle}>{event.address}</Text>
             <EventLabels  name='person-circle-outline' />
-            <Text style={styles.creatorTextStyle}>{events.creator.username}</Text>
+            <Text style={styles.creatorTextStyle}>{event.creator.username}</Text>
           </View>
           <View style={styles.timeContainer}>
             <Text style={styles.timeTextStyle}>start:</Text>
-            <EventLabels name='calendar-outline' desc={events.startDate.substring(0,10)} />
+            <EventLabels name='calendar-outline' desc={event.startDate.substring(0,10)} />
             <Text style={styles.timeTextStyle}>end:</Text>
-            <EventLabels name='calendar-outline' desc={events.endDate.substring(0,10)} />
+            <EventLabels name='calendar-outline' desc={event.endDate.substring(0,10)} />
           </View>
           <View style={styles.tagContainer}>
             <FlatList
               data={tags}
               keyExtractor={(item) => item._id}
               renderItem={({item}) => (
-              <TouchableOpacity onPress={()=>navigation.navigate("TagDetails",{item:item,events:events})}>
+              <TouchableOpacity onPress={()=>navigation.navigate("TagDetails",{item:item,event:event})}>
                  <EventLabels name='pricetag' desc={item.description} />
               </TouchableOpacity>  
               )}
@@ -75,11 +107,11 @@ const EventDetailsPage = ({route,navigation}) => {
           </View>
           <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + events.numAttendees + '/' + events.capacity}</Text>
+          <Text style={styles.capacityTextStyle}>{'attending: ' + event.numAttendees + '/' + event.capacity}</Text>
         </View>
         <View style={styles.rsvpContainer}>
           <TouchableOpacity disabled = {disabled} onPress={()=> {
-            axios.post(`${backendUrl}/events/${events._id}/attendees`, 
+            axios.post(`${backendUrl}/events/${event._id}/attendees`, 
             {
                 username: current_user,
                 numAttendees: events.numAttendees
@@ -96,7 +128,7 @@ const EventDetailsPage = ({route,navigation}) => {
             .catch((err) => {console.log(err)});            
             navigation.navigate("RsvpScreen",
             {
-              events: events,
+              events: event,
           
             })
           }}>

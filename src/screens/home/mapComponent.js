@@ -7,6 +7,7 @@ import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 import * as mapSettings from './map-settings';
 import setFriendLocations from '../../services/friends.locations.service';
+import { useNavigation } from '@react-navigation/native';
 
 const mapStyles = StyleSheet.create({
   map: {
@@ -18,7 +19,7 @@ const mapStyles = StyleSheet.create({
   }
 });
 
-const createEventMarkers = (events) => (
+const createEventMarkers = (navigation, events) => (
   events.map((event) => {
     return <Marker
       key = {event._id}
@@ -26,6 +27,7 @@ const createEventMarkers = (events) => (
           longitude: event.location.coordinates[0],
           latitude: event.location.coordinates[1]
       }}
+      onPress={() => navigation.navigate("EventDetails", {eventid: event._id})}
       pinColor = {eventPinColor}
       title = { event.name }
     />
@@ -73,15 +75,15 @@ const createHeatMap = (events) => {
 };
 
 function MapComponent({heatMapOn}) {
+  const navigation = useNavigation();
   const location = useSelector(state => state.userLocation);
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
   const friendLocations = useSelector(state => state.friendLocations);
-  const userid = useSelector(state => state.currUser._id);
 
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
-  const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
+  const eventMarkers = useMemo(() => createEventMarkers(navigation, mapEvents), [mapEvents]);
   const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations]);
 
   useEffect(() => {
