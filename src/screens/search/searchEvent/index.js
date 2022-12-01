@@ -33,7 +33,7 @@ const EventSearchScreen = ({navigation}) => {
     <SafeAreaView style={styles.root}>
       {!clicked}
 
-      <TouchableOpacity onPress={()=>navigation.navigate("MyEvents")} style={styles.backBtn}>
+      <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backBtn}>
         <Text style={styles.backText}>Back</Text>
       </TouchableOpacity>
 
