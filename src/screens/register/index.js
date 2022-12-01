@@ -9,12 +9,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { createUser } from '../../services/users.service';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/actions/actions';
 
 const RegisterScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+
+  const dispatch = useDispatch();
 
   const checkInput = () => {
     if (!username.trim()) {
