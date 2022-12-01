@@ -11,12 +11,24 @@ import {store } from '../../../../redux/store/store';
 const EventDetailsPage = ({route,navigation}) => {
   const username = store.getState().currUser.username;
   const [rsvp , setRsvp] = useState(true);
+  const [attendee, setAttendee] = useState(0);
+
+  useEffect(() => {
+    axios.get(`${backendUrl}/events/${events._id}/attendees/count`)
+    .then((response) => {
+      console.log(response.data);
+      setAttendee(response.data);
+      setRefreshing(false);
+    })
+    .catch((err) => {console.log(err)})
+  },[])
 
   function IsRsvp(eventID){
     axios.get(`${backendUrl}/events/${eventID}/${username}`)
     .then((response) => {
-      if(response.data === ""){
-        //console.log("can rsvp");
+
+      if(response.data.length == 0){
+        setRsvp(true);
       }
       else{
         setRsvp(false);
@@ -26,19 +38,20 @@ const EventDetailsPage = ({route,navigation}) => {
       console.log(error);
     })
   }
-
+ 
   function RsvpStatus(creator)
   {
-    
+    IsRsvp(events._id);
     if(creator.creator === username)
     {
       //don't render attend button
     }
     else //NOT creator
     {
-      IsRsvp(events._id);
       //if event at capacity - attend isn't pressable, unattend is pressable
-      if(events.numAttendees >= events.capacity ){
+      //fetch live numAttendees from backend
+
+      if(attendee >= events.capacity ){
         
         if(rsvp){
           return (
@@ -70,42 +83,65 @@ const EventDetailsPage = ({route,navigation}) => {
     }
     //event not at capacity. attend is pressable, unattend is also pressable
     else{
-      return (
-          <TouchableOpacity disabled = {disabled} onPress={()=> {
-            axios.post(`${backendUrl}/events/${events._id}/attendees`, 
-            {
-                username: username,
-                numAttendees: events.numAttendees,
-                capacity: events.capacity
-            },
-            {
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then((response) => {
-                //
-            })
-            .catch((err) => {console.log(err)});   
-            axios.get(`${backendUrl}/events/${events._id}`)
+     //r IsRsvp(events._id);
+      if(rsvp){
+        return (
+            <TouchableOpacity  onPress={()=> {
+              axios.post(`${backendUrl}/events/${events._id}/attendees`, 
+              {
+                  username: username,
+                  numAttendees: events.numAttendees,
+                  capacity: events.capacity
+              },
+              {
+                  headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json'
+                  }
+              })
+              .then((response) => {
+                  //
+              })
+              .catch((err) => {console.log(err)});   
+              axios.get(`${backendUrl}/events/${events._id}`)
 
-            navigation.navigate("RsvpScreen",
-            {
-              attendee: username,
-              events: events,
-          
-            })
-          }}>
-              <RsvpButton/>
+              navigation.navigate("RsvpScreen",
+              {
+                attendee: username,
+                events: events,
+            
+              })
+            }}>
+                <RsvpButton/>
             </TouchableOpacity>
-      )
+        )
+        } 
+        //unattend
+        else{
+          return (
+            <TouchableOpacity onPress={()=>{
+                axios.delete(`${backendUrl}/events/${events._id}/${username}`)
+                {
+                  data = {
+                    numAttendees: events.numAttendees 
+                  }
+                }
+               navigation.navigate("UnattendConfirmation",
+              {
+                attendee: username,
+                events: events,
+              })
+            }}>
+                <UnRsvp/>
+            </TouchableOpacity>
+          ) 
     }
+  }
   }
   }
 
   
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
  // const [events, setEvents] = useState([]);
   const [disabled, setDisabled] = useState(false);
   //const [current_capacity, increment_capacity] = useState(0);
@@ -170,7 +206,7 @@ const EventDetailsPage = ({route,navigation}) => {
           </View>
           <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + events.numAttendees + '/' + events.capacity}</Text>
+          <Text style={styles.capacityTextStyle}>{'attending: ' + attendee + '/' + events.capacity}</Text>
         </View>
         <View style={styles.rsvpContainer}>
 
