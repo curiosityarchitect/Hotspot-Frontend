@@ -1,6 +1,6 @@
-export default function mapEventReducer(state = [], action) {
+export default function attendingEventReducer(state = [], action) {
     switch (action.type) {
-        case "map/updateEvents": {
+        case "events/updateAttendingEvents": {
             return action.payload;
         }
         default: {

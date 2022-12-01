@@ -41,10 +41,10 @@ const username = store.getState().currUser.username;
 
 
 
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: '10%'
     },
     userInfoStyle: {
       paddingStart: 20,
@@ -152,7 +152,7 @@ const ProfileScreen = ({navigation}) => {
       }).catch((error) => {
           console.log(error);
       });
-    axios.get(`${backendUrl}/events/${username}`,
+    axios.get(`${backendUrl}/profile-events/${username}`,
       {
           method: 'GET',
           headers: {

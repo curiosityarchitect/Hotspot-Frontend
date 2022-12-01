@@ -8,9 +8,8 @@ import axios from 'axios';
 import { backendUrl } from '../services/const';
 import { useEffect, useState } from 'react';
 import { store } from '../redux/store/store';
-const Tab = createBottomTabNavigator();
 
- 
+const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
   const username = store.getState().currUser.username;
@@ -74,4 +73,3 @@ export default function MyTabs() {
     </Tab.Navigator>
   );
 }
-

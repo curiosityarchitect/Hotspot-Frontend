@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
-import { ironbowPalette, startPoints } from './home.styles';
+import { ironbowPalette, eventPinColor, friendPinColor, startPoints } from './home.styles';
 import MapView, { Heatmap, Marker } from 'react-native-maps';
 import { connect, useSelector } from 'react-redux';
 import { useState, useMemo, useRef, useEffect } from 'react';
@@ -7,6 +7,7 @@ import { regularMapStyle, heatMapStyle } from './home.styles';
 import { setNearbyEvents } from '../../services/events.service';
 import * as mapSettings from './map-settings';
 import setFriendLocations from '../../services/friends.locations.service';
+import { useNavigation } from '@react-navigation/native';
 
 const mapStyles = StyleSheet.create({
   map: {
@@ -18,14 +19,16 @@ const mapStyles = StyleSheet.create({
   }
 });
 
-const createEventMarkers = (events) => (
-  events.map((event, index) => {
+const createEventMarkers = (navigation, events) => (
+  events.map((event) => {
     return <Marker
-      key = {index}
+      key = {event._id}
       coordinate = {{
           longitude: event.location.coordinates[0],
           latitude: event.location.coordinates[1]
       }}
+      onPress={() => navigation.navigate("EventDetails", {eventid: event._id})}
+      pinColor = {eventPinColor}
       title = { event.name }
     />
   })
@@ -37,13 +40,14 @@ const createFriendMarkers = (friends) => (
     friend.location.coordinates && 
     friend.location.coordinates.length > 0)
     
-  .map((friend, index) => {
+  .map((friend) => {
     return <Marker
-      key = {index}
+      key = {friend._id}
       coordinate = {{
           longitude: friend.location.coordinates[0],
           latitude: friend.location.coordinates[1]
       }}
+      pinColor = {friendPinColor}
       title = { friend.username }
     />
   })
@@ -71,30 +75,32 @@ const createHeatMap = (events) => {
 };
 
 function MapComponent({heatMapOn}) {
+  const navigation = useNavigation();
   const location = useSelector(state => state.userLocation);
   const mapEvents = useSelector(state => state.mapEvents)
   const foregroundPerm = useSelector(state => state.foregroundPerm);
   const friendLocations = useSelector(state => state.friendLocations);
-  const userid = useSelector(state => state.currUser._id);
 
   const mapViewRef = useRef(null);
   const heatMap = useMemo(() => createHeatMap(mapEvents), [mapEvents]);
-  const eventMarkers = useMemo(() => createEventMarkers(mapEvents), [mapEvents]);
-  const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations])
+  const eventMarkers = useMemo(() => createEventMarkers(navigation, mapEvents), [mapEvents]);
+  const friendMarkers = useMemo(() => createFriendMarkers(friendLocations), [friendLocations]);
 
   useEffect(() => {
-    setNearbyEvents(userid, location, false);
-  }, [location]);
+    setFriendLocations();
+    setNearbyEvents(false);
+  }, []);
 
   // automatically fetch friend location on a 5 second timer
   useEffect(() => {
-    setFriendLocations();
-    // retrieve friend locations every 5 seconds
-    const intervalId = setInterval(setFriendLocations, 5000);
+    // retrieve every 5 seconds
+    const friendLocationInterval = setInterval(setFriendLocations, 3000);
+    const nearbyEventsInterval = setInterval(setNearbyEvents, 3000, false);
 
-    // clean up friend location fetching interval
+    // clean up intervals
     return () => {
-      clearInterval(intervalId);
+      clearInterval(friendLocationInterval);
+      clearInterval(nearbyEventsInterval);
     };
   }, []);
 
@@ -178,7 +184,7 @@ function MapComponent({heatMapOn}) {
           customMapStyle={heatMapOn ? heatMapStyle : regularMapStyle}
           onRegionChangeComplete={handleRegionChange}>
           { heatMapOn ? null : eventMarkers }
-          { friendMarkers }
+          { heatMapOn ? null : friendMarkers }
           { heatMapOn ? heatMap : null }
         </MapView>
     );

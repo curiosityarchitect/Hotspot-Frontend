@@ -3,10 +3,10 @@ import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 
 import FriendCard  from './friend-request-card';
 import NotificationHeader from './social-components/notification-header';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import {backendUrl} from '../../services/const';
 import { useIsFocused } from '@react-navigation/native'
 import NotificationCard from './notification-card';
-import {useSelector} from 'react-redux';
 
 const NotificationView = ({navigation}) => {
     const username = useSelector(state => state.currUser.username);
@@ -63,7 +63,7 @@ const NotificationView = ({navigation}) => {
                   'Content-Type': 'application/json'
               }
           }).then((response) => {
-              console.log(response)
+              //console.log(response)
           }).catch((error) => {
               console.log(error);
           })}} style={styles.backButton}>

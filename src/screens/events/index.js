@@ -114,7 +114,6 @@ const EventScreen = ({navigation}) => {
   }, []); 
   
  
-
   const wait = (timeout) => { 
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -136,23 +135,10 @@ const EventScreen = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() =>
-              axios.get(`${backendUrl}/events/${item._id}/tags`,
-              {
-                method: 'GET',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json'
-                }
-              }).then((response) => {
-                  tags = response.data;
-              }).catch ((err) => {console.log(err)})
-              .finally(() => {
               navigation.navigate('EventDetails', 
               {
-                events: item, 
-                tags: tags, 
+                eventid: item._id
               })
-            })
             }>
               <EventCard info = {item}/>
             </TouchableOpacity>
@@ -166,6 +152,4 @@ const EventScreen = ({navigation}) => {
 
 )}
 
-
 export default EventScreen
-

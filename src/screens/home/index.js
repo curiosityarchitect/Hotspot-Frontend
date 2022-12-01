@@ -5,15 +5,14 @@ import CreateEventButton from '../eventCreation/create-event-button';
 import MapComponent from './mapComponent'
 import { Icon } from 'react-native-elements';
 
-
 const homeStyles = StyleSheet.create({
   container: {
       position: 'absolute',
-      flex: 1,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
+      justifyContent: 'flex-end',
       alignItems: 'center',
   },
   buttonContainer:{
@@ -41,7 +40,6 @@ const homeStyles = StyleSheet.create({
     backgroundColor:'#fff',
     borderRadius:20,
   }
-
 });
 
 function HomeScreen({navigation}) {
@@ -80,11 +78,4 @@ function HomeScreen({navigation}) {
   
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    location: state.location
-  };
-};
-
-  
-export default connect(mapStateToProps)(HomeScreen);
+export default HomeScreen;

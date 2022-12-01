@@ -25,6 +25,7 @@ import FriendList from './src/screens/social/friend-list';
 import ProfileTagDetailsScreen from './src/screens/profile/profile-components/profileTagDetails';
 import UnattendConfirmation from './src/screens/events/eventscreen-components/event-rsvp/unrsvp-confirmation';
 
+
 const App = () => {
   const Stack = createStackNavigator();
 

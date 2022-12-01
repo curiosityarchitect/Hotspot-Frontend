@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   item: {
-    margin: 30,
+    margin: 10,
+    marginLeft: 20,
     borderBottomWidth: 2,
     borderBottomColor: "lightgrey"
   },

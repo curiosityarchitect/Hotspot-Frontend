@@ -3,7 +3,10 @@ import { store } from "../redux/store/store";
 import { updateMapEvents } from "../redux/actions/actions";
 import axios from 'axios';
 
-export async function setNearbyEvents(userid, location, specific) {
+export async function setNearbyEvents(specific) {
+    const userid = store.getState().currUser._id;
+    const location = store.getState().userLocation;
+
     axios.get(`${backendUrl}/events`, 
     {
         method: 'GET',
@@ -23,7 +26,7 @@ export async function setNearbyEvents(userid, location, specific) {
             ...(location && {
                 longitude: location.coords.longitude,
                 latitude: location.coords.latitude,
-                distance: 800
+                distance: 6000
             }) 
         }
     })
@@ -34,22 +37,25 @@ export async function setNearbyEvents(userid, location, specific) {
     .catch((err) => {console.log(err)});
 }
 
-export async function createEvent(eventDetails) {
+export async function createEvent(name, longitude, latitude, numAttendees=1, tags=[], startDate, endDate, eventScope, invitees) {
+    const username = store.getState().currUser.username;
+
+    if (!username) {
+        return;
+    }
+
     return axios.post(`${backendUrl}/events`, 
     {
-        name: eventDetails.name,
-        description: !eventDetails.description ? "" : eventDetails.description,
-        longitude: !eventDetails.longitude ? 0 : parseInt(eventDetails.longitude),
-        latitude: !eventDetails.latitude ? 0 : parseInt(eventDetails.latitude),
-        username: eventDetails.username,
-        numAttendees: 1,
-        capacity: !eventDetails.capacity ? 0 : eventDetails.capacity,
-        startDate: !eventDetails.startDate ? 0 : eventDetails.startDate,
-        endDate: !eventDetails.endDate ? 0 : eventDetails.endDate,
-        cover: !eventDetails.cover ? "" : eventDetails.cover,
-        tags: eventDetails.tags,
-        invitees: eventDetails.invitees,
-        scope: eventDetails.scope
+        name: name,
+        longitude: parseFloat(longitude),
+        latitude: parseFloat(latitude),
+        numAttendees: numAttendees,
+        tags: tags,
+        username: username,
+        startDate: startDate,
+        endDate: endDate,
+        scope: eventScope,
+        invitees: invitees
     },
     {
         method: 'POST',
@@ -58,11 +64,14 @@ export async function createEvent(eventDetails) {
             'Content-Type': 'application/json'
         }
     });
-
 }
 
-export async function findEventById(id) {
-    return axios.get(`${backendUrl}/events/${id}`,
+export async function setAttendingEvents(userid) {
+    if (!userid) {
+        return;
+    }
+    
+    const response = await axios.get(`${backendUrl}/user/${userid}/events/attending`, 
     {
         method: 'GET',
         headers: {
@@ -70,18 +79,25 @@ export async function findEventById(id) {
             'Content-Type': 'application/json'
         }
     })
+    .catch((err) => {console.log(err)});
+
+    return response.data;
 }
 
+export async function reportEventArrival(eventid, userid) {
+    if (!userid || !eventid) {
+        return;
+    }
 
-export async function tagID(id) {
-    return axios.get(`${backendUrl}/events/${id}/tags`,
+    await axios.post(`${backendUrl}/events/${eventid}/arrivee`, 
     {
-        method: 'GET',
+        arriveeId: userid
+    },
+    {
+        method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         }
-    })
-
-
+    });
 }

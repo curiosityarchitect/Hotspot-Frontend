@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   StyleSheet,
@@ -9,12 +9,12 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { withTheme } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 import { createEvent } from '../../services/events.service';
 import InviteButton from './invite-components/invite-button';
-import { useSelector } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-//const user = useSelector((state) => state.user);
 const parseTags = (tagsString) => {
   return tagsString.split("#")
     .map((tag) => tag.trim())
@@ -22,15 +22,24 @@ const parseTags = (tagsString) => {
     .filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
-
-const parseInvitees = (invitees) => {
-  return invitees.split(",")
+const parseInvitees = (inviteesString) => {
+  return inviteesString.split(",")
     .map((invitee) => invitee.trim())
     .filter((invitee) => invitee.length > 0)
     .filter((invitee, index, self) => self.indexOf(invitee) === index);
 }
- 
 
+const combineDateTime = (date, time) => {
+  return new Date(parseDateISO(date) + parseTimeISO(time));
+}
+
+const parseDateISO = (date) => {
+  return date.toISOString().substring(0, 11);
+}
+
+const parseTimeISO = (time) => {
+  return time.toISOString().substring(11);
+}
 
 const EventCreationScreen = ({route,navigation}) => {
   const [invitees, setInvitees] = useState('');
@@ -40,9 +49,6 @@ const EventCreationScreen = ({route,navigation}) => {
   }
   const [eventName, setEventName] = useState('');
   const [eventTagString, setEventString] = useState('');
-  const [eventDescription, setDescription] = useState('');
-
-  //long and lat 
   const [Longitude, setLong] = useState('');
   const [Latitude, setLat] = useState('');
  // Start Date and Time
@@ -94,10 +100,6 @@ const EventCreationScreen = ({route,navigation}) => {
       alert('Please Enter Event Name');
       return;
     }
-    if (!eventTagString.trim()) {
-      alert('Please Enter Event Tag');
-      return;
-    }
     if (!Longitude.trim() || Longitude > 180 || Longitude < -180 || /[a-zA-Z]+/g.test(Longitude)) {
       alert('Longitude Incorrect');
       return;
@@ -105,23 +107,12 @@ const EventCreationScreen = ({route,navigation}) => {
     if (!Latitude.trim() || Latitude > 90 || Latitude < -90 || /[a-zA-Z]+/g.test(Latitude)) {
       alert('Latitude Incorrect');
       return;
-    } 
-     createEvent({
-      name: eventName, 
-      description: eventDescription,
-      longitude: Longitude,
-      latitude: Latitude,
-      username: creatorUsername,
-      capacity: capacity,
-      startDate: startDate,
-      endDate: endDate,
-      tags: parseTags(eventTagString),
-      invitees: parseInvitees(invitees),
-      scope: eventScope.toLowerCase() 
-   }).
-    then(()=>navigation.goBack()).catch((err)=>console.log(err)) 
+    }
+    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), 
+      combineDateTime(startDate, startTime), combineDateTime(endDate, endTime), 
+      eventScope.toLowerCase(), parseInvitees(invitees)).
+    then(()=>navigation.goBack()).catch((err)=>console.log(err))
   };
-  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -236,46 +227,46 @@ const EventCreationScreen = ({route,navigation}) => {
 
       <View style={styles.MainContainer}>
  
-          <Text style={styles.text}>End Date = {endDate.toDateString()}</Text>
-          <Text style={styles.text}>End Time = {endTime.toLocaleTimeString('en-US')}</Text>
+        <Text style={styles.text}>End Date = {endDate.toDateString()}</Text>
 
-          {endDatePicker && (
-            <DateTimePicker
-              value={endDate}
-              mode={'date'}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              is24Hour={true}
-              onChange={onEndDateSelected}
-              style={styles.datePicker}
-            />
-          )}
+        <Text style={styles.text}>End Time = {endTime.toLocaleTimeString('en-US')}</Text>
 
-          {endTimePicker && (
-            <DateTimePicker
-              value={endTime}
-              mode={'time'}
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              is24Hour={false}
-              onChange={onEndDateSelected}
-              style={styles.datePicker}
-            />
-          )}
+        {endDatePicker && (
+          <DateTimePicker
+            value={endDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onEndDateSelected}
+            style={styles.datePicker}
+          />
+        )}
 
-          {!endDatePicker && (
-            <View style={{ margin: 10 }}>
-              <Button title="Pick End Date" color="black" onPress={showEndDatePicker} />
-            </View>
-          )}
+        {endTimePicker && (
+          <DateTimePicker
+            value={endTime}
+            mode={'time'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={false}
+            onChange={onEndTimeSelected}
+            style={styles.datePicker}
+          />
+        )}
 
-          {!endTimePicker && (
-            <View style={{ marginBottom: 10 }}>
-              <Button title="Pick End Time" color="black" onPress={showEndTimePicker} />
-            </View>
-          )}
+        {!endDatePicker && (
+          <View style={{ margin: 10 }}>
+            <Button title="Pick End Date" color="black" onPress={showEndDatePicker} />
+          </View>
+        )}
+
+        {!endTimePicker && (
+          <View style={{ marginBottom: 10 }}>
+            <Button title="Pick End Time" color="black" onPress={showEndTimePicker} />
+          </View>
+        )}
 
       </View>
 
-      
       <TouchableOpacity onPress={() => navigation.navigate("InvitePage")} style={styles.inviteBtn}>
         <InviteButton />
       </TouchableOpacity>
@@ -283,7 +274,6 @@ const EventCreationScreen = ({route,navigation}) => {
       <TouchableOpacity onPress={checkInput} style={styles.createBtn}>
         <Text style={styles.createText}>Create</Text>
       </TouchableOpacity>
-      
 
       <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={styles.cancelBtn}>
         <Text style={styles.cancelText}>Cancel</Text>
@@ -331,15 +321,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-  inviteBtn: {
-  
-    height: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginStart: '15%',
-    marginTop: "2%",
-    backgroundColor: '#ffffff',
-  },
+
   createBtn: {
     width: '90%',
     borderRadius: 10,
@@ -390,6 +372,15 @@ const styles = StyleSheet.create({
     borderColor: '#cacaca',
     borderWidth: 1,
     marginBottom: -40,
+  },
+
+  inviteBtn: {
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginStart: '15%',
+    marginTop: "2%",
+    backgroundColor: '#ffffff',
   },
 
   MainContainer: {
