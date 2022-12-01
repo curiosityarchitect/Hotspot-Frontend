@@ -21,7 +21,7 @@ const EventCard = (props) => {
             <View style={styles.dasteLocSeperator}>
               <EventLabels name='calendar-outline' desc={props.info.startDate.substring(0,10)} />
             </View>
-            <EventLabels name='location-outline' desc={props.info.address}/>
+            <EventLabels name='location-outline' desc={(''+props.info.location.coordinates[0]).substring(0,6) + ', ' +(''+props.info.location.coordinates[1]).substring(0,6) }/>
           </View>
         </View>
 

@@ -2,21 +2,116 @@ import React,{useState, useEffect} from 'react';
 import {View, Text, FlatList,StyleSheet,Image,Dimensions,TouchableOpacity,ActivityIndicator, Pressable} from 'react-native';
 import EventLabels from '../tab-components/event-labels';
 import RsvpButton from '../event-rsvp/rsvp-button';
+import UnRsvp from '../event-rsvp/unattend';
 import axios from 'axios';
 import { backendUrl } from '../../../../services/const';
-
+import {store } from '../../../../redux/store/store';
 
 
 const EventDetailsPage = ({route,navigation}) => {
+  const username = store.getState().currUser.username;
+  const [rsvp , setRsvp] = useState(true);
+
+  function IsRsvp(eventID){
+    axios.get(`${backendUrl}/events/${eventID}/${username}`)
+    .then((response) => {
+      if(response.data === ""){
+        //console.log("can rsvp");
+      }
+      else{
+        setRsvp(false);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  function RsvpStatus(creator)
+  {
+    
+    if(creator.creator === username)
+    {
+      //don't render attend button
+    }
+    else //NOT creator
+    {
+      IsRsvp(events._id);
+      //if event at capacity - attend isn't pressable, unattend is pressable
+      if(events.numAttendees >= events.capacity ){
+        
+        if(rsvp){
+          return (
+              <RsvpButton/>
+          )
+       }
+      //unattend
+      else{
+        return (
+          <TouchableOpacity onPress={()=>{
+              axios.delete(`${backendUrl}/events/${events._id}/${username}`)
+              {
+                data = {
+                  numAttendees: events.numAttendees 
+                }
+              }
+             navigation.navigate("UnattendConfirmation",
+            {
+              attendee: username,
+              events: events,
+            })
+          }}>
+              <UnRsvp/>
+
+          </TouchableOpacity>
+        )
+      }
+          
+    }
+    //event not at capacity. attend is pressable, unattend is also pressable
+    else{
+      return (
+          <TouchableOpacity disabled = {disabled} onPress={()=> {
+            axios.post(`${backendUrl}/events/${events._id}/attendees`, 
+            {
+                username: username,
+                numAttendees: events.numAttendees,
+                capacity: events.capacity
+            },
+            {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                //
+            })
+            .catch((err) => {console.log(err)});   
+            axios.get(`${backendUrl}/events/${events._id}`)
+
+            navigation.navigate("RsvpScreen",
+            {
+              attendee: username,
+              events: events,
+          
+            })
+          }}>
+              <RsvpButton/>
+            </TouchableOpacity>
+      )
+    }
+  }
+  }
+
   
   const [refreshing, setRefreshing] = useState(false);
  // const [events, setEvents] = useState([]);
   const [disabled, setDisabled] = useState(false);
   //const [current_capacity, increment_capacity] = useState(0);
-  const current_user = 'alexwu';
   const {events,tags} = route.params;
 
-  useEffect(() => {
+/*   useEffect(() => {
     axios.get(`${backendUrl}/events/${events._id}/attendees`,
     {
       method: 'GET',
@@ -35,7 +130,7 @@ const EventDetailsPage = ({route,navigation}) => {
       console.log(err)
     })
   },[])
-
+ */
 
   return (
     <View style={styles.container}>
@@ -52,15 +147,15 @@ const EventDetailsPage = ({route,navigation}) => {
           </View>
           <View style={styles.eventIdentificationContainer}>
             <EventLabels name='location-outline' />
-            <Text style={styles.locationTextStyle}>{events.address}</Text>
+            <Text style={styles.locationTextStyle}>{(''+events.location.coordinates[0]).substring(0,6) + ', ' +(''+events.location.coordinates[1]).substring(0,6) }</Text>
             <EventLabels  name='person-circle-outline' />
             <Text style={styles.creatorTextStyle}>{events.creator.username}</Text>
           </View>
           <View style={styles.timeContainer}>
             <Text style={styles.timeTextStyle}>start:</Text>
-            <EventLabels name='calendar-outline' desc={events.startDate.substring(0,10)} />
+            <EventLabels name='calendar-outline' desc={events.startDate.toString().substring(0,10) + ', '+events.startDate.toString().substring(11,16) } />
             <Text style={styles.timeTextStyle}>end:</Text>
-            <EventLabels name='calendar-outline' desc={events.endDate.substring(0,10)} />
+            <EventLabels name='calendar-outline' desc={events.endDate.toString().substring(0,10) + ', '+events.startDate.toString().substring(11,16)} />
           </View>
           <View style={styles.tagContainer}>
             <FlatList
@@ -78,30 +173,9 @@ const EventDetailsPage = ({route,navigation}) => {
           <Text style={styles.capacityTextStyle}>{'attending: ' + events.numAttendees + '/' + events.capacity}</Text>
         </View>
         <View style={styles.rsvpContainer}>
-          <TouchableOpacity disabled = {disabled} onPress={()=> {
-            axios.post(`${backendUrl}/events/${events._id}/attendees`, 
-            {
-                username: current_user,
-                numAttendees: events.numAttendees
-            },
-            {
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then((response) => {
-               // console.log(response);
-            })
-            .catch((err) => {console.log(err)});            
-            navigation.navigate("RsvpScreen",
-            {
-              events: events,
-          
-            })
-          }}>
-              <RsvpButton/>
-            </TouchableOpacity>
+
+            <RsvpStatus creator={events.creator.username}/>
+
             <TouchableOpacity onPress={()=>navigation.navigate("My Events")} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
             </TouchableOpacity>

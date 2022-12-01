@@ -23,6 +23,7 @@ import SettingsScreen from './src/screens/profile/profile-components/settings';
 import TagDetailsScreen from './src/screens/events/tags/tagdetails';
 import FriendList from './src/screens/social/friend-list';
 import ProfileTagDetailsScreen from './src/screens/profile/profile-components/profileTagDetails';
+import UnattendConfirmation from './src/screens/events/eventscreen-components/event-rsvp/unrsvp-confirmation';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -51,6 +52,7 @@ const App = () => {
         <Stack.Screen name ="TagDetails" component={TagDetailsScreen}/>
         <Stack.Screen name ='FriendList' component={FriendList}/>
         <Stack.Screen name ='ProfileTagDetails' component={ProfileTagDetailsScreen}/>
+        <Stack.Screen name ='UnattendConfirmation' component={UnattendConfirmation}/>
       </Stack.Navigator>
       </NavigationContainer>
     </Provider>

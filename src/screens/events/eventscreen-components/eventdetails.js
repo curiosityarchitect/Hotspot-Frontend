@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+/* import React,{Component} from 'react';
 import {View, Text, StyleSheet,Image,Dimensions,TouchableOpacity} from 'react-native';
 import EventLabels from './event-labels';
 import RsvpButton from './event-rsvp/rsvp-button';
@@ -164,3 +164,4 @@ const styles = StyleSheet.create({
 
 export default EventDetailsPage;
 
+ */

@@ -9,7 +9,9 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-import { updateProfile } from '../../../services/profile.service';
+import { updateProfile, usernameChange } from '../../../services/profile.service';
+import {store} from '../../../redux/store/store';
+
 
  
 
@@ -20,15 +22,17 @@ const SettingsScreen = ({navigation}) => {
   const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
   const username = useSelector(state => state.currUser.username);
+  const id = store.getState().currUser._id;
+
 
   const validate = () => {
     if (newusername === '') {
-      updateProfile(displayName, phoneNumber, displayLocation, username, username,profTags)
+      updateProfile(displayName, phoneNumber, displayLocation, username,username,profTags)
       
     }
     else{
-       updateProfile(displayName, phoneNumber, displayLocation, username, newusername,profTags)
-
+       updateProfile(displayName, phoneNumber, displayLocation,username, newusername,profTags)
+       usernameChange(id,newusername)
     }
     navigation.navigate("Profile");
   }

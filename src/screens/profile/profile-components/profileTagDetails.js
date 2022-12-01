@@ -91,7 +91,7 @@ const ProfileTagDetailsScreen = ({route, navigation}) => {
     }
   );
   }, []);
-  console.log(users)
+
   return (
     <SafeAreaView style={styles.container}>
        

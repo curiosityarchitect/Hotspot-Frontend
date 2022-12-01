@@ -49,3 +49,17 @@ export async function getUpdatedProfile(username) {
       } 
     })
 }
+
+export async function usernameChange(userID,username) {
+    return axios.put(`${backendUrl}/users/${userID}`,
+    {
+        username: username
+    },
+    {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+}

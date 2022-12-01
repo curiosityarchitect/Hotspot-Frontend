@@ -8,21 +8,15 @@ import {
 } from 'react-native';
 
 
-const RsvpConfirmation = ({route,navigation}) => {
+
+const UnattendConfirmation = ({route,navigation}) => {
   const {attendee,events} = route.params;
   return (
     <View style={styles.container}>
-      <Text style={styles.confirmationTextStyle}>{attendee}: Thank you for the RSVP!</Text>
-      <Text style={styles.confirmationDetailStyle}>Here are the details...</Text>
-      <View style={styles.detailsContainer}>
-        <Text style={styles.detailTextStyle}>Event: {events.name}</Text>
-        <Text style={styles.detailTextStyle}>Where: {events.address}</Text>
-        <Text style={styles.detailTextStyle}>When: {events.startDate.substring(0,10)}</Text>
-        <Text style={styles.detailTextStyle}>Hosted by: {events.creator.username}</Text>
-      </View>
+      <Text style={styles.confirmationTextStyle}>{attendee}, you have successfully removed your RSVP for </Text>
+      <Text style={styles.confirmationDetailStyle}>{events.name}</Text>
       <View style={styles.emailContainer}>
-        <Text style={styles.emailTextStyle}>We have sent you a notification!</Text>
-
+        <Text style={styles.emailTextStyle}>{events.creator.username} will recieve a notification...</Text>
       </View>
       <View style={styles.doneView}>
         <TouchableOpacity onPress={()=>navigation.navigate("My Events",
@@ -51,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     fontStyle: 'italic',
-    paddingTop: 10,
+    paddingTop: 30,
     alignSelf: 'center',
   },
   detailContainer: {
@@ -102,5 +96,5 @@ const styles = StyleSheet.create({
 
 });
 
-export default RsvpConfirmation;
+export default UnattendConfirmation;
 
