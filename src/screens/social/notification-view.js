@@ -63,7 +63,7 @@ const NotificationView = ({navigation}) => {
                   'Content-Type': 'application/json'
               }
           }).then((response) => {
-              console.log("deleted")
+              console.log(response)
           }).catch((error) => {
               console.log(error);
           })}} style={styles.backButton}>
