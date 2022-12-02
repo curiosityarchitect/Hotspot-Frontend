@@ -6,6 +6,10 @@ import { updateFriendLocations } from "../redux/actions/actions";
 export default async function setFriendLocations() {
     const userId = store.getState().currUser._id;
 
+    if (!userId) {
+        return;
+    }
+
     axios.get(`${backendUrl}/users/${userId}/friends/locations`,
     {
         method: 'GET',

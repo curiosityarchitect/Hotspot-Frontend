@@ -9,12 +9,14 @@ import {
   Alert,
 } from 'react-native';
 import { getUser } from '../../services/users.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../redux/actions/actions';
+import updateUserLocation from '../../services/user.location.service';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const location = useSelector(state => state.userLocation);
 
   const dispatch = useDispatch();
 
@@ -29,6 +31,7 @@ const LoginScreen = ({navigation}) => {
     }
     getUser(username, password).then((response) => {
       dispatch(setUser(response.data));
+      updateUserLocation(location);
       navigation.navigate("MainApp");
     }).catch((error) => {
       alert('Invalid Credentials');

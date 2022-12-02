@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   usernameStyle: {
     fontSize: 12,
     fontWeight: 'bold',
-    fontFamily: 'Helvetica',
+    //fontFamily: 'Helvetica',
     paddingTop: 3,
     paddingLeft: 3,
   },
