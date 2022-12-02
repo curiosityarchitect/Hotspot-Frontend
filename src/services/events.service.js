@@ -37,7 +37,7 @@ export async function setNearbyEvents(specific) {
     .catch((err) => {console.log(err)});
 }
 
-export async function createEvent(name, longitude, latitude, numAttendees=1, tags=[], startDate, endDate, eventScope, invitees) {
+export async function createEvent(name, longitude, latitude, description, numAttendees, tags=[], startDate, endDate, eventScope, invitees) {
     const username = store.getState().currUser.username;
 
     if (!username) {
@@ -49,7 +49,8 @@ export async function createEvent(name, longitude, latitude, numAttendees=1, tag
         name: name,
         longitude: parseFloat(longitude),
         latitude: parseFloat(latitude),
-        numAttendees: numAttendees,
+        description: description,
+        numAttendees: parseInt(numAttendees),
         tags: tags,
         username: username,
         startDate: startDate,

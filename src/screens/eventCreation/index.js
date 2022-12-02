@@ -61,7 +61,9 @@ const EventCreationScreen = ({route,navigation}) => {
   const [endDatePicker, setEndDatePicker] = useState(false);
   const [endTimePicker, setEndTimePicker] = useState(false);
   const [endTime, setEndTime] = useState(new Date(Date.now()));
+
   const [capacity, setCapacity] = useState('');
+  const [eventDescription, setDescription] = useState('');
 
   const [eventScope, setEventScope] = useState('Public');
   const creatorUsername = useSelector(state => state.currUser.username);
@@ -108,7 +110,11 @@ const EventCreationScreen = ({route,navigation}) => {
       alert('Latitude Incorrect');
       return;
     }
-    createEvent(eventName, Longitude, Latitude, undefined, parseTags(eventTagString), 
+    if (!capacity.trim() || capacity < 0 || /[a-zA-Z]+/g.test(capacity)) {
+      alert('Capacity Incorrect');
+      return;
+    }
+    createEvent(eventName, Longitude, Latitude, eventDescription, capacity, parseTags(eventTagString), 
       combineDateTime(startDate, startTime), combineDateTime(endDate, endTime), 
       eventScope.toLowerCase(), parseInvitees(invitees)).
     then(()=>navigation.goBack()).catch((err)=>console.log(err))
@@ -248,7 +254,7 @@ const EventCreationScreen = ({route,navigation}) => {
             mode={'time'}
             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             is24Hour={false}
-            onChange={onEndTimeSelected}
+            onChange={onEndDateSelected}
             style={styles.datePicker}
           />
         )}
