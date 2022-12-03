@@ -95,89 +95,55 @@ const EventDetailsPage = ({route,navigation}) => {
   },[]);
 
  
-  function RsvpStatus(creator)
-  {
-    if(creator === username) {
+  const RsvpStatusButton = ({creator}) => {
+    if (creator === username) {
       return;
     }
-    
-    //if event at capacity - attend isn't pressable, unattend is pressable
-    //fetch live numAttendees from backend
 
-    if(attendee >= event.capacity){
-      
-      if(rsvp){
-        return (
-            <RsvpButton/>
-        )
-      }
-      //unattend
-      else {
-        return (
-          <TouchableOpacity onPress={()=>{
-              axios.delete(`${backendUrl}/events/${eventid}/${username}`)
-              .then(() => {
-                navigation.navigate("UnattendConfirmation",
-                {
-                  attendee: username,
-                  events: event,
-                })
-              })
-            }}>
-          <UnRsvp/>
-
-          </TouchableOpacity>
-        )
-      }
-    }
-    //event not at capacity. attend is pressable, unattend is also pressable
-    else {
-      if(rsvp){
-        return (
-            <TouchableOpacity  onPress={()=> {
-              axios.post(`${backendUrl}/events/${eventid}/attendees`, 
-              {
-                  username: username,
-                  numAttendees: event.numAttendees,
-                  capacity: event.capacity
-              },
-              {
-                  headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json'
-                  }
-              })
-              .catch((err) => {console.log(err)});   
-
-              navigation.navigate("RsvpScreen",
+    if (rsvp) {
+      return (
+        <TouchableOpacity onPress={()=>{
+            axios.delete(`${backendUrl}/events/${eventid}/${username}`)
+            .then(() => {
+              navigation.navigate("UnattendConfirmation",
               {
                 attendee: username,
                 events: event,
-            
               })
-            }}>
-                <RsvpButton/>
-            </TouchableOpacity>
-        )
-      } 
-      //unattend
-      else{
-        return (
-          <TouchableOpacity onPress={()=>{
-              axios.delete(`${backendUrl}/events/${eventid}/${username}`)
-              .then(() => {
-                navigation.navigate("UnattendConfirmation",
-                {
-                  attendee: username,
-                  events: event,
-                })
-              })
-            }}>
-            <UnRsvp/>
+            })
+          }}>
+        <UnRsvp/>
 
-          </TouchableOpacity>
-        )
-      }
+        </TouchableOpacity>
+      )
+    }
+
+    if (attendee < event.capacity) {
+      return (
+        <TouchableOpacity  onPress={()=> {
+          axios.post(`${backendUrl}/events/${eventid}/attendees`, 
+          {
+              username: username,
+              numAttendees: event.numAttendees,
+              capacity: event.capacity
+          },
+          {
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          })
+          .catch((err) => {console.log(err)});   
+
+          navigation.navigate("RsvpScreen",
+          {
+            attendee: username,
+            events: event,
+        
+          })
+        }}>
+            <RsvpButton/>
+        </TouchableOpacity>)
     }
   }
   
@@ -225,12 +191,9 @@ const EventDetailsPage = ({route,navigation}) => {
               )}
             />
           </View>
-          <View style={styles.capacityContainer}>
-          <EventLabels name='people-circle-outline' />
-          <Text style={styles.capacityTextStyle}>{'attending: ' + attendee + '/' + event.capacity}</Text>
-        </View>
         <View style={styles.rsvpContainer}>
-            <RsvpStatus creator={event.creator.username}/>
+          <EventLabels name='people-circle-outline' desc={'attending: ' + attendee + '/' + event.capacity}/>
+            <RsvpStatusButton creator={event.creator.username}/>
 
             <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>

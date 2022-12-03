@@ -1,4 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import {
   StyleSheet,
   Text,
@@ -17,18 +19,31 @@ const Item = ({ name, description }) => (
 
 // the filter
 const List = (props) => {
+  const navigation = useNavigation();
   const renderItem = ({ item }) => {
     // when no input, show all
     if (props.searchPhrase === "") {
-      return <Item name={item.name} description={item.description} />;
+      return <TouchableOpacity onPress={() => 
+        navigation.navigate("EventDetails", {eventid: item._id})}>
+
+        <Item name={item.name} description={item.description} />
+      </TouchableOpacity>;
     }
     // filter of the name
     if (item.name.toUpperCase().includes(props.searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item name={item.name} description={item.description} />;
+      return <TouchableOpacity onPress={() => 
+        navigation.navigate("EventDetails", {eventid: item._id})}>
+
+        <Item name={item.name} description={item.description} />
+      </TouchableOpacity>;
     }
     // filter of the description
     if (item.description.toUpperCase().includes(props.searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item name={item.name} description={item.description} />;
+      return <TouchableOpacity onPress={() => 
+        navigation.navigate("EventDetails", {eventid: item._id})}>
+
+        <Item name={item.name} description={item.description} />
+      </TouchableOpacity>;
     }
   };
 

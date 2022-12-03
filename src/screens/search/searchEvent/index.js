@@ -10,23 +10,28 @@ import axios from 'axios';
 import List from "./components/List";
 import SearchBar from "./components/SearchBar";
 import { backendUrl } from "../../../services/const";
+import { useIsFocused } from "@react-navigation/native";
+import { store } from "../../../redux/store/store";
 
 const EventSearchScreen = ({navigation}) => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   const [fakeData, setFakeData] = useState();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [isFocused]);
 
   const getData = () => {
-    axios.get(`${backendUrl}/events`)
-    .then((response) => {
-      const allData = response.data;
-      setFakeData(allData);
-    })
-    .catch(error => console.error(`Error: ${error}`));
+    if (store.getState().currUser._id) {
+      axios.get(`${backendUrl}/events?userid=${store.getState().currUser._id}`)
+      .then((response) => {
+        const allData = response.data;
+        setFakeData(allData);
+      })
+      .catch(error => console.error(`Error: ${error}`));
+    }
   }
 
   return (

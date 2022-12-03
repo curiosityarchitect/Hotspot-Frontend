@@ -12,9 +12,12 @@ import { store } from '../redux/store/store';
 const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
-  const username = store.getState().currUser.username;
+  const userid = store.getState().currUser._id;
+  const [eventCount, setEventCount] = useState(0)
+  const [groupCount, setGroupCount] = useState(0)
+  
   useEffect(() => {
-      axios.get(`${backendUrl}/events/${username}/count`,
+      axios.get(`${backendUrl}/events?userid=${userid}`,
         {
             method: 'GET',
             headers: {
@@ -22,16 +25,12 @@ export default function MyTabs() {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            setEventCount(response.data)
+            setEventCount(response.data.length)
         }).catch((error) => {
             console.log(error);
         }
       );
   }, []);
-   
-  
-  const [eventCount, setEventCount] = useState(0)
-  const [groupCount, setGroupCount] = useState(0)
   
   return (
     <Tab.Navigator initialRouteName="Home"  screenOptions={{
