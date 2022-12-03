@@ -195,29 +195,33 @@ const EventDetailsPage = ({route,navigation}) => {
         />
         <View style={styles.headerContent}>
           <Text style={styles.nameStyle}>{event.name}</Text>
-          <View style={styles.descriptionContainer}>
+          {event.description.length > 0 && <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionStyle}>{event.description}</Text>
-          </View>
+          </View>}
+
           <View style={styles.eventIdentificationContainer}>
             <EventLabels name='location-outline' />
             <Text style={styles.locationTextStyle}>{(''+ event.location.coordinates[0]).substring(0,6) + ', ' +(''+event.location.coordinates[1]).substring(0,6) }</Text>
             <EventLabels  name='person-circle-outline' />
             <Text style={styles.creatorTextStyle}>{event.creator.username}</Text>
           </View>
+
           <View style={styles.timeContainer}>
             <Text style={styles.timeTextStyle}>start:</Text>
-            <EventLabels name='calendar-outline' desc={event.startDate.toString().substring(0,10) + ', '+event.startDate.toString().substring(11,16) } />
+              <EventLabels name='calendar-outline' desc={event.startDate.toString().substring(0,10) + ', '+event.startDate.toString().substring(11,16) }/>
             <Text style={styles.timeTextStyle}>end:</Text>
-            <EventLabels name='calendar-outline' desc={event.endDate.toString().substring(0,10) + ', '+event.startDate.toString().substring(11,16)} />
+              <EventLabels name='calendar-outline' desc={event.endDate.toString().substring(0,10) + ', '+event.endDate.toString().substring(11,16) }/>
           </View>
+
           <View style={styles.tagContainer}>
             <FlatList
               data={tags}
               keyExtractor={(item) => item._id}
               renderItem={({item}) => (
-              <TouchableOpacity onPress={()=>navigation.navigate("TagDetails",{item:item,event:event})}>
-                 <EventLabels name='pricetag' desc={item.description} />
-              </TouchableOpacity>  
+                <EventLabels name='pricetag' desc={item.description} />
+              // <TouchableOpacity onPress={()=>{navigation.navigate("TagDetails", {item, event})}}>
+              //    <EventLabels name='pricetag' desc={item.description} />
+              // </TouchableOpacity>  
               )}
             />
           </View>
@@ -241,7 +245,6 @@ const EventDetailsPage = ({route,navigation}) => {
 
 }
 
-const deviceWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -255,34 +258,32 @@ const styles = StyleSheet.create({
     flex: 1
   },
   nameStyle: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
-    paddingTop: 3,
-    paddingLeft: 3,
+    paddingTop: '3%',
+    paddingLeft: '3%',
   },
   descriptionContainer: {
-    width: '80%',
-    marginStart: '1%',
+    width: '90%',
+    paddingTop: 5,
+    paddingLeft: '3%',
   },
   descriptionStyle: {
-    fontSize: 15,
+    fontSize: 20,
     fontStyle: 'italic',
-    paddingTop: 10,
     color: '#404040',
     paddingLeft: 3,
   },
   //container for location and creator details
   eventIdentificationContainer:{
     flexDirection: 'row',
-    paddingTop: 6,
-    paddingLeft: 3,
+    paddingTop: 10,
+    paddingLeft: 10,
   },
   //location
   locationTextStyle: {
     fontSize: 16,
     fontStyle: 'bold',
-    paddingTop: 11,
-    paddingLeft: 3,
     paddingRight: 10,
   },
   locationIconStyle: {
@@ -292,23 +293,20 @@ const styles = StyleSheet.create({
   creatorTextStyle: {
       fontSize: 16,
       fontStyle: 'bold',
-      paddingTop: 11,
   },
   //date
   timeContainer:{
-    paddingTop: 18,
-    height: 0.3*deviceWidth,
-    alignContent: 'center',
-    padding: 11,
-    paddingBottom: 2,
+    paddingTop: 20,
+    marginLeft: '4%'
   },
   timeTextStyle:{
-    fontSize: 13,
+    fontSize: 16,
     color: '#696969',
   },
   //capacity
   capacityContainer:{
-    start:deviceWidth*0.6,
+    marginLeft: 'auto',
+    marginRight: 5,
     flexDirection: 'row',
   },
   capacityTextStyle: {
@@ -318,7 +316,7 @@ const styles = StyleSheet.create({
   },
   //
   rsvpContainer: {
-    start: deviceWidth/1.55,
+    start: '65%',
   },
   backButton: {
     width: '30%',
@@ -337,10 +335,9 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     flexDirection: 'column',
-    paddingTop: 22,
-    height: 0.3*deviceWidth,
+    paddingTop: 20,
+    paddingLeft: 20,
     alignContent: 'center',
-    padding: 11,
     paddingBottom: 2,
   }
 

@@ -1,40 +1,14 @@
 import React, { useEffect , useState} from 'react';
 import {View,Text,FlatList,SafeAreaView, Dimensions, StyleSheet,Share, Button,TouchableOpacity} from 'react-native';
 import {Caption, Title} from 'react-native-paper';
-import {Icon, Avatar} from 'react-native-elements';
 import EventLabels from '../events/eventscreen-components/tab-components/event-labels';
-import NotificationsButton from './profile-components/notifications-button';
-import SettingsButton from './profile-components/settings-button';
+import AddFriendButton from './components/add-friend-button';
 import { getUpdatedProfile, newUser } from '../../services/profile.service';
 import { useIsFocused } from '@react-navigation/native'
-import { useSelector } from 'react-redux';
 import { backendUrl } from '../../services/const';
 import axios from 'axios';
 import EventCard from '../events/eventscreen-components/tab-components/eventcard';
-import ShareButton from './profile-components/profile-share-button';
-import { store } from '../../redux/store/store';
-
- 
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message:
-          'Hotspot | Event management reimagined.\nDiscover your first event today!\nClick below to add ' + username+'\nhttps://hotspot-app.herokuapp.com/'
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
+import sendFriendRequest from '../../services/friend.requests.service';
 
 
 const styles = StyleSheet.create({
@@ -55,9 +29,9 @@ const styles = StyleSheet.create({
       lineHeight: 14,
       fontWeight: '500',
     },
-    NotificationButtonStyle: {
-      marginLeft: 'auto',
-      marginRight: '5%'
+    AddFriendButtonStyle: {
+        marginLeft: 'auto',
+        marginRight: '5%'
     },
     locationStyle: {
       flexDirection: 'row',
@@ -100,8 +74,8 @@ const styles = StyleSheet.create({
 });
 
   
-const ProfileScreen = ({navigation}) => {
-  const username = useSelector(state => state.currUser.username);
+const ExternalProfileScreen = ({route, navigation}) => {
+  const username = route.params.username;
   const [profile, setProfile ] = useState([])
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
@@ -125,10 +99,7 @@ const ProfileScreen = ({navigation}) => {
         })
       }
       else{
-        if (response.data === profile){
-           pass
-        }
-        else{
+        if (response.data !== profile){
           setProfile(response.data)
         }
       }
@@ -136,47 +107,49 @@ const ProfileScreen = ({navigation}) => {
     }).catch ((err) => {console.log(err)});
  
     Promise.all([
-      axios.get(`${backendUrl}/friends/${username}`,
-      {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
+        axios.get(`${backendUrl}/friends/${username}`,
+          {
+              method: 'GET',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          }).then((response) => {
+              setFriendList(response.data)
+          }).catch((error) => {
+              console.log(error);
+          }),
+        axios.get(`${backendUrl}/profile-events/${username}`,
+          {
+              method: 'GET',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          }).then((response) => {
+              setMyEvents(response.data)
+          }).catch((error) => {
+              console.log(error);
           }
-      }).then((response) => {
-          setFriendList(response.data)
-      }).catch((error) => {
-          console.log(error);
-      }),
-      axios.get(`${backendUrl}/profile-events/${username}`,
-        {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => {
-            setMyEvents(response.data)
-        }).catch((error) => {
-            console.log(error);
-        }
-      ),
-      axios.get(`${backendUrl}/events/${username}/count`,
-        {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => {
-            setEventCount(response.data)
-        }
-      ).catch((error) => {
-            console.log(error);
-        }
-      )
-    ]).then(() => setIsLoading(false));
-}, [isFocused]) 
+        ),
+        axios.get(`${backendUrl}/events/${username}/count`,
+          {
+              method: 'GET',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          }).then((response) => {
+              setEventCount(response.data)
+          }
+        ).catch((error) => {
+              console.log(error);
+          }
+        )
+    ]).then(() => 
+        setIsLoading(false)
+    );
+  }, [isFocused]) 
 
    if (isLoading) {
     return (
@@ -204,30 +177,21 @@ const ProfileScreen = ({navigation}) => {
     <SafeAreaView style={styles.container}>
         <View style={styles.userInfoStyle}>
             <View style={{flexDirection:'row',marginTop:10}}>
-                <TouchableOpacity>
-                <Avatar
-                    rounded
-                    source={require('./profile-temp-assets/spongebob.jpeg')}
-                    size={90}
-                />
-                </TouchableOpacity>
-                <View style={{marginStart:22}}>
+                <View >
                   <TouchableOpacity>
                     <Title style={styles.titleStyle}>{profile.displayName}</Title>
                   </TouchableOpacity>
                   <TouchableOpacity>
                     <Caption style={styles.captionStyle}>{profile.username}</Caption>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>navigation.navigate('SettingsScreen')}>
-                    <SettingsButton/>
-                  </TouchableOpacity>
                 </View>
-                <View style={styles.NotificationButtonStyle}>
-                    <TouchableOpacity onPress={()=>{navigation.navigate('Notifications')}}>
-                      <NotificationsButton/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress= {onShare} >
-                      <ShareButton/>
+                <View style={styles.AddFriendButtonStyle}>
+                    <TouchableOpacity onPress={() =>
+                        sendFriendRequest(username)
+                            .then(()=>alert("Friend request sent!")
+                            .catch(() => alert("Friend request failed!")))
+                        }>
+                      <AddFriendButton/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -259,16 +223,12 @@ const ProfileScreen = ({navigation}) => {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
             }]}>
-              <TouchableOpacity onPress={()=>navigation.navigate("FriendList" ,{friends: friends})}>
                 <Title style={{alignSelf:'center' }}>{friendCount}</Title>
                 <Caption>friends</Caption>
-              </TouchableOpacity>
             </View>
             <View style={styles.stat}>
-              <TouchableOpacity onPress={()=>navigation.navigate("My Events")}>
-                <Title style={{alignSelf:'center' }}>{eventCount}</Title>
-                <Caption >events</Caption>
-              </TouchableOpacity>
+            <Title style={{alignSelf:'center' }}>{eventCount}</Title>
+            <Caption >events</Caption>
             </View>
           </View>
           <View style={styles.eventContainer}>
@@ -281,12 +241,8 @@ const ProfileScreen = ({navigation}) => {
             )}
           />
           </View>
-            
-
-
-     
     </SafeAreaView>
   );
 };
 
-export default ProfileScreen;
+export default ExternalProfileScreen;

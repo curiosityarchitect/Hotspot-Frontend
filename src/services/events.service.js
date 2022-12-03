@@ -50,6 +50,7 @@ export async function createEvent(name, longitude, latitude, description, capaci
         longitude: parseFloat(longitude),
         latitude: parseFloat(latitude),
         description: description,
+        numAttendees: 1,
         capacity: parseInt(capacity),
         tags: tags,
         username: username,

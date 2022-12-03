@@ -25,7 +25,7 @@ export async function updateProfile(displayName,phoneNumber,displayLocation,user
 export async function newUser(username) {
     return axios.post(`${backendUrl}/profile/${username}/settings`,
     {
-        displayName: 'No display name set',
+        displayName: username,
         displayLocation: 'No location set',
         phoneNumber: 'No phone number set',
         profTags: 'Add tags',

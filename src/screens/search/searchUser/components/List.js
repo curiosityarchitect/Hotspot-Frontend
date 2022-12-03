@@ -12,7 +12,7 @@ import { TouchableOpacity } from "react-native";
 // definition of the Item, which will be rendered in the FlatList
 const Item = ({ navigation, name }) => (
   <View style={styles.item}>
-    <TouchableOpacity onPress={() => navigation.navigate("Profile", {username: name})}>
+    <TouchableOpacity onPress={() => navigation.navigate("ExternalProfileScreen", {username: name})}>
       <Text style={styles.title}>{name}</Text>
     </TouchableOpacity>
   </View>

@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   imageStyle: {
-    width: DeviceWidth - 22,
-    height: 111,
+    width: '100%',
+    height: '50%',
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
     opacity: 0.88,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   IconWithLabel: {
     flexDirection: 'row',
-    marginTop: 22,
+    marginTop: '5%',
   }
 
 })

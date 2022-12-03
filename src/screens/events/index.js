@@ -119,7 +119,19 @@ const EventScreen = ({navigation}) => {
   }
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(1111).then(() => setRefreshing(false));
+    
+    axios.get(`${backendUrl}/events?userid=${user_id}&specific=true`, 
+    {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then((response) => {
+      setEvents(response.data);
+    })
+      .catch ((err) => {console.log(err)})
+      .finally(() => setRefreshing(false));
   }, []);
 
   return(

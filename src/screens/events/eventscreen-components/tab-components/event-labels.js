@@ -9,7 +9,6 @@ const EventLabels = ({name,desc}) => {
              name = {name}
              type = 'ionicon'
              color = '#8b0000' 
-             size = {13}
              style={styles.iconStyle}
              />
             <Text style={styles.lableStyle}>{desc}</Text>
@@ -22,10 +21,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     lableStyle: {
-        fontSize: 10,
+        paddingLeft: 5
     },
     iconStyle:{
-        marginRight: 3,
         fontWeight: 10,
     },
 })

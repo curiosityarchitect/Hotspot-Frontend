@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
   
   
 const TagDetailsScreen = ({route, navigation}) => {
-  const {item,events} = route.params;
+  console.log(route.params)
+  const {events, item} = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
