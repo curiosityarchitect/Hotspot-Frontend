@@ -15,9 +15,9 @@ export default function MyTabs() {
   const userid = store.getState().currUser._id;
   const [eventCount, setEventCount] = useState(0)
   const [groupCount, setGroupCount] = useState(0)
-  
+
   useEffect(() => {
-      axios.get(`${backendUrl}/events?userid=${userid}`,
+      axios.get(`${backendUrl}/events?userid=${userid}&specific=true`,
         {
             method: 'GET',
             headers: {
