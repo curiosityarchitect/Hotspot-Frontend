@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   StyleSheet,
@@ -6,24 +7,28 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 // definition of the Item, which will be rendered in the FlatList
-const Item = ({ name }) => (
+const Item = ({ navigation, name }) => (
   <View style={styles.item}>
-    <Text style={styles.title}>{name}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate("Profile", {username: name})}>
+      <Text style={styles.title}>{name}</Text>
+    </TouchableOpacity>
   </View>
 );
 
 // the filter
 const List = (props) => {
+  const navigation = useNavigation();
   const renderItem = ({ item }) => {
     // when no input, show all
     if (props.searchPhrase === "") {
-      return <Item name={item.username} />;
+      return <Item navigation={navigation} name={item.username} />;
     }
     // filter of the name
     if (item.username.toUpperCase().includes(props.searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item name={item.username} />;
+      return <Item navigation={navigation} name={item.username} />;
     }
   };
 

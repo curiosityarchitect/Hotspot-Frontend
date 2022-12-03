@@ -34,7 +34,7 @@ const FriendList = ({route,navigation}) => {
             
           
         
-          <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>
+          <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
               <Text style={styles.loginText}>back</Text>
           </TouchableOpacity>
         </View>

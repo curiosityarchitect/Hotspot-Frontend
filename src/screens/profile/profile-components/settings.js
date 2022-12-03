@@ -15,15 +15,14 @@ import {store} from '../../../redux/store/store';
 
  
 
-const SettingsScreen = ({navigation}) => {
+const SettingsScreen = ({route, navigation}) => {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [displayLocation, setDisplayLocation] = useState('');
   const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
-  const username = useSelector(state => state.currUser.username);
+  const username = route.params.username ? route.params.username : useSelector(state => state.currUser.username);
   const id = store.getState().currUser._id;
-
 
   const validate = () => {
     if (newusername === '') {
@@ -34,7 +33,7 @@ const SettingsScreen = ({navigation}) => {
        updateProfile(displayName, phoneNumber, displayLocation,username, newusername,profTags)
        usernameChange(id,newusername)
     }
-    navigation.navigate("Profile");
+    navigation.goBack();
   }
 
   return (
@@ -94,7 +93,7 @@ const SettingsScreen = ({navigation}) => {
         <Text style={styles.createText}>Apply</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.cancelBtn}>
+      <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.cancelBtn}>
         <Text style={styles.cancelText}>Back</Text>
       </TouchableOpacity>
 

@@ -11,6 +11,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
+      paddingTop: '5%',
       flex: 1,
       backgroundColor: '#faf0e6',
     },
@@ -119,7 +120,7 @@ const ProfileTagDetailsScreen = ({route, navigation}) => {
         </View>
       
         <View style={styles.backContainer}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Profile")} style={styles.backButton}>
+            <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
                     <Text style={styles.loginText}>Back</Text>
             </TouchableOpacity>
         </View>

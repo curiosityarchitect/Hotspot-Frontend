@@ -15,7 +15,6 @@ import ShareButton from './profile-components/profile-share-button';
 import { store } from '../../redux/store/store';
 
 
-
 const deviceWidth = Dimensions.get('window').width;
 const username = store.getState().currUser.username;
  
@@ -115,7 +114,6 @@ const ProfileScreen = ({navigation}) => {
   const [myEvents, setMyEvents] = useState([])
   const [eventCount, setEventCount] = useState(0)
   
-
   useEffect(() => {
     getUpdatedProfile(username).then((response) => { //get default values
       if(response.data === null){

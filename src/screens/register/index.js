@@ -66,7 +66,7 @@ const RegisterScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-    <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
+    <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backBtn}>
         <Text style={styles.registerText}>Back</Text>
       </TouchableOpacity>
 
