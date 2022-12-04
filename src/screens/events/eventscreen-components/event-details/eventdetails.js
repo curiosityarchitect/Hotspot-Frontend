@@ -7,6 +7,7 @@ import axios from 'axios';
 import { backendUrl } from '../../../../services/const';
 import { useSelector } from 'react-redux';
 import { store } from '../../../../redux/store/store';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const EventDetailsPage = ({route,navigation}) => {
@@ -20,6 +21,7 @@ const EventDetailsPage = ({route,navigation}) => {
   const {eventid} = route.params;
   const [event, setEvent] = useState(null);
   const [tags, setTags] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     Promise.all([
@@ -92,15 +94,15 @@ const EventDetailsPage = ({route,navigation}) => {
     .then(() => {
       setLoading(false);
     });
-  },[]);
+  },[isFocused]);
 
  
-  const RsvpStatusButton = ({creator}) => {
+  const RsvpStatusButton = ({creator, rsvp}) => {
     if (creator === username) {
       return;
     }
 
-    if (rsvp) {
+    if (!rsvp) {
       return (
         <TouchableOpacity onPress={()=>{
             axios.delete(`${backendUrl}/events/${eventid}/${username}`)
@@ -197,7 +199,7 @@ const EventDetailsPage = ({route,navigation}) => {
         </View>
 
         <View style={styles.rsvpContainer}>
-            <RsvpStatusButton creator={event.creator.username}/>
+            <RsvpStatusButton creator={event.creator.username} rsvp={rsvp}/>
             <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
             </TouchableOpacity>
@@ -272,7 +274,7 @@ const styles = StyleSheet.create({
   //capacity
   capacityContainer:{
     marginLeft: 'auto',
-    marginRight: 5
+    marginRight: 10
   },
   capacityTextStyle: {
     fontSize: 15,
