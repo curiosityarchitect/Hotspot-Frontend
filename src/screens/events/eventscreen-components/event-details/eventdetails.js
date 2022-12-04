@@ -73,7 +73,6 @@ const EventDetailsPage = ({route,navigation}) => {
       .then((response) => {
         // console.log(response.data);
         setAttendee(response.data);
-        setRefreshing(false);
       })
       .catch((err) => {console.log(err)}),
 

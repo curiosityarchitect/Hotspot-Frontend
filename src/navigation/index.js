@@ -42,7 +42,7 @@ export default function MyTabs() {
             headerShown: false,
             tabBarIcon:({focused}) =>(
               <Ionicons name="golf" size={25} color={focused ? "tan" : "gray"} />
-            ), tabBarBadge: eventCount
+            ), // tabBarBadge: eventCount
           }
         }icon="Person" name="My Events" component={EventScreen} />
       <Tab.Screen options={
@@ -53,14 +53,14 @@ export default function MyTabs() {
             ),
           }
         } name="Home" component={HomeScreen} />
-      <Tab.Screen options={
+      {/* <Tab.Screen options={
           {
             headerShown: true,
             tabBarIcon:({focused}) =>(
               <Ionicons name="people" size={25} color={focused ? "tan" : "gray"} />
             ),
           }
-        } name="Group" component={GroupScreen} />
+        } name="Group" component={GroupScreen} /> */}
       <Tab.Screen options={
           {
             headerShown: false,

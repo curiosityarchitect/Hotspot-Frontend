@@ -85,18 +85,25 @@ const EventCreationScreen = ({route,navigation}) => {
   };
 
   function onStartDateSelected(event, value) {
-    setStartTime(value);
-    setStartTimePicker(false);
     setStartDate(value);
     setStartDatePicker(false);
+  };
+
+  function onStartTimeSelected(event, value) {
+    setStartTime(value);
+    setStartTimePicker(false);
   };
 
   function onEndDateSelected(event, value) {
     setEndDate(value);
     setEndDatePicker(false);
+  };
+
+  function onEndTimeSelected(event, value) {
     setEndTime(value);
     setEndTimePicker(false);
   };
+
   const checkInput = () => {
    if (!eventName.trim()) {
       alert('Please Enter Event Name');
@@ -211,7 +218,7 @@ const EventCreationScreen = ({route,navigation}) => {
             mode={'time'}
             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             is24Hour={false}
-            onChange={onStartDateSelected}
+            onChange={onStartTimeSelected}
             style={styles.datePicker}
           />
         )}
@@ -254,7 +261,7 @@ const EventCreationScreen = ({route,navigation}) => {
             mode={'time'}
             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             is24Hour={false}
-            onChange={onEndDateSelected}
+            onChange={onEndTimeSelected}
             style={styles.datePicker}
           />
         )}
