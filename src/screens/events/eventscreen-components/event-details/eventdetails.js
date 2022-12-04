@@ -191,10 +191,13 @@ const EventDetailsPage = ({route,navigation}) => {
               )}
             />
           </View>
-        <View style={styles.rsvpContainer}>
+          
+        <View style={styles.capacityContainer}>
           <EventLabels name='people-circle-outline' desc={'attending: ' + attendee + '/' + event.capacity}/>
-            <RsvpStatusButton creator={event.creator.username}/>
+        </View>
 
+        <View style={styles.rsvpContainer}>
+            <RsvpStatusButton creator={event.creator.username}/>
             <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backButton}>
               <Text style={styles.loginText}>Back</Text>
             </TouchableOpacity>
@@ -215,13 +218,13 @@ const styles = StyleSheet.create({
   },
   coverImage: { 
     width: '100%',
-    height: '40%',
+    height: '35%',
   },
   header: {
     flex: 1
   },
   nameStyle: {
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: 'bold',
     paddingTop: '3%',
     paddingLeft: '3%',
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
     paddingLeft: '3%',
   },
   descriptionStyle: {
-    fontSize: 20,
+    fontSize: 18,
     fontStyle: 'italic',
     color: '#404040',
     paddingLeft: 3,
@@ -259,7 +262,7 @@ const styles = StyleSheet.create({
   },
   //date
   timeContainer:{
-    paddingTop: 20,
+    paddingTop: 10,
     marginLeft: '4%'
   },
   timeTextStyle:{
@@ -269,8 +272,7 @@ const styles = StyleSheet.create({
   //capacity
   capacityContainer:{
     marginLeft: 'auto',
-    marginRight: 5,
-    flexDirection: 'row',
+    marginRight: 5
   },
   capacityTextStyle: {
     fontSize: 15,
@@ -279,7 +281,7 @@ const styles = StyleSheet.create({
   },
   //
   rsvpContainer: {
-    start: '65%',
+    start: '65%'
   },
   backButton: {
     width: '30%',

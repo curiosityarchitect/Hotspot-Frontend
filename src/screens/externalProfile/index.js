@@ -188,8 +188,8 @@ const ExternalProfileScreen = ({route, navigation}) => {
                 <View style={styles.AddFriendButtonStyle}>
                     <TouchableOpacity onPress={() =>
                         sendFriendRequest(username)
-                            .then(()=>alert("Friend request sent!")
-                            .catch(() => alert("Friend request failed!")))
+                            .then(()=>alert("Friend request sent!"))
+                            .catch(() => alert("Friend request failed!"))
                         }>
                       <AddFriendButton/>
                     </TouchableOpacity>

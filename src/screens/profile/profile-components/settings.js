@@ -21,7 +21,7 @@ const SettingsScreen = ({route, navigation}) => {
   const [displayLocation, setDisplayLocation] = useState('');
   const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
-  const username = route.params.username ? route.params.username : useSelector(state => state.currUser.username);
+  const username = useSelector(state => state.currUser.username);
   const id = store.getState().currUser._id;
 
   const validate = () => {

@@ -15,7 +15,7 @@ import ShareButton from './profile-components/profile-share-button';
 import { store } from '../../redux/store/store';
 
  
-  const onShare = async () => {
+  const onShare = async (username) => {
     try {
       const result = await Share.share({
         message:
@@ -226,7 +226,7 @@ const ProfileScreen = ({navigation}) => {
                     <TouchableOpacity onPress={()=>{navigation.navigate('Notifications')}}>
                       <NotificationsButton/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress= {onShare} >
+                    <TouchableOpacity onPress= {() => onShare(username)} >
                       <ShareButton/>
                     </TouchableOpacity>
                 </View>
