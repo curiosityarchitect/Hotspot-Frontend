@@ -55,12 +55,12 @@ const EventCreationScreen = ({route,navigation}) => {
   const [startDate, setStartDate] = useState(new Date());
   const [startDatePicker, setStartDatePicker] = useState(false);
   const [startTimePicker, setStartTimePicker] = useState(false);
-  const [startTime, setStartTime] = useState(new Date(Date.now()));
+  const [startTime, setStartTime] = useState(new Date(new Date().setSeconds(0, 0)));
   // End Date and Time
   const [endDate, setEndDate] = useState(new Date());
   const [endDatePicker, setEndDatePicker] = useState(false);
   const [endTimePicker, setEndTimePicker] = useState(false);
-  const [endTime, setEndTime] = useState(new Date(Date.now()));
+  const [endTime, setEndTime] = useState(new Date(new Date().setSeconds(0, 0)));
 
   const [capacity, setCapacity] = useState('');
   const [eventDescription, setDescription] = useState('');
@@ -90,7 +90,7 @@ const EventCreationScreen = ({route,navigation}) => {
   };
 
   function onStartTimeSelected(event, value) {
-    setStartTime(value);
+    setStartTime(new Date(value.setSeconds(0,0)));
     setStartTimePicker(false);
   };
 
@@ -100,7 +100,7 @@ const EventCreationScreen = ({route,navigation}) => {
   };
 
   function onEndTimeSelected(event, value) {
-    setEndTime(value);
+    setEndTime(new Date(value.setSeconds(0,0)));
     setEndTimePicker(false);
   };
 

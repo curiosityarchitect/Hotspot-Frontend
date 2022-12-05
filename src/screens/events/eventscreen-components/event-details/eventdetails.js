@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { store } from '../../../../redux/store/store';
 import { useIsFocused } from '@react-navigation/native';
 
+const toLocaleTime = (date) => new Date(date.toString() + " UTC").toLocaleString();
 
 const EventDetailsPage = ({route,navigation}) => {
   const username = store.getState().currUser.username;
@@ -169,9 +170,9 @@ const EventDetailsPage = ({route,navigation}) => {
 
           <View style={styles.timeContainer}>
             <Text style={styles.timeTextStyle}>start:</Text>
-              <EventLabels name='calendar-outline' desc={event.startDate.toString().substring(0,10) + ', '+event.startDate.toString().substring(11,16) }/>
+              <EventLabels name='calendar-outline' desc={event.startDate.toLocaleString().substring(0,10) + ', '+event.startDate.toLocaleString().substring(11,16) + " UTC"}/>
             <Text style={styles.timeTextStyle}>end:</Text>
-              <EventLabels name='calendar-outline' desc={event.endDate.toString().substring(0,10) + ', '+event.endDate.toString().substring(11,16) }/>
+              <EventLabels name='calendar-outline' desc={event.endDate.toLocaleString().substring(0,10) + ', '+event.endDate.toLocaleString().substring(11,16) + " UTC"}/>
           </View>
 
           <View style={styles.tagContainer}>
