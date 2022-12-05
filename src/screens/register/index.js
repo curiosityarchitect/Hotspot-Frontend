@@ -54,11 +54,12 @@ const RegisterScreen = ({navigation}) => {
       return;
     }
     createUser(username, email, password).then((response) => {
-      dispatch(setUser(response.data));
+      const extractDetails = ({_id, username}) => ({_id, username});
+      const currUser = extractDetails(response.data);
+      dispatch(setUser(currUser));
       navigation.navigate("MainApp");
     }).catch((error) => {
       alert('User already exists');
-      return;
     });
     
   };
