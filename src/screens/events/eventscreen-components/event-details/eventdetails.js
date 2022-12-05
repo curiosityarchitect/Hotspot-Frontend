@@ -104,7 +104,7 @@ const EventDetailsPage = ({route,navigation}) => {
     if (!rsvp) {
       return (
         <TouchableOpacity onPress={()=>{
-            axios.delete(`${backendUrl}/even ts/${eventid}/${username}`)
+            axios.delete(`${backendUrl}/events/${eventid}/${username}`)
             .then(() => {
               alert(`You have cancelled your RSVP from ${event.name}!`);
               navigation.goBack();
