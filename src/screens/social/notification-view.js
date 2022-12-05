@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image} from 'react-native';
+import {View,Text, TouchableOpacity,FlatList, StyleSheet,Dimensions,Image,ActivityIndicator} from 'react-native';
 import FriendCard  from './friend-request-card';
 import NotificationHeader from './social-components/notification-header';
 import axios from 'axios';
@@ -15,7 +15,7 @@ const NotificationView = ({navigation}) => {
 
     const isFocused = useIsFocused()
     useEffect(() => {
-
+      setIsLoading(true);
       axios.get(`${backendUrl}/notifications/${username}`,
       {
           method: 'GET',
@@ -33,8 +33,8 @@ const NotificationView = ({navigation}) => {
    
     if (isLoading) {
       return (
-        <View>
-          <Text>Loading...</Text>
+        <View style={styles.container}>
+          <ActivityIndicator color="#D2B48C" />
         </View>
       )
     } 
@@ -54,9 +54,10 @@ const NotificationView = ({navigation}) => {
               showsVerticalScrollIndicator ={false}
             />  
             
-          <TouchableOpacity onPress={()=> {navigation.navigate("Profile") 
-         axios.delete(`${backendUrl}/notifications/${username}`,
-          {
+          <TouchableOpacity onPress={()=> {
+            navigation.navigate("Profile") 
+            axios.delete(`${backendUrl}/notifications/${username}`,
+              {
               method: 'DELETE',
               headers: {
                   Accept: 'application/json',

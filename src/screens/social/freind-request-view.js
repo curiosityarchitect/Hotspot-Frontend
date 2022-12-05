@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
         width: 2,
         height: 2,
       },
+      marginBottom: 10,
       shadowOpacity: 0.333,
     }
   });

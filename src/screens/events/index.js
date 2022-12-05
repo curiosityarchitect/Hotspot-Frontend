@@ -15,6 +15,7 @@ import axios from 'axios';
 import { backendUrl } from '../../services/const';
 import { useSelector } from 'react-redux';
 import {Icon} from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
 
 /* const events = [
   {
@@ -81,9 +82,8 @@ import {Icon} from 'react-native-elements';
  */
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    paddingTop: '8%',
     flex: 1,
-    marginTop: '5%',
     alignItems: 'center',
     backgroundColor: '#faf0e6',
   },
@@ -98,7 +98,9 @@ const EventScreen = ({navigation}) => {
   const [events, setEvents] = useState([]);
   const user_id = useSelector(state => state.currUser._id);
   let tags = [];
+  const isFocused = useIsFocused();
    useEffect(() => {
+      setRefreshing(true);
       axios.get(`${backendUrl}/events?userid=${user_id}&specific=true`, 
       {
           method: 'GET',
@@ -111,7 +113,7 @@ const EventScreen = ({navigation}) => {
       })
         .catch ((err) => {console.log(err)})
         .finally(() => setRefreshing(false));
-  }, []); 
+  }, [isFocused]); 
   
  
   const wait = (timeout) => { 
