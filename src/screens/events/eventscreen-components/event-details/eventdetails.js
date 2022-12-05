@@ -104,13 +104,10 @@ const EventDetailsPage = ({route,navigation}) => {
     if (!rsvp) {
       return (
         <TouchableOpacity onPress={()=>{
-            axios.delete(`${backendUrl}/events/${eventid}/${username}`)
+            axios.delete(`${backendUrl}/even ts/${eventid}/${username}`)
             .then(() => {
-              navigation.navigate("UnattendConfirmation",
-              {
-                attendee: username,
-                events: event,
-              })
+              alert(`You have cancelled your RSVP from ${event.name}!`);
+              navigation.goBack();
             })
           }}>
         <UnRsvp/>
@@ -134,14 +131,11 @@ const EventDetailsPage = ({route,navigation}) => {
                   'Content-Type': 'application/json'
               }
           })
+          .then(() => {
+              alert(`You have RSVP'd to ${event.name}!`);
+              navigation.goBack();
+            })
           .catch((err) => {console.log(err)});   
-
-          navigation.navigate("RsvpScreen",
-          {
-            attendee: username,
-            events: event,
-        
-          })
         }}>
             <RsvpButton/>
         </TouchableOpacity>)

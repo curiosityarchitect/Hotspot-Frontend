@@ -19,20 +19,13 @@ const SettingsScreen = ({route, navigation}) => {
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [displayLocation, setDisplayLocation] = useState('');
-  const [newusername, setUsername] = useState('');
+  // const [newusername, setUsername] = useState('');
   const [profTags, setProfTags] = useState('');
   const username = useSelector(state => state.currUser.username);
   const id = store.getState().currUser._id;
 
   const validate = () => {
-    if (newusername === '') {
-      updateProfile(displayName, phoneNumber, displayLocation, username,username,profTags)
-      
-    }
-    else{
-       updateProfile(displayName, phoneNumber, displayLocation,username, newusername,profTags)
-       usernameChange(id,newusername)
-    }
+    updateProfile(displayName, phoneNumber, displayLocation, username,username,profTags)
     navigation.goBack();
   }
 
@@ -70,14 +63,14 @@ const SettingsScreen = ({route, navigation}) => {
         />
       </View>
 
-      <View style={styles.inputView}>
+      {/* <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="Change Username" 
           placeholderTextColor="#808080"
           onChangeText={(newusername) => setUsername(newusername)}
         />
-      </View>
+      </View> */}
 
       <View style={styles.inputView}>
         <TextInput

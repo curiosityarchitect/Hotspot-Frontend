@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
 const UnRsvp= () => {
     return (
       <View style={styles.buttonStyle}>
-        <Text style={styles.buttonText}>unattend</Text>
+        <Text style={styles.buttonText}>Unattend</Text>
       </View>
     );
 }

@@ -21,7 +21,7 @@ const InviteButton= ({navigation}) => {
             flexDirection: 'row',
             width: '70%',
             borderRadius: 3,
-            height: 30,
+            height: 40,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 10,

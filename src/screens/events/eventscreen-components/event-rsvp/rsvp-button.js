@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity,  StyleSheet } from 'react-native'
 const RsvpButton= () => {
     return (
       <View style={styles.buttonStyle}>
-        <Text style={styles.buttonText}>attend</Text>
+        <Text style={styles.buttonText}>Attend</Text>
       </View>
     );
 }

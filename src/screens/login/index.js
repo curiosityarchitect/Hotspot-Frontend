@@ -68,7 +68,7 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backBtn}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
         <Text style={styles.loginText}>Back</Text>
       </TouchableOpacity>
 

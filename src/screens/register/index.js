@@ -66,7 +66,7 @@ const RegisterScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-    <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.backBtn}>
+    <TouchableOpacity onPress={()=>navigation.navigate("Welcome")} style={styles.backBtn}>
         <Text style={styles.registerText}>Back</Text>
       </TouchableOpacity>
 
@@ -183,9 +183,9 @@ const styles = StyleSheet.create({
   },
 
   welcomeText: {
-    marginTop: 100,
-    width: 300,
-    height: 80,
+    marginTop: 50,
+    marginBottom: 20,
+    width: '70%',
     fontSize: 25,
     color: 'black',
     fontWeight: 'bold',
